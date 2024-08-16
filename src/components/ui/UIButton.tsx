@@ -40,7 +40,7 @@ const buttonVariants = {
   variant: {
     bare: [""],
     outline: ["border border-gray-400"],
-    fill: ["border-orange-200"],
+    fill: ["bg-bgColor dark:darkBgColor"],
     icon: [""],
   },
   size: {

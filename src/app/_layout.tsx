@@ -5,12 +5,17 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Href, Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-
-import { useColorScheme } from "@/components/useColorScheme";
+import React from "react";
+import { useColorScheme } from "nativewind";
+import { useAuth } from "@/hooks/useAuth";
+import GlobalProvider from "@/services/providers/GlobalProvider";
+import AuthProvider, {
+  AuthContextProps,
+} from "@/services/providers/AuthProvider";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -19,7 +24,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "index",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -49,15 +54,45 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+const StackLayout = () => {
+  const {
+    authState: { isAuthenticated, user },
+  } = useAuth() as AuthContextProps;
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    const inAuthGroup = segments[0] === "(protected)";
+
+    if (user === null && inAuthGroup) {
+      router.replace("/");
+    } else if (user) {
+      router.replace(
+        "/(protected)/(tabs)/HomeTab" as Href<"/(protected)/(tabs)/HomeTab">,
+      );
+    }
+  }, [user]);
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(protected)" />
+      <Stack.Screen name="SignupScreen" />
+    </Stack>
+  );
+};
+
+function RootLayoutNav() {
+  const { colorScheme } = useColorScheme();
+
+  return (
+    <GlobalProvider>
+      <AuthProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <StackLayout />
+        </ThemeProvider>
+      </AuthProvider>
+    </GlobalProvider>
   );
 }

@@ -7,7 +7,7 @@ import IconComponent from "./IconComponent";
 const SettingsButton = () => {
   const { colorScheme } = useColorScheme();
   return (
-    <Link href="/" asChild>
+    <Link href="/(protected)/SettingScreen" asChild>
       <TouchableOpacity className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor p-2 rounded-xl inline-block justify-center items-center">
         <IconComponent
           name="setting"
