@@ -5,7 +5,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Href, Stack, useRouter, useSegments } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -56,7 +56,7 @@ export default function RootLayout() {
 
 const StackLayout = () => {
   const {
-    authState: { isAuthenticated, user },
+    authState: { user },
   } = useAuth() as AuthContextProps;
   const segments = useSegments();
   const router = useRouter();
@@ -67,9 +67,7 @@ const StackLayout = () => {
     if (user === null && inAuthGroup) {
       router.replace("/");
     } else if (user) {
-      router.replace(
-        "/(protected)/(tabs)/HomeTab" as Href<"/(protected)/(tabs)/HomeTab">,
-      );
+      router.replace("/(protected)/(tabs)/HomeTab");
     }
   }, [user]);
 

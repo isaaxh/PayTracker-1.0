@@ -37,3 +37,22 @@ export const transactionSchema = z.object({
 });
 
 export type Ttransaction = z.infer<typeof transactionSchema>;
+
+/* userData type */
+
+export const userDataSchema = z.object({
+  uid: z.string(),
+  displayName: z.string(),
+  email: z.string(),
+  createdAt: z.string(),
+  grandTotal: z.number(),
+  monthlyTotal: z.object({
+    month: z.string(),
+    income: z.number(),
+    expenses: z.number(),
+    total: z.number(),
+  }),
+  transactions: z.array(transactionSchema).optional(),
+});
+
+export type TUserData = z.infer<typeof userDataSchema>;

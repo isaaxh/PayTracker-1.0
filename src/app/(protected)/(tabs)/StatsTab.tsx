@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "@/hooks/useGlobal";
 import { getFormattedDate } from "@/utils/getFormattedDate";
+import UIButton from "@/components/ui/UIButton";
 
 export default function TabTwoScreen() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
@@ -38,9 +39,7 @@ export default function TabTwoScreen() {
       <TouchableOpacity onPress={retrieveAllDocuments}>
         <Text>retrieve all doc</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={logout}>
-        <Text>Log out</Text>
-      </TouchableOpacity>
+      <UIButton onPress={logout}>Log out</UIButton>
     </View>
   );
 }

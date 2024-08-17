@@ -1,4 +1,4 @@
-import { TouchableOpacity, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import UIText from "./ui/UIText";
 import UIInput from "./ui/UIInput";
@@ -66,7 +66,7 @@ const LoginForm = () => {
         </View>
       </View>
       <View className="justify-end items-center mb-6 mx-4 mt-auto">
-        <Link href="/(protected)/HomeTab">
+        <Link href="/(protected)/(tabs)/HomeTab">
           <Text className="text-red-300">Unauthorized access</Text>
         </Link>
         <UIButton

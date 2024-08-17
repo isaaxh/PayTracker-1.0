@@ -66,7 +66,6 @@ const SignupForm = () => {
           onPress={handleSubmit(onSubmit)}
           size="large"
           buttonStyles="mx-0 mb-3"
-          textStyles="bg-white"
           loading={loading}
         >
           Create Account

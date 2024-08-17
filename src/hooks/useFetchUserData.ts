@@ -5,6 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "./useAuth";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { FIREBASE_DB } from "../../firebaseConfig";
+import { TUserData } from "@/utils/types";
 
 export const useFetchUserData = () => {
   const { userData, setUserData } = useGlobal() as GlobalContextProps;
@@ -19,7 +20,7 @@ export const useFetchUserData = () => {
         const docRef = doc(FIREBASE_DB, "users", user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setUserData(docSnap.data());
+          setUserData(docSnap.data() as TUserData);
         } else {
           console.log("no such document exists");
         }

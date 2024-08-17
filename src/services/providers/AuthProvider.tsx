@@ -40,8 +40,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   });
   const [loading, setLoading] = useState(false);
 
-  const { addUserDocument, retrieveDocument, retrieveAllDocuments } =
-    useGlobal() as GlobalContextProps;
+  const {
+    addUserDocument,
+    retrieveDocument,
+    retrieveAllDocuments,
+    setUserData,
+  } = useGlobal() as GlobalContextProps;
 
   const auth = FIREBASE_AUTH;
 
@@ -73,11 +77,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       addUserDocument({
         data,
         uid: response.user.uid,
-        date: getFormattedDate().toString(),
+        createdAt: getFormattedDate().toString(),
       });
     } catch (e: any) {
       console.log(e);
-      alert("Registration failed:" + e.message);
+      alert("Registration failed: " + e.message);
     } finally {
       setLoading(false);
     }
@@ -85,6 +89,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     setAuthState({ isAuthenticated: null, user: null });
+    setUserData(null);
     FIREBASE_AUTH.signOut();
   };
 

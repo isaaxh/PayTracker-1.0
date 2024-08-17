@@ -6,11 +6,9 @@ import SummaryComponent from "./SummaryComponent";
 import { Link } from "expo-router";
 import { useFetchUserData } from "@/hooks/useFetchUserData";
 
-const totalMonthly = 4800;
-
 const TotalPayCard = () => {
   const userData = useFetchUserData();
-  console.log(userData);
+  console.log("total Pay: ", userData);
   return (
     <LinearGradView>
       <Link href="/(protected)/(tabs)/StatsTab" asChild>
@@ -20,12 +18,18 @@ const TotalPayCard = () => {
           </View>
           <View className="flex-row items-center mb-4">
             <UIText variant="headerLg" alwaysDarkText={true}>
-              SAR {userData?.grandTotal.toFixed(2)}
+              SAR {userData?.grandTotal.toFixed(2) ?? 0}
             </UIText>
           </View>
           <View className="flex-row w-full px-4 justify-between">
-            <SummaryComponent label="Income" amount={558.0} />
-            <SummaryComponent label="Expenses" amount={356.0} />
+            <SummaryComponent
+              label="Income"
+              amount={userData?.monthlyTotal.income ?? 0}
+            />
+            <SummaryComponent
+              label="Expenses"
+              amount={userData?.monthlyTotal.expenses ?? 0}
+            />
           </View>
         </TouchableOpacity>
       </Link>

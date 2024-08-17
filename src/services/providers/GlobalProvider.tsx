@@ -1,5 +1,5 @@
 import GlobalContext from "@/contexts/GlobalContext";
-import { TSignupSchema, Ttransaction } from "@/utils/types";
+import { TSignupSchema, TUserData } from "@/utils/types";
 import {
   DocumentData,
   collection,
@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import { ReactNode, useState } from "react";
 import { FIREBASE_DB } from "../../../firebaseConfig";
+import { getFormattedDate } from "@/utils/getFormattedDate";
 
 interface GlobalProviderProps {
   children: ReactNode;
@@ -17,26 +18,16 @@ interface GlobalProviderProps {
 
 export type GlobalContextProps = {
   userData: TUserData | null;
-  setUserData: React.Dispatch<React.SetStateAction<DocumentData | null>>;
+  setUserData: React.Dispatch<React.SetStateAction<TUserData | null>>;
   addUserDocument: (props: addUserDocumentType) => void;
   retrieveDocument: (props: retrieveDocumentType) => void;
   retrieveAllDocuments: () => void;
 };
 
-export type TUserData = {
-  uid: string;
-  displayName: string;
-  email: string;
-  date: string;
-  grandTotal: number;
-  totalMonthly: number;
-  transactions: Ttransaction[] | [];
-};
-
 type addUserDocumentType = {
   data: TSignupSchema;
   uid: string;
-  date: string;
+  createdAt: string;
 };
 
 type retrieveDocumentType = {
@@ -48,15 +39,20 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
   const [userData, setUserData] = useState<TUserData | null>(null);
 
   const addUserDocument = async (props: addUserDocumentType) => {
-    const { uid, data, date } = props;
+    const { uid, data, createdAt } = props;
     try {
       await setDoc(doc(FIREBASE_DB, "users", uid), {
         uid: uid,
         displayName: data.name,
         email: data.email,
-        date: date,
+        createdAt: createdAt,
         grandTotal: 0,
-        totalMonthly: 0,
+        monthlyTotal: {
+          month: getFormattedDate(),
+          income: 0,
+          expenses: 0,
+          total: 0,
+        },
         transactions: [],
       });
       console.log("Document written successfully!");
