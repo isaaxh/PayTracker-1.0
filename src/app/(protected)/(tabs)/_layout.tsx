@@ -1,10 +1,11 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
-import { Pressable, View } from "react-native";
+import { Pressable, TouchableOpacity } from "react-native";
 import TabBarIcon from "@/components/TabBarIcon";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
+import LinearGradView from "@/components/LinearGradView";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -72,9 +73,16 @@ export default function TabLayout() {
       <Tabs.Screen
         name="AddTransactionModalBase"
         options={{
-          title: "Stats Tab",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="status up" color={color} />
+          title: "Add Transaction",
+          tabBarIcon: () => (
+            <LinearGradView containerStyles={"mb-12 rounded-full p-3"}>
+              <TabBarIcon
+                name="add"
+                color={Colors.dark.text}
+                size={38}
+                variant="Linear"
+              />
+            </LinearGradView>
           ),
         }}
         listeners={({ navigation }) => ({

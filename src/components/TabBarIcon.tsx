@@ -2,6 +2,7 @@ import { Setting } from "iconsax-react-native";
 import { Grid2 } from "iconsax-react-native";
 import { StatusUp } from "iconsax-react-native";
 import { Profile } from "iconsax-react-native";
+import { Add } from "iconsax-react-native";
 import { EmojiHappy } from "iconsax-react-native";
 import { ComponentProps } from "react";
 
@@ -31,6 +32,9 @@ export default function TabBarIcon({
       break;
     case "profile":
       IconComponent = Profile;
+      break;
+    case "add":
+      IconComponent = Add;
       break;
   }
 
