@@ -12,10 +12,14 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        tabBarInactiveTintColor:
+          colorScheme.colorScheme === "dark"
+            ? Colors.dark.tabIconDefault
+            : Colors.light.tabIconDefault,
         tabBarActiveTintColor:
           colorScheme.colorScheme === "dark"
-            ? Colors.dark.tint
-            : Colors.light.tint,
+            ? Colors.dark.tabIconSelected
+            : Colors.light.tabIconSelected,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
