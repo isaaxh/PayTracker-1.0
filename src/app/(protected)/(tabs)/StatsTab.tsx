@@ -11,8 +11,12 @@ import UIButton from "@/components/ui/UIButton";
 export default function TabTwoScreen() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const { logout } = useAuth() as AuthContextProps;
+  const { currency, language } = useGlobal() as GlobalContextProps;
   const { addUserDocument, retrieveDocument, retrieveAllDocuments } =
     useGlobal() as GlobalContextProps;
+
+  console.log(currency.value);
+  console.log(language.value);
 
   return (
     <View style={styles.container}>
@@ -22,9 +26,11 @@ export default function TabTwoScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <View className="bg-transparent items-center">
-        <Text className="text-black dark:text-white">Toggle Theme</Text>
-        <Switch value={colorScheme === "dark"} onChange={toggleColorScheme} />
+      <View>
+        <Text>{language.value}</Text>
+      </View>
+      <View>
+        <Text>{currency.value}</Text>
       </View>
       <TouchableOpacity
         onPress={() => {

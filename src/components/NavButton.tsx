@@ -5,6 +5,9 @@ import { ArrowLeft } from "iconsax-react-native";
 import { Entypo } from "@expo/vector-icons";
 import { cva } from "class-variance-authority";
 import { cn } from "@/utils/cn";
+import IconComponent from "./IconComponent";
+import { useColorScheme } from "nativewind";
+import Colors from "@/constants/Colors";
 
 interface NavButtonProps {
   variant: "back" | "cancel";
@@ -12,31 +15,40 @@ interface NavButtonProps {
 
 const navButtonVariants = {
   variant: {
-    back: ["rounded-2xl p-3"],
+    back: ["rounded-xl inline-block justify-center items-center"],
     cancel: ["p-1"],
   },
 };
 
-const btnStyles = cva(["rounded-3xl"], {
-  variants: navButtonVariants,
-  defaultVariants: {
-    variant: "back",
+const btnStyles = cva(
+  ["bg-bgSecondaryColor dark:bg-darkBgSecondaryColor p-2 rounded-3xl"],
+  {
+    variants: navButtonVariants,
+    defaultVariants: {
+      variant: "back",
+    },
   },
-});
+);
 
 const NavButton = ({ variant }: NavButtonProps) => {
   const [isPressed, setPressed] = useState(false);
   const navigation = useNavigation();
+  const { colorScheme } = useColorScheme();
+
   return (
     <Pressable
       className={cn(btnStyles({ variant: variant }))}
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
-      style={{ backgroundColor: "#ffffff88", opacity: isPressed ? 0.6 : 1 }}
+      style={{ opacity: isPressed ? 0.6 : 1 }}
       onPress={() => navigation.goBack()}
     >
       {variant === "back" ? (
-        <ArrowLeft size="32" color="#000000" />
+        <IconComponent
+          name="arrow left"
+          color={colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint}
+          size={20}
+        />
       ) : (
         <Entypo name="cross" size={24} color="black" />
       )}

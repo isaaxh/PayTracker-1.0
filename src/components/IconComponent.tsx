@@ -5,6 +5,8 @@ import { Profile } from "iconsax-react-native";
 import { EmojiHappy } from "iconsax-react-native";
 import { ArrowUp } from "iconsax-react-native";
 import { ArrowDown } from "iconsax-react-native";
+import { ArrowCircleLeft2 } from "iconsax-react-native";
+import { ArrowCircleRight2 } from "iconsax-react-native";
 import { Ticket } from "iconsax-react-native";
 import { GasStation } from "iconsax-react-native";
 import { Heart } from "iconsax-react-native";
@@ -44,6 +46,12 @@ export default function Icon({
       break;
     case "arrow down":
       IconComponent = ArrowDown;
+      break;
+    case "arrow left":
+      IconComponent = ArrowCircleLeft2;
+      break;
+    case "arrow right":
+      IconComponent = ArrowCircleRight2;
       break;
     case "ticket":
       IconComponent = Ticket;

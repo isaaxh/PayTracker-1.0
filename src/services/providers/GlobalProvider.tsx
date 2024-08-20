@@ -1,13 +1,6 @@
 import GlobalContext from "@/contexts/GlobalContext";
 import { TSignupSchema, TUserData } from "@/utils/types";
-import {
-  DocumentData,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { ReactNode, useState } from "react";
 import { FIREBASE_DB } from "../../../firebaseConfig";
 import { getFormattedDate } from "@/utils/getFormattedDate";
@@ -22,7 +15,30 @@ export type GlobalContextProps = {
   addUserDocument: (props: addUserDocumentType) => void;
   retrieveDocument: (props: retrieveDocumentType) => void;
   retrieveAllDocuments: () => void;
+  currency: currencyType;
+  setCurrency: React.Dispatch<React.SetStateAction<currencyType>>;
+  language: languageType;
+  setLanguage: React.Dispatch<React.SetStateAction<languageType>>;
 };
+
+export type languageType =
+  | {
+      label: "English";
+      value: "ENG";
+    }
+  | {
+      label: "Arabic";
+      value: "AR";
+    };
+export type currencyType =
+  | {
+      label: "Saudi Riyals";
+      value: "SAR";
+    }
+  | {
+      label: "US Dollar";
+      value: "USD";
+    };
 
 type addUserDocumentType = {
   data: TSignupSchema;
@@ -37,6 +53,14 @@ type retrieveDocumentType = {
 
 const AuthProvider = ({ children }: GlobalProviderProps) => {
   const [userData, setUserData] = useState<TUserData | null>(null);
+  const [currency, setCurrency] = useState<currencyType>({
+    label: "Saudi Riyals",
+    value: "SAR",
+  });
+  const [language, setLanguage] = useState<languageType>({
+    label: "English",
+    value: "ENG",
+  });
 
   const addUserDocument = async (props: addUserDocumentType) => {
     const { uid, data, createdAt } = props;
@@ -94,6 +118,10 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
   const value: GlobalContextProps = {
     userData,
     setUserData,
+    currency,
+    setCurrency,
+    language,
+    setLanguage,
     addUserDocument,
     retrieveAllDocuments,
     retrieveDocument,
