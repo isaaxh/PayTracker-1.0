@@ -9,7 +9,10 @@ function ProtectedLayoutNav() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="(transactions)" />
-      <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      <Stack.Screen
+        name="AddTransactionModal"
+        options={{ presentation: "modal" }}
+      />
       <Stack.Screen name="SettingScreen" />
       <Stack.Screen name="ProfileScreen" />
     </Stack>

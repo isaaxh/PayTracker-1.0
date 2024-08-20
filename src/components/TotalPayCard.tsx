@@ -18,7 +18,7 @@ const TotalPayCard = () => {
           </View>
           <View className="flex-row items-center mb-4">
             <UIText variant="headerLg" alwaysDarkText={true}>
-              SAR {userData?.monthlyTotal.total ?? 0}
+              SAR {userData?.monthlyTotal.total ?? 0.0}
             </UIText>
           </View>
           <View className="flex-row w-full px-4 justify-between">

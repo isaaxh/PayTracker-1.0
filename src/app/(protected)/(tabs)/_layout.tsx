@@ -1,12 +1,10 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 import TabBarIcon from "@/components/TabBarIcon";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -18,7 +16,6 @@ export default function TabLayout() {
           colorScheme.colorScheme === "dark"
             ? Colors.dark.tint
             : Colors.light.tint,
-        /* tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint, */
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -28,7 +25,6 @@ export default function TabLayout() {
           right: 0,
           left: 0,
           backgroundColor:
-            /* Colors[colorScheme === "dark" ? "dark" : "light"].background, */
             colorScheme.colorScheme === "dark"
               ? Colors.dark.backgroundSecondary
               : Colors.light.backgroundSecondary,
@@ -68,6 +64,21 @@ export default function TabLayout() {
             </Link>
           ),
         }}
+      />
+      <Tabs.Screen
+        name="AddTransactionModalBase"
+        options={{
+          title: "Stats Tab",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="status up" color={color} />
+          ),
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("AddTransactionModal");
+          },
+        })}
       />
       <Tabs.Screen
         name="StatsTab"
