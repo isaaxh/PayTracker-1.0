@@ -1,7 +1,6 @@
 import { Pressable } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "expo-router";
-import { ArrowLeft } from "iconsax-react-native";
 import { Entypo } from "@expo/vector-icons";
 import { cva } from "class-variance-authority";
 import { cn } from "@/utils/cn";
@@ -11,12 +10,13 @@ import Colors from "@/constants/Colors";
 
 interface NavButtonProps {
   variant: "back" | "cancel";
+  customStyles?: string;
 }
 
 const navButtonVariants = {
   variant: {
     back: ["rounded-xl inline-block justify-center items-center"],
-    cancel: ["p-1"],
+    cancel: ["p-1 inline-block justify-center items-center"],
   },
 };
 
@@ -30,14 +30,14 @@ const btnStyles = cva(
   },
 );
 
-const NavButton = ({ variant }: NavButtonProps) => {
+const NavButton = ({ variant, customStyles }: NavButtonProps) => {
   const [isPressed, setPressed] = useState(false);
   const navigation = useNavigation();
   const { colorScheme } = useColorScheme();
 
   return (
     <Pressable
-      className={cn(btnStyles({ variant: variant }))}
+      className={cn(btnStyles({ variant: variant }), customStyles)}
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
       style={{ opacity: isPressed ? 0.6 : 1 }}
@@ -50,7 +50,11 @@ const NavButton = ({ variant }: NavButtonProps) => {
           size={20}
         />
       ) : (
-        <Entypo name="cross" size={24} color="black" />
+        <Entypo
+          name="cross"
+          size={24}
+          color={colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint}
+        />
       )}
     </Pressable>
   );

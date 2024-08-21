@@ -11,6 +11,7 @@ import { Ticket } from "iconsax-react-native";
 import { GasStation } from "iconsax-react-native";
 import { Heart } from "iconsax-react-native";
 import { Mobile } from "iconsax-react-native";
+import { TaskSquare } from "iconsax-react-native";
 import { Element3 } from "iconsax-react-native";
 import { ComponentProps } from "react";
 
@@ -67,6 +68,9 @@ export default function Icon({
       break;
     case "mobile":
       IconComponent = Mobile;
+      break;
+    case "task":
+      IconComponent = TaskSquare;
       break;
   }
 
