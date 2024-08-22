@@ -1,8 +1,9 @@
-import { View } from "react-native";
+import { TextInput, View } from "react-native";
 import React, { useState } from "react";
 import AmountInput from "./AmountInput";
 import UIText from "./ui/UIText";
 import UIDropDown from "./ui/UIDropDown";
+import UITextInput from "./ui/UITextInput";
 
 const transactionTypeData = [
   { label: "Expense", value: "expense" },
@@ -16,6 +17,7 @@ const categoriesData = [
 
 const AddTransactionBody = () => {
   const [amount, setAmount] = useState("0");
+  const [note, setNote] = useState("");
   return (
     <View className="flex-1 items-center mt-16">
       <UIText variant="header3">Add Transaction</UIText>
@@ -31,6 +33,7 @@ const AddTransactionBody = () => {
           placeholder="Category"
           iconName="category"
         />
+        <UITextInput note={note} setNote={setNote} />
       </View>
     </View>
   );

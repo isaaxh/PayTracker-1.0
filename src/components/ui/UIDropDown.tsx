@@ -23,7 +23,7 @@ const UIDropDown = (props: UIDropDownProps) => {
   const { colorScheme } = useColorScheme();
 
   return (
-    <View style={styles.container}>
+    <View className="mb-5">
       <Dropdown
         style={[
           styles.dropdown,
@@ -53,7 +53,7 @@ const UIDropDown = (props: UIDropDownProps) => {
         }}
         placeholderStyle={{
           ...styles.placeholderStyle,
-          color: colorScheme === "dark" ? Colors.dark.text : Colors.light.text,
+          color: colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
         }}
         selectedTextStyle={{
           ...styles.selectedTextStyle,
