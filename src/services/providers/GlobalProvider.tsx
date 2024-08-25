@@ -3,7 +3,7 @@ import { TSignupSchema, TUserData } from "@/utils/types";
 import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { ReactNode, useState } from "react";
 import { FIREBASE_DB } from "../../../firebaseConfig";
-import { getFormattedDate } from "@/utils/getFormattedDate";
+import { getFormattedDate } from "@/utils/dateHelperFn";
 
 interface GlobalProviderProps {
   children: ReactNode;

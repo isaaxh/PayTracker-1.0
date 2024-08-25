@@ -14,6 +14,7 @@ import { Mobile } from "iconsax-react-native";
 import { TaskSquare } from "iconsax-react-native";
 import { Category2 } from "iconsax-react-native";
 import { DocumentText } from "iconsax-react-native";
+import { Calendar2 } from "iconsax-react-native";
 import { Element3 } from "iconsax-react-native";
 import { ComponentProps } from "react";
 
@@ -79,6 +80,9 @@ export default function Icon({
       break;
     case "document text":
       IconComponent = DocumentText;
+      break;
+    case "calender":
+      IconComponent = Calendar2;
       break;
   }
 

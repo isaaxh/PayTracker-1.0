@@ -40,7 +40,7 @@ const buttonVariants = {
   variant: {
     bare: [""],
     outline: ["border border-gray-400"],
-    fill: ["bg-bgColor dark:darkBgColor"],
+    fill: ["bg-bgSecondaryColor"],
     icon: [""],
   },
   size: {

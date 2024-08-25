@@ -9,6 +9,8 @@ type UIDropDownProps = {
   data: dataItemType[];
   iconName?: string;
   placeholder?: string;
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type dataItemType = {
@@ -17,13 +19,13 @@ type dataItemType = {
 };
 
 const UIDropDown = (props: UIDropDownProps) => {
-  const { data, iconName, placeholder } = props;
-  const [value, setValue] = useState<string | null>(null);
+  const { data, iconName, placeholder, value, setValue } = props;
+  /* const [value, setValue] = useState<string | null>(null); */
   const [isFocus, setIsFocus] = useState(false);
   const { colorScheme } = useColorScheme();
 
   return (
-    <View className="mb-5">
+    <View>
       <Dropdown
         style={[
           styles.dropdown,

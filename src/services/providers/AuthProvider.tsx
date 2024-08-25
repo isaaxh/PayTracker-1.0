@@ -9,9 +9,9 @@ import { Keyboard } from "react-native";
 import { TLoginSchema, TSignupSchema } from "@/utils/types";
 import { GlobalContextProps } from "./GlobalProvider";
 import { useGlobal } from "@/hooks/useGlobal";
-import { getFormattedDate } from "@/utils/getFormattedDate";
 import { FIREBASE_AUTH } from "../../../firebaseConfig";
 import AuthContext from "../contexts/AuthContext";
+import { getFormattedDate } from "@/utils/dateHelperFn";
 
 interface AuthProviderProps {
   children: ReactNode;

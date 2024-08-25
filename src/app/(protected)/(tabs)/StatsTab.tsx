@@ -5,8 +5,8 @@ import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { useAuth } from "@/hooks/useAuth";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "@/hooks/useGlobal";
-import { getFormattedDate } from "@/utils/getFormattedDate";
 import UIButton from "@/components/ui/UIButton";
+import { getFormattedDate } from "@/utils/dateHelperFn";
 
 export default function TabTwoScreen() {
   const { colorScheme, toggleColorScheme } = useColorScheme();

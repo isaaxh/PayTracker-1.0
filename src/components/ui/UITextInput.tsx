@@ -14,7 +14,10 @@ const UITextInput = (props: UITextInputProps) => {
   const { colorScheme } = useColorScheme();
   return (
     <View className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor px-5 py-3 space-x-6 rounded-md flex-row">
-      <IconComponent name="document text" />
+      <IconComponent
+        name="document text"
+        color={colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint}
+      />
       <TextInput
         className="text-base text-textLight dark:text-textDark flex-1"
         value={note}
