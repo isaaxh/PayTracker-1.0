@@ -30,11 +30,11 @@ export type TSignupSchema = z.infer<typeof signupSchema>;
 
 export const transactionSchema = z.object({
   id: z.string(),
+  date: z.date(),
   amount: z.number(),
   note: z.string(),
   type: z.enum(["income", "expense"]),
   category: categoryEnum,
-  date: z.string(),
 });
 
 export type Ttransaction = z.infer<typeof transactionSchema>;
@@ -59,3 +59,14 @@ export const userDataSchema = z.object({
 export type TUserData = z.infer<typeof userDataSchema>;
 
 /* add transaction types*/
+
+export const addTransactionSchema = z.object({
+  id: z.string(),
+  date: z.date(),
+  amount: z.number(),
+  type: z.enum(["income", "expense"]),
+  category: categoryEnum,
+  note: z.string(),
+});
+
+export type TAddTransaction = z.infer<typeof addTransactionSchema>;
