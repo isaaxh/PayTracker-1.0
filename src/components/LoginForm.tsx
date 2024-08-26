@@ -16,11 +16,17 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const { login, loading } = useAuth() as AuthContextProps;
+  const {
+    login,
+    loading,
+    authState: { user },
+  } = useAuth() as AuthContextProps;
 
   const onSubmit = (data: TLoginSchema) => {
     login({ email: data.email, password: data.password });
   };
+
+  console.log("loginForm: ", user);
 
   return (
     <>

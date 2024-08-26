@@ -1,8 +1,8 @@
 import { FlatList } from "react-native";
 import React from "react";
 import TransactionCard from "./TransactionCard";
-import { transactions } from "@/constants/Transactions";
-import { CategoryLabelType } from "@/constants/Categories";
+import { TTransactionType, transactions } from "@/constants/Transactions";
+import { TCategoryLabel } from "@/constants/Categories";
 
 const TransactionList = () => {
   return (
@@ -13,8 +13,9 @@ const TransactionList = () => {
       data={transactions}
       renderItem={({ item }) => (
         <TransactionCard
-          category={item.category as CategoryLabelType}
+          categoryLabel={item.category as TCategoryLabel}
           transactionId={item.id}
+          type={item.type as TTransactionType}
           amount={item.amount}
           date={item.date}
         />

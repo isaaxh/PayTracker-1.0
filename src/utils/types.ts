@@ -1,4 +1,4 @@
-import { categoryEnum } from "@/constants/Categories";
+import { categoryLabelEnum } from "@/constants/Categories";
 import { z } from "zod";
 
 /* auth data types*/
@@ -34,7 +34,7 @@ export const transactionSchema = z.object({
   amount: z.number(),
   note: z.string(),
   type: z.enum(["income", "expense"]),
-  category: categoryEnum,
+  category: categoryLabelEnum,
 });
 
 export type Ttransaction = z.infer<typeof transactionSchema>;
@@ -65,7 +65,7 @@ export const addTransactionSchema = z.object({
   date: z.date(),
   amount: z.number(),
   type: z.enum(["income", "expense"]),
-  category: categoryEnum,
+  category: categoryLabelEnum,
   note: z.string(),
 });
 

@@ -1,24 +1,31 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import React from "react";
 import UIText from "./ui/UIText";
 import TransactionIcon from "./TransactionIcon";
-import { CategoryLabelType, categories } from "@/constants/Categories";
-import { GlobalStyles } from "@/utils/globalStyles";
+import { TCategory, TCategoryLabel, categories } from "@/constants/Categories";
 import { Link } from "expo-router";
+import { TTransactionType } from "@/constants/Transactions";
 
 type TransactionIconProps = {
-  category: CategoryLabelType;
+  categoryLabel: TCategoryLabel;
   transactionId: number;
+  type: TTransactionType;
   amount: number;
   date: string;
 };
 
 const TransactionCard = ({
-  category,
+  categoryLabel,
   transactionId,
+  type,
   amount,
   date,
 }: TransactionIconProps) => {
+  const category: TCategory | undefined = categories.find(
+    (cat) => categoryLabel === cat.label,
+  );
+
+  console.log(category?.iconName);
   return (
     <Link
       href={{
@@ -27,16 +34,15 @@ const TransactionCard = ({
       }}
       asChild
     >
-      <TouchableOpacity
-        className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor flex-row px-6 py-6 mb-3 rounded-3xl items-center"
-        /* style={GlobalStyles.shadow} */
-      >
-        <TransactionIcon category={categories[category]} />
+      <TouchableOpacity className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor flex-row px-6 py-6 mb-3 rounded-3xl items-center">
+        <TransactionIcon category={category} />
         <View className="flex-1 ml-3">
-          <UIText textStyles="font-bold">{categories[category].label}</UIText>
+          <UIText textStyles="font-bold">{categoryLabel}</UIText>
         </View>
         <View className="items-end">
-          <UIText variant="subHeader2">SAR {amount.toFixed(2)}</UIText>
+          <UIText variant="subHeader2">
+            {type === "income" ? "+" : "-"} SAR {amount.toFixed(2)}
+          </UIText>
           <UIText variant="subHeader">{date}</UIText>
         </View>
       </TouchableOpacity>

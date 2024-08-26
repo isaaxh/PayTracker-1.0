@@ -1,19 +1,19 @@
 import { View } from "react-native";
 import React from "react";
 import IconComponent from "./IconComponent";
-import { CategoryType } from "@/constants/Categories";
+import { TCategory } from "@/constants/Categories";
 
 type TransactionIconProps = {
-  category: CategoryType;
+  category: TCategory | undefined;
 };
 
 const TransactionIcon = ({ category }: TransactionIconProps) => {
   return (
     <View
       className="bg-yellow-400 p-4 rounded-full"
-      style={{ backgroundColor: category.color }}
+      style={{ backgroundColor: category?.color ?? "#000000" }}
     >
-      <IconComponent name={category.iconName} color="#fefefe" />
+      <IconComponent name={category?.iconName ?? ""} color="#fefefe" />
     </View>
   );
 };
