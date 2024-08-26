@@ -3,19 +3,11 @@ import HomeHeader from "@/components/HomeHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HomeBody from "@/components/HomeBody";
 import { useColorScheme } from "nativewind";
-import { useGlobal } from "@/hooks/useGlobal";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
-import { TCategoryLabel } from "@/constants/Categories";
 
 function HomeTab() {
   const { colorScheme } = useColorScheme();
 
-  const { language } = useGlobal() as GlobalContextProps;
-
-  const catLabels: TCategoryLabel = "gas";
-
-  console.log(language);
-  console.log(catLabels);
+  /* const { language } = useGlobal() as GlobalContextProps; */
 
   return (
     <SafeAreaView className="bg-bgColor dark:bg-darkBgColor flex-1 items-center">

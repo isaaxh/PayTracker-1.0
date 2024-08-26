@@ -3,11 +3,17 @@ import { categoryLabelEnum } from "./Categories";
 
 export const transactionTypeEnum = z.enum(["income", "expense"]);
 
+export const transactionTypeArray = [
+  { label: "income", value: "1" },
+  { label: "expense", value: "2" },
+];
+
 export const transactionSchema = z.object({
   id: z.number().int(), // Ensures id is an integer
   type: transactionTypeEnum,
   category: categoryLabelEnum,
   amount: z.number().positive(), // Ensures amount is a positive number
+  note: z.string(),
   date: z.union([
     z.literal("Today"),
     z.literal("Yesterday"),
@@ -15,13 +21,13 @@ export const transactionSchema = z.object({
   ]),
 });
 
-export const transactionsSchema = z.array(transactionSchema);
-
-export type TTransactionType = z.infer<typeof transactionTypeEnum>;
-
 export type TTransaction = z.infer<typeof transactionSchema>;
 
+export const transactionsSchema = z.array(transactionSchema);
+
 export type TTransactions = z.infer<typeof transactionSchema>;
+
+export type TTransactionType = z.infer<typeof transactionTypeEnum>;
 
 export const transactions = [
   {
@@ -29,6 +35,7 @@ export const transactions = [
     type: "expense",
     category: "gas",
     amount: 30,
+    note: "",
     date: "Today",
   },
   {
@@ -36,6 +43,8 @@ export const transactions = [
     type: "expense",
     category: "food",
     amount: 5,
+
+    note: "",
     date: "Today",
   },
   {
@@ -43,6 +52,7 @@ export const transactions = [
     type: "expense",
     category: "recharge",
     amount: 115,
+    note: "",
     date: "Yesterday",
   },
   {
@@ -50,6 +60,7 @@ export const transactions = [
     type: "expense",
     category: "entertainment",
     amount: 50,
+    note: "",
     date: "Yesterday",
   },
   {
@@ -57,6 +68,7 @@ export const transactions = [
     type: "expense",
     category: "miscellaneous",
     amount: 10,
+    note: "",
     date: "Yesterday",
   },
   {
@@ -64,6 +76,7 @@ export const transactions = [
     type: "expense",
     category: "food",
     amount: 15,
+    note: "",
     date: "26/07/2024",
   },
   {
@@ -71,6 +84,7 @@ export const transactions = [
     type: "expense",
     category: "gas",
     amount: 45,
+    note: "",
     date: "25/07/2024",
   },
   {
@@ -78,6 +92,7 @@ export const transactions = [
     type: "expense",
     category: "recharge",
     amount: 60,
+    note: "",
     date: "24/07/2024",
   },
   {
@@ -85,6 +100,7 @@ export const transactions = [
     type: "expense",
     category: "entertainment",
     amount: 100,
+    note: "",
     date: "23/07/2024",
   },
   {
@@ -92,6 +108,7 @@ export const transactions = [
     type: "expense",
     category: "miscellaneous",
     amount: 75,
+    note: "",
     date: "22/07/2024",
   },
 ];

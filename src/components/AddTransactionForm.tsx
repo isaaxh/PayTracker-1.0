@@ -6,16 +6,12 @@ import UIDropDown from "./ui/UIDropDown";
 import CustomDateTimePicker from "./CustomDateTimePicker";
 import UITextInput from "./ui/UITextInput";
 import UIButton from "./ui/UIButton";
-
-const transactionTypeData = [
-  { label: "Expense", value: "expense" },
-  { label: "Income", value: "income" },
-];
-
-const categoriesData = [
-  { label: "Food", value: "food" },
-  { label: "Gas", value: "gas" },
-];
+import { categoryLabelsArray } from "@/constants/Categories";
+import { TTransaction, transactionTypeArray } from "@/constants/Transactions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { transactionSchema } from "@/utils/types";
+import UIInput from "./ui/UIInput";
 
 const AddTransactionForm = () => {
   const [amount, setAmount] = useState("0");
@@ -25,22 +21,30 @@ const AddTransactionForm = () => {
   const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = () => {
-    setLoading(true);
-    console.log("date: ", date);
+  const { control, handleSubmit } = useForm<TTransaction>({
+    resolver: zodResolver(transactionSchema),
+  });
 
-    if (Number(amount) > 500) {
-      console.log("Max amount cannot exceed 500");
-      setLoading(false);
-      return;
-    }
-    console.log("Type: ", type);
-    console.log("Category: ", category);
-    console.log("amount: ", amount);
-    console.log("note: ", note);
-
-    setLoading(false);
+  const onSubmit = (data: TTransaction) => {
+    console.log(data);
   };
+
+  /* const onSubmit = () => { */
+  /*   setLoading(true); */
+  /*   console.log("date: ", date); */
+  /**/
+  /*   if (Number(amount) > 500) { */
+  /*     console.log("Max amount cannot exceed 500"); */
+  /*     setLoading(false); */
+  /*     return; */
+  /*   } */
+  /*   console.log("Type: ", type); */
+  /*   console.log("Category: ", category); */
+  /*   console.log("amount: ", amount); */
+  /*   console.log("note: ", note); */
+  /**/
+  /*   setLoading(false); */
+  /* }; */
   return (
     <>
       <UIText variant="header3">Add Transaction</UIText>
@@ -48,7 +52,7 @@ const AddTransactionForm = () => {
       <View className="flex-1 w-full px-8 mt-12">
         <View className="mb-4">
           <UIDropDown
-            data={transactionTypeData}
+            data={transactionTypeArray}
             placeholder="Type"
             iconName="task"
             value={type}
@@ -57,7 +61,7 @@ const AddTransactionForm = () => {
         </View>
         <View className="mb-4">
           <UIDropDown
-            data={categoriesData}
+            data={categoryLabelsArray}
             placeholder="Category"
             iconName="category"
             value={category}
@@ -65,7 +69,17 @@ const AddTransactionForm = () => {
           />
         </View>
         <View className="mb-4">
-          <UITextInput note={note} setNote={setNote} />
+          {/* <UITextInput note={note} setNote={setNote} control={control} /> */}
+          <UIInput
+            name="note"
+            control={control}
+            containerStyles={
+              "bg-bgSecondaryColor dark:bg-darkBgSecondaryColor px-5 py-3 space-x-6 rounded-md flex-row"
+            }
+            placeholder="Note"
+            showIcon={true}
+            iconName="document text"
+          />
         </View>
         <View className="mb-4">
           <CustomDateTimePicker date={date} setDate={setDate} />

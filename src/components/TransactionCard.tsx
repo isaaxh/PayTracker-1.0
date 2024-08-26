@@ -25,7 +25,6 @@ const TransactionCard = ({
     (cat) => categoryLabel === cat.label,
   );
 
-  console.log(category?.iconName);
   return (
     <Link
       href={{

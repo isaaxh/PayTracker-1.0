@@ -46,7 +46,10 @@ export const categoriesSchema = z.array(categorySchema);
 
 export type TCategories = z.infer<typeof categoriesSchema>;
 
-export const categoryLabels = categories.map((category) => category.label);
+export const categoryLabelsArray = categories.map((category) => ({
+  label: category.label,
+  value: category.id,
+}));
 
 export const categoryLabelEnum = z.enum([
   "gas",
