@@ -6,6 +6,7 @@ import UIText from "./UIText";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "nativewind";
 import IconComponent from "../IconComponent";
+import { VariantProps, cva } from "class-variance-authority";
 
 type UIInputProps<T extends FieldValues> = {
   name: Path<T>;
@@ -14,7 +15,8 @@ type UIInputProps<T extends FieldValues> = {
   containerStyles?: string;
   buttonStyles?: string;
   textStyles?: string;
-} & (UIInputPropsWithIcon | UIInputPropsWithoutIcon) &
+} & VariantProps<typeof inputStyles> &
+  (UIInputPropsWithIcon | UIInputPropsWithoutIcon) &
   TextInputProps;
 
 type UIInputPropsWithIcon = {
@@ -25,11 +27,38 @@ type UIInputPropsWithoutIcon = {
   showIcon?: false;
 };
 
+const inputVariants = {
+  variant: {
+    bare: [""],
+    rounded: ["border rounded-2xl"],
+    rectangular: ["rounded-md "],
+    withIcon: ["space-x-6"],
+  },
+  size: {
+    small: [""],
+    default: [""],
+    large: [""],
+  },
+};
+
+const inputStyles = cva(
+  [
+    "bg-bgSecondaryColor dark:bg-darkBgSecondaryColor px-5 py-3 flex-row items-center",
+  ],
+  {
+    variants: inputVariants,
+    defaultVariants: {
+      variant: "rounded",
+      size: "default",
+    },
+  },
+);
+
 const UIInput = <T extends FieldValues>(
   props: UIInputProps<T>,
   ref: ForwardedRef<TextInput>,
 ) => {
-  const { name, control, containerStyles, showIcon } = props;
+  const { variant, size, name, control, containerStyles, showIcon } = props;
   const { colorScheme } = useColorScheme();
 
   return (
@@ -40,12 +69,12 @@ const UIInput = <T extends FieldValues>(
         field: { onChange, onBlur, value },
         fieldState: { error },
       }) => (
-        <>
+        <View className="mb-3">
           <View
             className={cn(
-              /* "bg-bgSecondaryColor dark:bg-darkBgSecondaryColor px-5 py-3 space-x-6 rounded-md flex-row" */
-              containerStyles ??
-                "bg-bgSecondaryColor dark:bg-darkBgSecondaryColor border rounded-2xl px-3 py-2 mb-1 flex-row items-center justify-between",
+              inputStyles({ variant: variant, size: size }),
+              containerStyles,
+              showIcon ? "space-x-6" : "",
               error
                 ? "border-red-400 bg-red-100"
                 : "border-gray-200 dark:border-zinc-700 dark:bg-darkBgSecondaryColor",
@@ -61,7 +90,7 @@ const UIInput = <T extends FieldValues>(
             ) : null}
             <TextInput
               ref={ref}
-              className="flex-1 text-textLight dark:text-textDark"
+              className="flex-1 text-base text-textLight dark:text-textDark"
               autoCapitalize="none"
               value={value}
               onChangeText={onChange}
@@ -80,7 +109,7 @@ const UIInput = <T extends FieldValues>(
               {error.message}
             </UIText>
           )}
-        </>
+        </View>
       )}
     />
   );

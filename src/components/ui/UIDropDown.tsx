@@ -20,7 +20,6 @@ type dataItemType = {
 
 const UIDropDown = (props: UIDropDownProps) => {
   const { data, iconName, placeholder, value, setValue } = props;
-  /* const [value, setValue] = useState<string | null>(null); */
   const [isFocus, setIsFocus] = useState(false);
   const { colorScheme } = useColorScheme();
 

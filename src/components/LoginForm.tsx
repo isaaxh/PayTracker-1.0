@@ -36,22 +36,18 @@ const LoginForm = () => {
           Enter your email to log in to your account
         </UIText>
         <View className="mt-3">
-          <View className="mb-3">
-            <UIInput
-              name="email"
-              control={control}
-              placeholder="Enter email here"
-            />
-          </View>
-          <View className="mb-3">
-            <UIInput
-              name="password"
-              control={control}
-              placeholder="Enter password here"
-              secureTextEntry={true}
-              isPassword
-            />
-          </View>
+          <UIInput
+            name="email"
+            control={control}
+            placeholder="Enter email here"
+          />
+          <UIInput
+            name="password"
+            control={control}
+            placeholder="Enter password here"
+            secureTextEntry={true}
+            isPassword
+          />
         </View>
 
         <View className="flex-row justify-between items-center px-1">

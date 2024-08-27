@@ -49,8 +49,9 @@ const AddTransactionForm = () => {
     <>
       <UIText variant="header3">Add Transaction</UIText>
       <AmountInput amount={amount} setAmount={setAmount} />
+      {/* <UIInput name="amount" control={conrrol} /> */}
       <View className="flex-1 w-full px-8 mt-12">
-        <View className="mb-4">
+        <View className="mb-3">
           <UIDropDown
             data={transactionTypeArray}
             placeholder="Type"
@@ -59,7 +60,7 @@ const AddTransactionForm = () => {
             setValue={setType}
           />
         </View>
-        <View className="mb-4">
+        <View className="mb-3">
           <UIDropDown
             data={categoryLabelsArray}
             placeholder="Category"
@@ -68,20 +69,16 @@ const AddTransactionForm = () => {
             setValue={setCategory}
           />
         </View>
-        <View className="mb-4">
-          {/* <UITextInput note={note} setNote={setNote} control={control} /> */}
-          <UIInput
-            name="note"
-            control={control}
-            containerStyles={
-              "bg-bgSecondaryColor dark:bg-darkBgSecondaryColor px-5 py-3 space-x-6 rounded-md flex-row"
-            }
-            placeholder="Note"
-            showIcon={true}
-            iconName="document text"
-          />
-        </View>
-        <View className="mb-4">
+        <UIInput
+          name="note"
+          control={control}
+          variant="rectangular"
+          size="large"
+          placeholder="Note"
+          showIcon={true}
+          iconName="document text"
+        />
+        <View className="mb-3">
           <CustomDateTimePicker date={date} setDate={setDate} />
         </View>
       </View>
