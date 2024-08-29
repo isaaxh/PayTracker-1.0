@@ -10,7 +10,7 @@ type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
   transactionId: number;
   type: TTransactionType;
-  amount: number;
+  amount: string;
   date: string;
 };
 
@@ -40,7 +40,7 @@ const TransactionCard = ({
         </View>
         <View className="items-end">
           <UIText variant="subHeader2">
-            {type === "income" ? "+" : "-"} SAR {amount.toFixed(2)}
+            {type === "income" ? "+" : "-"} SAR {Number(amount).toFixed(2)}
           </UIText>
           <UIText variant="subHeader">{date}</UIText>
         </View>

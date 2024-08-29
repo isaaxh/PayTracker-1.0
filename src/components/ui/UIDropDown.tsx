@@ -24,7 +24,7 @@ const UIDropDown = (props: UIDropDownProps) => {
   const { colorScheme } = useColorScheme();
 
   return (
-    <View>
+    <View className="mb-3">
       <Dropdown
         style={[
           styles.dropdown,

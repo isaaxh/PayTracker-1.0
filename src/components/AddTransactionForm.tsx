@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { TextInput, View } from "react-native";
 import React, { useState } from "react";
 import UIText from "./ui/UIText";
 import AmountInput from "./AmountInput";
@@ -14,7 +14,7 @@ import { transactionSchema } from "@/utils/types";
 import UIInput from "./ui/UIInput";
 
 const AddTransactionForm = () => {
-  const [amount, setAmount] = useState("0");
+  const [amount, setAmount] = useState("0.0");
   const [note, setNote] = useState("");
   const [date, setDate] = useState<Date>(new Date());
   const [type, setType] = useState("");
@@ -23,6 +23,7 @@ const AddTransactionForm = () => {
 
   const { control, handleSubmit } = useForm<TTransaction>({
     resolver: zodResolver(transactionSchema),
+    defaultValues: { amount: "0.0" },
   });
 
   const onSubmit = (data: TTransaction) => {
@@ -47,11 +48,20 @@ const AddTransactionForm = () => {
   /* }; */
   return (
     <>
-      <UIText variant="header3">Add Transaction</UIText>
-      <AmountInput amount={amount} setAmount={setAmount} />
-      {/* <UIInput name="amount" control={conrrol} /> */}
+      <View className="items-center justify-center w-full px-24">
+        <UIText variant="header3">Add Transaction</UIText>
+        <View className="w-full mt-6">
+          <UIInput
+            name="amount"
+            control={control}
+            variant="fullyRounded"
+            size="default"
+            isAmountInput
+          />
+        </View>
+      </View>
       <View className="flex-1 w-full px-8 mt-12">
-        <View className="mb-3">
+        <View className="flex-1">
           <UIDropDown
             data={transactionTypeArray}
             placeholder="Type"
@@ -59,8 +69,6 @@ const AddTransactionForm = () => {
             value={type}
             setValue={setType}
           />
-        </View>
-        <View className="mb-3">
           <UIDropDown
             data={categoryLabelsArray}
             placeholder="Category"
@@ -68,29 +76,41 @@ const AddTransactionForm = () => {
             value={category}
             setValue={setCategory}
           />
-        </View>
-        <UIInput
-          name="note"
-          control={control}
-          variant="rectangular"
-          size="large"
-          placeholder="Note"
-          showIcon={true}
-          iconName="document text"
-        />
-        <View className="mb-3">
+          <UIInput
+            name="note"
+            control={control}
+            variant="rectangular"
+            size="large"
+            placeholder="Note"
+            showIcon={true}
+            iconName="document text"
+          />
           <CustomDateTimePicker date={date} setDate={setDate} />
+          <TextInput
+            keyboardType="numeric"
+            value={amount}
+            onChangeText={(text) => {
+              const cleanedValue = text.replace(/[^0-9]/g, "");
+              const parsedValue = parseInt(cleanedValue, 10);
+              if (!isNaN(parsedValue)) {
+                const boundedValue = Math.max(0, Math.min(parsedValue, 500));
+                setAmount(boundedValue.toString());
+              } else {
+                setAmount("");
+              }
+            }}
+          />
         </View>
-      </View>
-      <View className="w-full px-6 py-7 items-center">
-        <UIButton
-          variant="fill"
-          size="large"
-          onPress={onSubmit}
-          loading={loading}
-        >
-          Save
-        </UIButton>
+        <View className="w-full py-7 items-center">
+          <UIButton
+            variant="fill"
+            size="large"
+            onPress={handleSubmit(onSubmit)}
+            loading={loading}
+          >
+            Save
+          </UIButton>
+        </View>
       </View>
     </>
   );

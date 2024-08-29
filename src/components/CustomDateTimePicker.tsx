@@ -42,7 +42,7 @@ const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
   };
 
   return (
-    <View className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor px-5 py-3 space-x-6 rounded-md flex-row">
+    <View className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor flex-row rounded-md  px-5 py-3 mb-3 space-x-6">
       <IconComponent
         name="calender"
         color={colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint}
