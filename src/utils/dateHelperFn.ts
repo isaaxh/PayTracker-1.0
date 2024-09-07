@@ -13,13 +13,14 @@ export const getFormattedDate = () => {
 export const formatDate = (date: Date): string => {
   const today = moment();
   const yesterday = moment().subtract(1, "days").startOf("day");
-  const inputDate = moment(date).startOf("day");
+  const inputDate = moment(date);
 
-  if (inputDate.isSame(today, "day")) {
-    return "Today";
-  } else if (inputDate.isSame(yesterday, "day")) {
-    return "Yesterday";
-  } else {
-    return inputDate.format("YYYY-MM-DD");
-  }
+  /* if (inputDate.isSame(today, "day")) { */
+  /*   return "Today"; */
+  /* } else if (inputDate.isSame(yesterday, "day")) { */
+  /*   return "Yesterday"; */
+  /* } else { */
+  /*   return inputDate.format("YYYY-MM-DD"); */
+  /* } */
+  return inputDate.format("YYYY-MM-DD HH:mm");
 };

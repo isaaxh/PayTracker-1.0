@@ -32,7 +32,7 @@ export const transactionSchema = z.object({
   id: z.string(),
   date: z.date(),
   amount: z.number(),
-  note: z.string(),
+  note: z.string().optional(),
   type: z.enum(["income", "expense"]),
   category: categoryLabelEnum,
 });

@@ -48,7 +48,7 @@ export type TCategories = z.infer<typeof categoriesSchema>;
 
 export const categoryLabelsArray = categories.map((category) => ({
   label: category.label,
-  value: category.id,
+  value: category.label,
 }));
 
 export const categoryLabelEnum = z.enum([

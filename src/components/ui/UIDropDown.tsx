@@ -4,13 +4,15 @@ import { Dropdown } from "react-native-element-dropdown";
 import IconComponent from "../IconComponent";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
+import UIText from "./UIText";
 
-type UIDropDownProps = {
+type UIDropDownProps<T extends FieldValues> = {
   data: dataItemType[];
+  name: Path<T>;
+  control: Control<T>;
   iconName?: string;
   placeholder?: string;
-  value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
 type dataItemType = {
@@ -18,77 +20,102 @@ type dataItemType = {
   value: string;
 };
 
-const UIDropDown = (props: UIDropDownProps) => {
-  const { data, iconName, placeholder, value, setValue } = props;
+const UIDropDown = <T extends FieldValues>(props: UIDropDownProps<T>) => {
+  const { data, name, control, iconName, placeholder } = props;
   const [isFocus, setIsFocus] = useState(false);
   const { colorScheme } = useColorScheme();
 
   return (
-    <View className="mb-3">
-      <Dropdown
-        style={[
-          styles.dropdown,
-          isFocus && {
-            borderColor:
-              colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
-          },
-          {
-            backgroundColor:
-              colorScheme === "dark"
-                ? Colors.dark.backgroundSecondary
-                : Colors.light.backgroundSecondary,
-          },
-        ]}
-        containerStyle={{
-          ...styles.containerStyle,
-          backgroundColor:
-            colorScheme === "dark"
-              ? Colors.dark.backgroundSecondary
-              : Colors.light.backgroundSecondary,
-        }}
-        itemContainerStyle={{
-          ...styles.itemContainerStyle,
-        }}
-        itemTextStyle={{
-          color: colorScheme === "dark" ? Colors.dark.text : Colors.light.text,
-        }}
-        placeholderStyle={{
-          ...styles.placeholderStyle,
-          color: colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
-        }}
-        selectedTextStyle={{
-          ...styles.selectedTextStyle,
-          color: colorScheme === "dark" ? Colors.dark.text : Colors.light.text,
-        }}
-        activeColor={colorScheme === "dark" ? "#3f3f46" : Colors.light.tint}
-        inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
-        data={data}
-        maxHeight={300}
-        showsVerticalScrollIndicator={false}
-        autoScroll={false}
-        labelField="label"
-        valueField="value"
-        placeholder={!isFocus ? placeholder ?? "Select item" : "..."}
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={(item) => {
-          setValue(item.value);
-          setIsFocus(false);
-        }}
-        renderLeftIcon={() => (
-          <View className="mr-6">
-            <IconComponent
-              name={iconName ?? ""}
-              color={
-                colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint
-              }
-            />
-          </View>
-        )}
-      />
-    </View>
+    <Controller
+      name={name}
+      control={control}
+      render={({
+        field: { onChange, value, onBlur },
+        fieldState: { error },
+      }) => (
+        <View className="mb-3">
+          <Dropdown
+            style={[
+              styles.dropdown,
+              isFocus && {
+                borderColor:
+                  colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
+              },
+              {
+                backgroundColor:
+                  colorScheme === "dark"
+                    ? Colors.dark.backgroundSecondary
+                    : Colors.light.backgroundSecondary,
+              },
+            ]}
+            containerStyle={{
+              ...styles.containerStyle,
+              backgroundColor:
+                colorScheme === "dark"
+                  ? Colors.dark.backgroundSecondary
+                  : Colors.light.backgroundSecondary,
+            }}
+            itemContainerStyle={{
+              ...styles.itemContainerStyle,
+            }}
+            itemTextStyle={{
+              color:
+                colorScheme === "dark" ? Colors.dark.text : Colors.light.text,
+            }}
+            placeholderStyle={{
+              ...styles.placeholderStyle,
+              color:
+                colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
+            }}
+            selectedTextStyle={{
+              ...styles.selectedTextStyle,
+              color:
+                colorScheme === "dark" ? Colors.dark.text : Colors.light.text,
+            }}
+            activeColor={colorScheme === "dark" ? "#3f3f46" : Colors.light.tint}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={data}
+            maxHeight={300}
+            showsVerticalScrollIndicator={false}
+            autoScroll={false}
+            labelField="label"
+            valueField="value"
+            placeholder={!isFocus ? placeholder ?? "Select item" : "..."}
+            value={value}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => {
+              onBlur();
+              setIsFocus(false);
+            }}
+            onChange={(item) => {
+              onChange(item.value);
+              setIsFocus(false);
+            }}
+            renderLeftIcon={() => (
+              <View className="mr-6">
+                <IconComponent
+                  name={iconName ?? ""}
+                  color={
+                    colorScheme === "dark"
+                      ? Colors.dark.tint
+                      : Colors.light.tint
+                  }
+                />
+              </View>
+            )}
+          />
+          {error && (
+            <UIText
+              variant="bodyText"
+              textStyles={"text-left ml-2 self-stretch text-red-400"}
+            >
+              {error.message}
+            </UIText>
+          )}
+        </View>
+      )}
+    />
   );
 };
 
