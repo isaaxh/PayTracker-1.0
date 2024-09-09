@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UIText from "./ui/UIText";
 import UIDropDown from "./ui/UIDropDown";
 import CustomDateTimePicker from "./CustomDateTimePicker";
@@ -14,22 +14,45 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import UIInput from "./ui/UIInput";
 import uuid from "react-native-uuid";
+import { useGlobal } from "@/hooks/useGlobal";
+import { GlobalContextProps } from "@/services/providers/GlobalProvider";
+import { router } from "expo-router";
 
 const AddTransactionForm = () => {
   const [date, setDate] = useState(new Date());
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<TTransaction>({
+  const { userData, addTransactionDoc, loading } =
+    useGlobal() as GlobalContextProps;
+
+  const { control, handleSubmit, reset, formState } = useForm<TTransaction>({
     resolver: zodResolver(transactionSchema),
-    defaultValues: { id: uuid.v4(), date: date.toISOString(), note: "" },
+    defaultValues: {
+      id: uuid.v4(),
+      date: date.toISOString(),
+      note: "",
+      amount: 0,
+    },
   });
 
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({
+        id: uuid.v4(),
+        date: date.toISOString(),
+        note: "",
+        amount: 0,
+      });
+    }
+  }, [formState, reset]);
+
   const onSubmit = (data: TTransaction) => {
-    console.log(data);
-    console.log("save clicked");
+    if (!userData) {
+      console.log("Cannot add transaction: user id not available!", userData);
+      return;
+    }
+
+    addTransactionDoc({ uid: userData?.uid, transactionData: data });
+    router.replace("/HomeTab");
   };
 
   return (
@@ -83,7 +106,7 @@ const AddTransactionForm = () => {
             variant="fill"
             size="large"
             onPress={handleSubmit(onSubmit)}
-            loading={isSubmitting}
+            loading={loading}
           >
             Save
           </UIButton>
