@@ -1,5 +1,5 @@
 import { TextInput, TextInputProps, View } from "react-native";
-import React, { ForwardedRef } from "react";
+import React, { ForwardedRef, useState } from "react";
 import { cn } from "@/utils/cn";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import UIText from "./UIText";
@@ -7,6 +7,7 @@ import Colors from "@/constants/Colors";
 import { useColorScheme } from "nativewind";
 import IconComponent from "../IconComponent";
 import { VariantProps, cva } from "class-variance-authority";
+import NumericInput from "react-numeric-input";
 
 type UIInputProps<T extends FieldValues> = {
   name: Path<T>;
@@ -32,7 +33,7 @@ const inputVariants = {
   variant: {
     bare: [""],
     rounded: ["border rounded-2xl"],
-    fullyRounded: ["items-end space-x-2 rounded-full py-3 px-16"],
+    fullyRounded: ["items-end space-x-2 rounded-full py-3 px-12"],
     rectangular: ["rounded-md"],
   },
   size: {
@@ -111,14 +112,12 @@ const UIInput = <T extends FieldValues>(
                   onChange(text);
                   return;
                 }
-                const cleanedValue = text.replace(/[^0-9.]/g, "");
-                const parsedValue = parseInt(cleanedValue, 10);
-                if (!isNaN(parsedValue)) {
-                  const boundedValue = Math.max(0, Math.min(parsedValue, 500));
-                  onChange(boundedValue.toString());
-                } else {
-                  onChange("");
-                }
+                const cleanedValue = text
+                  .replace(/[^0-9.]/g, "")
+                  .replace(/(\..*)\./g, "$1")
+                  .replace(/(\.\d{2})\d+/g, "$1");
+                const parsedValue = parseFloat(cleanedValue);
+                onChange(parsedValue);
               }}
               onBlur={onBlur}
               placeholderTextColor={
@@ -131,7 +130,10 @@ const UIInput = <T extends FieldValues>(
           {error && (
             <UIText
               variant="bodyText"
-              textStyles={"text-left ml-2 self-stretch text-red-400"}
+              textStyles={cn(
+                "text-left ml-2 self-stretch text-red-400",
+                isAmountInput && "text-center ml-0",
+              )}
             >
               {error.message}
             </UIText>

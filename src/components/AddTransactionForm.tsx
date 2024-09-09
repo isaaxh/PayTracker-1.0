@@ -14,8 +14,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import UIInput from "./ui/UIInput";
 import uuid from "react-native-uuid";
-import { formatDate } from "@/utils/dateHelperFn";
-import moment from "moment";
 
 const AddTransactionForm = () => {
   const [date, setDate] = useState(new Date());
@@ -26,7 +24,7 @@ const AddTransactionForm = () => {
     formState: { isSubmitting },
   } = useForm<TTransaction>({
     resolver: zodResolver(transactionSchema),
-    defaultValues: { id: uuid.v4(), amount: "0.0", note: "" },
+    defaultValues: { id: uuid.v4(), note: "" },
   });
 
   const onSubmit = (data: TTransaction) => {
@@ -40,13 +38,13 @@ const AddTransactionForm = () => {
       <View className="items-center justify-center w-full px-24">
         <UIText variant="header3">Add Transaction</UIText>
         <View className="w-full mt-6">
-          {/* <UIInput */}
-          {/*   name="amount" */}
-          {/*   control={control} */}
-          {/*   variant="fullyRounded" */}
-          {/*   size="default" */}
-          {/*   isAmountInput */}
-          {/* /> */}
+          <UIInput
+            name="amount"
+            control={control}
+            variant="fullyRounded"
+            size="default"
+            isAmountInput
+          />
         </View>
       </View>
       <View className="flex-1 w-full px-8 mt-12">

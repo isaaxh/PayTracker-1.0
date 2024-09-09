@@ -17,7 +17,9 @@ export const transactionSchema = z.object({
   id: z.union([z.string(), z.array(z.number())]),
   type: transactionTypeEnum,
   category: categoryLabelEnum,
-  amount: z.string(),
+  amount: z
+    .number({ message: "Please enter an amount" })
+    .max(500, { message: "Amount must not exceed 500" }),
   note: z.string().optional(),
   /* date: z.union([ */
   /*   z.literal("Today"), */
@@ -40,7 +42,8 @@ export const transactions = [
     id: "970f2874-fa0b-44b0-b9fd-778f055d99d7",
     type: "expense",
     category: "gas",
-    amount: "30",
+    /* amount: "30", */
+    amount: 30,
     note: "",
     date: "Today",
   },
@@ -48,8 +51,8 @@ export const transactions = [
     id: "623a4f4d-688d-4888-bbc5-9b92176bff8a",
     type: "expense",
     category: "food",
-    amount: "5",
-
+    /* amount: "5", */
+    amount: 5,
     note: "",
     date: "Today",
   },
@@ -57,7 +60,8 @@ export const transactions = [
     id: "cab0cb7c-44f3-40a7-89aa-a609b19fc63a",
     type: "expense",
     category: "recharge",
-    amount: "115",
+    amount: 155,
+    /* amount: "115", */
     note: "",
     date: "Yesterday",
   },
@@ -65,7 +69,8 @@ export const transactions = [
     id: "d305c041-a028-492c-a1f1-294d90868b58",
     type: "expense",
     category: "entertainment",
-    amount: "50",
+    amount: 50,
+    /* amount: "50", */
     note: "",
     date: "Yesterday",
   },
@@ -73,7 +78,8 @@ export const transactions = [
     id: "53946d88-42a4-4c53-b263-423490b72c90",
     type: "expense",
     category: "miscellaneous",
-    amount: "10",
+    /* amount: "10", */
+    amount: 10,
     note: "",
     date: "Yesterday",
   },
@@ -81,7 +87,8 @@ export const transactions = [
     id: "22f9b15f-8b14-4e01-a6e0-6b726f5004d2",
     type: "expense",
     category: "food",
-    amount: "15",
+    /* amount: "15", */
+    amount: 15,
     note: "",
     date: "26/07/2024",
   },
@@ -89,7 +96,8 @@ export const transactions = [
     id: "fe7c9cf5-8aba-4299-8ed7-b9cc82af0eba",
     type: "expense",
     category: "gas",
-    amount: "45",
+    /* amount: "45", */
+    amount: 45,
     note: "",
     date: "25/07/2024",
   },
@@ -97,7 +105,8 @@ export const transactions = [
     id: "8b9b9508-b9b5-4a6b-9b59-5ac8b31f7479",
     type: "expense",
     category: "recharge",
-    amount: "60",
+    /* amount: "60", */
+    amount: 60,
     note: "",
     date: "24/07/2024",
   },
@@ -105,7 +114,8 @@ export const transactions = [
     id: "aecaece3-6dfd-4c3d-be61-afd603e3a844",
     type: "expense",
     category: "entertainment",
-    amount: "100",
+    /* amount: "100", */
+    amount: 100,
     note: "",
     date: "23/07/2024",
   },
@@ -113,7 +123,8 @@ export const transactions = [
     id: "c25e5b06-03ab-45cb-8d14-61ec9de629a8",
     type: "expense",
     category: "miscellaneous",
-    amount: "75",
+    /* amount: "75", */
+    amount: 75,
     note: "",
     date: "22/07/2024",
   },

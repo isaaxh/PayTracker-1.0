@@ -8,9 +8,9 @@ import { TTransactionType } from "@/constants/Transactions";
 
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
-  transactionId: number;
+  transactionId: string;
   type: TTransactionType;
-  amount: string;
+  amount: number;
   date: string;
 };
 
@@ -40,7 +40,7 @@ const TransactionCard = ({
         </View>
         <View className="items-end">
           <UIText variant="subHeader2">
-            {type === "income" ? "+" : "-"} SAR {Number(amount).toFixed(2)}
+            {type === "income" ? "+" : "-"} SAR {amount.toFixed(2)}
           </UIText>
           <UIText variant="subHeader">{date}</UIText>
         </View>
