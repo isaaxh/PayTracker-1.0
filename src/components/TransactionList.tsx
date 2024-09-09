@@ -18,6 +18,7 @@ const TransactionList = () => {
           type={item.type as TTransactionType}
           amount={item.amount}
           date={item.date}
+          note={item.note}
         />
       )}
       keyExtractor={(item) => item.id.toString()}

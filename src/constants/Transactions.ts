@@ -43,7 +43,7 @@ export const transactions = [
     type: "expense",
     category: "gas",
     amount: 30,
-    note: "",
+    note: "Filled gas at jeddah station",
     date: new Date("2024-09-09T01:02:09.382Z").toISOString(),
   },
   {

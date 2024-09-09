@@ -13,6 +13,7 @@ type TransactionIconProps = {
   type: TTransactionType;
   amount: number;
   date: string;
+  note: string;
 };
 
 const TransactionCard = ({
@@ -21,10 +22,14 @@ const TransactionCard = ({
   type,
   amount,
   date,
+  note,
 }: TransactionIconProps) => {
   const category: TCategory | undefined = categories.find(
     (cat) => categoryLabel === cat.label,
   );
+
+  const capitalizedLabel =
+    categoryLabel[0].toUpperCase() + categoryLabel.slice(1);
 
   return (
     <Link
@@ -37,7 +42,8 @@ const TransactionCard = ({
       <TouchableOpacity className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor flex-row px-6 py-6 mb-3 rounded-3xl items-center">
         <TransactionIcon category={category} />
         <View className="flex-1 ml-3">
-          <UIText textStyles="font-bold">{categoryLabel}</UIText>
+          <UIText textStyles="font-bold">{capitalizedLabel}</UIText>
+          {/* {note !== "" ? <UIText variant="subHeader">{note}</UIText> : null} */}
         </View>
         <View className="items-end">
           <UIText variant="subHeader2">
