@@ -24,3 +24,14 @@ export const formatDate = (date: Date): string => {
   /* } */
   return inputDate.format("YYYY-MM-DD HH:mm");
 };
+
+export function convertToTimezone(date: Date, offsetInHours: number) {
+  // Convert the date to UTC (get the time in milliseconds since the Unix epoch)
+  const utcTime = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
+
+  // Add the offset (in milliseconds)
+  const targetTime = utcTime + offsetInHours * 60 * 60 * 1000;
+
+  // Create a new Date object with the adjusted time
+  return new Date(targetTime);
+}

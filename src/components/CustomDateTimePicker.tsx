@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { formatDate } from "@/utils/dateHelperFn";
+import { convertToTimezone, formatDate } from "@/utils/dateHelperFn";
 import IconComponent from "./IconComponent";
 import UIText from "./ui/UIText";
 import { useColorScheme } from "nativewind";
@@ -13,6 +13,7 @@ import { TTransaction } from "@/constants/Transactions";
 
 type CustomDateTimePickerProps = {
   date: Date;
+  setDate: React.Dispatch<React.SetStateAction<Date>>;
   control: Control<TTransaction>;
   placeholder?: string;
 };
@@ -20,7 +21,8 @@ type CustomDateTimePickerProps = {
 const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
   props: CustomDateTimePickerProps,
 ) => {
-  const { date, control } = props;
+  const { control, date, setDate } = props;
+  /* const [date, setDate] = useState(new Date()); */
   const [dateString, setDateString] = useState(formatDate(date));
   const [show, setShow] = useState<boolean>(false);
 
@@ -70,7 +72,7 @@ const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
           </TouchableOpacity>
           {show && (
             <DateTimePicker
-              value={value}
+              value={date}
               mode={"date"}
               is24Hour={true}
               display="default"
@@ -80,7 +82,8 @@ const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
               ) => {
                 setShow(false);
                 if (event.type === "set" && selectedDate) {
-                  onChange(formatDate(selectedDate));
+                  onChange(convertToTimezone(selectedDate, 3));
+                  setDate(convertToTimezone(selectedDate, 3));
                   setDateString(formatDate(selectedDate));
                 }
               }}

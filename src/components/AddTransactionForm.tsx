@@ -24,12 +24,11 @@ const AddTransactionForm = () => {
     formState: { isSubmitting },
   } = useForm<TTransaction>({
     resolver: zodResolver(transactionSchema),
-    defaultValues: { id: uuid.v4(), note: "" },
+    defaultValues: { id: uuid.v4(), date: date.toISOString(), note: "" },
   });
 
   const onSubmit = (data: TTransaction) => {
     console.log(data);
-    console.log("date: " + date);
     console.log("save clicked");
   };
 
@@ -44,6 +43,7 @@ const AddTransactionForm = () => {
             variant="fullyRounded"
             size="default"
             isAmountInput
+            placeholder="0.00"
           />
         </View>
       </View>
@@ -72,7 +72,11 @@ const AddTransactionForm = () => {
             showIcon={true}
             iconName="document text"
           />
-          {/* <CustomDateTimePicker control={control} date={date} /> */}
+          <CustomDateTimePicker
+            control={control}
+            date={date}
+            setDate={setDate}
+          />
         </View>
         <View className="w-full py-7 items-center">
           <UIButton

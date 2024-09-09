@@ -5,6 +5,7 @@ import TransactionIcon from "./TransactionIcon";
 import { TCategory, TCategoryLabel, categories } from "@/constants/Categories";
 import { Link } from "expo-router";
 import { TTransactionType } from "@/constants/Transactions";
+import { formatDate } from "@/utils/dateHelperFn";
 
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
@@ -42,7 +43,7 @@ const TransactionCard = ({
           <UIText variant="subHeader2">
             {type === "income" ? "+" : "-"} SAR {amount.toFixed(2)}
           </UIText>
-          <UIText variant="subHeader">{date}</UIText>
+          <UIText variant="subHeader">{formatDate(new Date(date))}</UIText>
         </View>
       </TouchableOpacity>
     </Link>
