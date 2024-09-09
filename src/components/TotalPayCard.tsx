@@ -4,11 +4,11 @@ import UIText from "./ui/UIText";
 import LinearGradView from "./LinearGradView";
 import SummaryComponent from "./SummaryComponent";
 import { Link } from "expo-router";
-import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { useGlobal } from "@/hooks/useGlobal";
+import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 
 const TotalPayCard = () => {
-  const userData = useFetchUserData();
-  console.log("total Pay: ", userData);
+  const { userData } = useGlobal() as GlobalContextProps;
   return (
     <LinearGradView>
       <Link href="/(protected)/(tabs)/StatsTab" asChild>

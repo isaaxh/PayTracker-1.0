@@ -11,12 +11,19 @@ import { getFormattedDate } from "@/utils/dateHelperFn";
 export default function TabTwoScreen() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const { logout } = useAuth() as AuthContextProps;
-  const { currency, language } = useGlobal() as GlobalContextProps;
-  const { addUserDocument, retrieveDocument, retrieveAllDocuments } =
-    useGlobal() as GlobalContextProps;
+  const {
+    userData,
+    currency,
+    language,
+    addUserDocument,
+    retrieveDocument,
+    retrieveAllDocuments,
+    addTransactionDoc,
+  } = useGlobal() as GlobalContextProps;
 
-  console.log(currency.value);
-  console.log(language.value);
+  /* console.log(currency.value); */
+  /* console.log(language.value); */
+  console.log("userdata statstab: ", userData?.uid);
 
   return (
     <View style={styles.container}>
@@ -42,9 +49,12 @@ export default function TabTwoScreen() {
       {/* <TouchableOpacity onPress={retrieveDocument}> */}
       {/*   <Text>retrieve doc</Text> */}
       {/* </TouchableOpacity> */}
-      <TouchableOpacity onPress={retrieveAllDocuments}>
-        <Text>retrieve all doc</Text>
-      </TouchableOpacity>
+      {/* <TouchableOpacity onPress={() => retrieveDocument(props)}> */}
+      {/*   <Text>addTransactionDoc</Text> */}
+      {/* </TouchableOpacity> */}
+      {/* <TouchableOpacity onPress={() => addTransactionDoc()}> */}
+      {/*   <Text>addTransactionDoc</Text> */}
+      {/* </TouchableOpacity> */}
       <UIButton onPress={logout}>Log out</UIButton>
     </View>
   );

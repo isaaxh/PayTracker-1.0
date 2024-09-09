@@ -7,8 +7,6 @@ import { useColorScheme } from "nativewind";
 function HomeTab() {
   const { colorScheme } = useColorScheme();
 
-  /* const { language } = useGlobal() as GlobalContextProps; */
-
   return (
     <SafeAreaView className="bg-bgColor dark:bg-darkBgColor flex-1 items-center">
       <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />

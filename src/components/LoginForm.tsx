@@ -26,8 +26,6 @@ const LoginForm = () => {
     login({ email: data.email, password: data.password });
   };
 
-  console.log("loginForm: ", user);
-
   return (
     <>
       <View className="mx-4 mt-6">
