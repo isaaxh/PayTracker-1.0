@@ -52,7 +52,7 @@ const AddTransactionForm = () => {
       collectionName: `users/${userData?.uid}/transactions`,
     });
 
-    router.replace("/HomeTab");
+    router.back();
   };
 
   return (

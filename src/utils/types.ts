@@ -1,5 +1,3 @@
-import { categoryLabelEnum } from "@/constants/Categories";
-import { transactionSchema } from "@/constants/Transactions";
 import { z } from "zod";
 
 /* auth data types*/
@@ -41,7 +39,6 @@ export const userDataSchema = z.object({
     expenses: z.number(),
     total: z.number(),
   }),
-  transactions: z.array(transactionSchema).optional(),
 });
 
 export type TUserData = z.infer<typeof userDataSchema>;

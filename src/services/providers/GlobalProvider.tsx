@@ -11,9 +11,15 @@ import {
 import { ReactNode, useState } from "react";
 import { FIREBASE_DB } from "../../../firebaseConfig";
 import { getFormattedDate } from "@/utils/dateHelperFn";
-import { TTransaction, TTransactionType } from "@/constants/Transactions";
+import {
+  TTransaction,
+  TTransactionType,
+  transactionsSchema,
+} from "@/constants/Transactions";
 import { router } from "expo-router";
 import { TCategoryLabel } from "@/constants/Categories";
+import Toast from "react-native-toast-message";
+import { useToast } from "@/hooks/useToast";
 
 interface GlobalProviderProps {
   children: ReactNode;
@@ -86,6 +92,7 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     label: "English",
     value: "ENG",
   });
+  const { showTransactionAddedToast } = useToast();
 
   const addUserDocument = async (props: TAddUserDocument) => {
     setLoading(true);
@@ -124,21 +131,25 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
         ...doc.data(),
       }));
 
-      setTransactions(() => {
-        const newTransactions: TTransaction[] = queryData.map((data) => ({
-          id: data.id,
-          date: data.date.toString(),
-          amount: data.amount as number,
-          type: data.type as TTransactionType,
-          category: data.category as TCategoryLabel,
-          note: data.note,
-        }));
+      const newTransactions: TTransaction[] = queryData.map((data) => ({
+        id: data.id,
+        date: data.date.toString(),
+        amount: data.amount as number,
+        type: data.type as TTransactionType,
+        category: data.category as TCategoryLabel,
+        note: data.note,
+      }));
 
-        return [
-          ...(newTransactions.length ? newTransactions : []), // Assign the transformed transactions to the user data
-        ];
-      });
+      const result = transactionsSchema.safeParse(newTransactions);
 
+      if (!result.success) {
+        console.error(result.error.format());
+      } else {
+        setTransactions(() => {
+          return [...(newTransactions.length ? newTransactions : [])];
+        });
+        console.log("Transactions are valid!");
+      }
       console.log("Retrieved all documents successfully!");
     } catch (e) {
       console.log("Failed to retrieve all documents", e);
@@ -201,7 +212,7 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
         },
       );
       console.log("Transaction Added successfully! ");
-      router.replace("/HomeTab");
+      showTransactionAddedToast();
     } catch (e) {
       console.log("Failed to add transaction", e);
     } finally {

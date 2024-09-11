@@ -1,21 +1,30 @@
-import { FlatList, View } from "react-native";
+import {
+  Text,
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  View,
+} from "react-native";
 import React from "react";
 import TransactionCard from "./TransactionCard";
 import { TTransactionType } from "@/constants/Transactions";
 import { TCategoryLabel } from "@/constants/Categories";
 import { useGlobal } from "@/hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
-import UIText from "./ui/UIText";
+import { useFetchAllTransactions } from "@/hooks/useFetchAllTransactions";
 
 const TransactionList = () => {
   const { transactions, loading } = useGlobal() as GlobalContextProps;
+  const { fetchAllTransactions } = useFetchAllTransactions();
 
   return (
     <>
-      {!loading && transactions?.length ? (
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
         <FlatList
           className="py-2"
-          contentContainerStyle={{ paddingBottom: 320 }}
+          contentContainerStyle={{ paddingBottom: 350 }}
           showsVerticalScrollIndicator={false}
           data={transactions}
           renderItem={({ item }) => (
@@ -30,10 +39,17 @@ const TransactionList = () => {
             />
           )}
           keyExtractor={(item) => item.id}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={fetchAllTransactions}
+            />
+          }
         />
-      ) : (
-        <View className="items-center justify-center">
-          <UIText>Loading transactions...</UIText>
+      )}
+      {!loading && !transactions.length && (
+        <View className="justify-center items-center">
+          <Text style={{ color: "#ffffff" }}>No transactions</Text>
         </View>
       )}
     </>

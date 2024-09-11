@@ -44,7 +44,9 @@ const TransactionCard = ({
           <UIText variant="subHeader2">
             {type === "income" ? "+" : "-"} SAR {amount}
           </UIText>
-          <UIText variant="subHeader">{formatDate(new Date(date))}</UIText>
+          <UIText variant="subHeader">
+            {formatDate(new Date(date)).split(" ")[0]}
+          </UIText>
         </View>
       </TouchableOpacity>
     </Link>

@@ -7,6 +7,7 @@ import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "@/hooks/useGlobal";
 import UIButton from "@/components/ui/UIButton";
 import { getFormattedDate } from "@/utils/dateHelperFn";
+import Toast from "react-native-toast-message";
 
 export default function TabTwoScreen() {
   const { logout } = useAuth() as AuthContextProps;
@@ -23,6 +24,13 @@ export default function TabTwoScreen() {
   } = useGlobal() as GlobalContextProps;
 
   /* console.log("stats: ", transactions); */
+  const showToast = () => {
+    Toast.show({
+      type: "error",
+      text1: "Opps!",
+      text2: "Something went wrong",
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -60,6 +68,7 @@ export default function TabTwoScreen() {
       {/* <TouchableOpacity onPress={() => addTransactionDoc()}> */}
       {/*   <Text>addTransactionDoc</Text> */}
       {/* </TouchableOpacity> */}
+      <UIButton onPress={showToast}>Show toast</UIButton>
       <UIButton onPress={logout}>Log out</UIButton>
     </View>
   );
