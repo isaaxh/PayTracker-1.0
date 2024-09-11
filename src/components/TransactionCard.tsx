@@ -4,21 +4,16 @@ import UIText from "./ui/UIText";
 import TransactionIcon from "./TransactionIcon";
 import { TCategory, TCategoryLabel, categories } from "@/constants/Categories";
 import { Link } from "expo-router";
-import { TTransactionType } from "@/constants/Transactions";
+import { TTransaction } from "@/constants/Transactions";
 import { formatDate } from "@/utils/dateHelperFn";
 
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
-  transactionId: string;
-  type: TTransactionType;
-  amount: number;
-  date: string;
-  note: string;
-};
+} & TTransaction;
 
 const TransactionCard = ({
   categoryLabel,
-  transactionId,
+  id,
   type,
   amount,
   date,
@@ -34,8 +29,8 @@ const TransactionCard = ({
   return (
     <Link
       href={{
-        pathname: `/(transactions)/${transactionId}`,
-        params: { id: transactionId },
+        pathname: `/(transactions)/${id}`,
+        params: { id: id },
       }}
       asChild
     >
@@ -43,11 +38,11 @@ const TransactionCard = ({
         <TransactionIcon category={category} />
         <View className="flex-1 ml-3">
           <UIText textStyles="font-bold">{capitalizedLabel}</UIText>
-          {/* {note !== "" ? <UIText variant="subHeader">{note}</UIText> : null} */}
+          {note !== "" ? <UIText variant="subHeader">{note}</UIText> : null}
         </View>
         <View className="items-end">
           <UIText variant="subHeader2">
-            {type === "income" ? "+" : "-"} SAR {amount.toFixed(2)}
+            {type === "income" ? "+" : "-"} SAR {amount}
           </UIText>
           <UIText variant="subHeader">{formatDate(new Date(date))}</UIText>
         </View>

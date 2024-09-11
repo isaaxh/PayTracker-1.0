@@ -14,7 +14,8 @@ export const useAuth = () => {
     setAuthState,
   } = useContext(AuthContext) as AuthContextProps;
 
-  const { setUserData } = useGlobal() as GlobalContextProps;
+  const { userData, setUserData, transactions, getAllDocuments } =
+    useGlobal() as GlobalContextProps;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
@@ -42,7 +43,19 @@ export const useAuth = () => {
     };
 
     fetchUserData();
-  }, [user]);
+  }, [user, setUserData]);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      if (transactions?.length) return;
+
+      getAllDocuments({
+        collectionName: `users/${userData?.uid}/transactions`,
+      });
+    };
+
+    fetchTransactions();
+  }, [userData]);
 
   return useContext(AuthContext);
 };

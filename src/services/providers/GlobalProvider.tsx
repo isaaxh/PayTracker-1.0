@@ -1,19 +1,19 @@
 import GlobalContext from "@/contexts/GlobalContext";
 import { TSignupSchema, TUserData } from "@/utils/types";
 import {
+  Transaction,
   collection,
   doc,
   getDoc,
   getDocs,
   setDoc,
-  query,
-  where,
 } from "firebase/firestore";
 import { ReactNode, useState } from "react";
 import { FIREBASE_DB } from "../../../firebaseConfig";
 import { getFormattedDate } from "@/utils/dateHelperFn";
-import { TTransaction } from "@/constants/Transactions";
+import { TTransaction, TTransactionType } from "@/constants/Transactions";
 import { router } from "expo-router";
+import { TCategoryLabel } from "@/constants/Categories";
 
 interface GlobalProviderProps {
   children: ReactNode;
@@ -23,9 +23,11 @@ export type GlobalContextProps = {
   loading: boolean;
   userData: TUserData | null;
   setUserData: React.Dispatch<React.SetStateAction<TUserData | null>>;
+  transactions: TTransaction[];
+  setTransactions: React.Dispatch<React.SetStateAction<TTransaction[]>>;
   addUserDocument: (props: TAddUserDocument) => void;
-  retrieveDocument: (props: TRetrieveDocument) => void;
-  retrieveAllDocuments: () => void;
+  getDocument: (props: TGetDocument) => void;
+  getAllDocuments: (props: TGetAllDocument) => void;
   addTransactionDoc: (props: TAddTransactionDoc) => void;
   currency: currencyType;
   setCurrency: React.Dispatch<React.SetStateAction<currencyType>>;
@@ -58,9 +60,13 @@ type TAddUserDocument = {
   createdAt: string;
 };
 
-type TRetrieveDocument = {
+type TGetDocument = {
   collectionName: string;
   id: string;
+};
+
+type TGetAllDocument = {
+  collectionName: string;
 };
 
 type TAddTransactionDoc = {
@@ -71,6 +77,7 @@ type TAddTransactionDoc = {
 const AuthProvider = ({ children }: GlobalProviderProps) => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<TUserData | null>(null);
+  const [transactions, setTransactions] = useState<TTransaction[] | []>([]);
   const [currency, setCurrency] = useState<currencyType>({
     label: "Saudi Riyals",
     value: "SAR",
@@ -106,20 +113,60 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     }
   };
 
-  const retrieveAllDocuments = async () => {
+  const getAllDocuments = async (props: TGetAllDocument) => {
+    setLoading(true);
+    const { collectionName } = props;
     try {
-      console.log("retAllDoc");
-      const querySnapshot = await getDocs(collection(FIREBASE_DB, "users"));
-      querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+      const querySnapshot = await getDocs(
+        collection(FIREBASE_DB, collectionName),
+      );
+      const queryData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+      }));
+
+      setTransactions(() => {
+        const newTransactions: TTransaction[] = queryData.map((data) => ({
+          id: data.id,
+          date: data.date.toString(),
+          amount: data.amount as number,
+          type: data.type as TTransactionType,
+          category: data.category as TCategoryLabel,
+          note: data.note,
+        }));
+
+        return [
+          ...(newTransactions.length ? newTransactions : []), // Assign the transformed transactions to the user data
+        ];
       });
+
+      console.log("Retrieved all documents successfully!");
     } catch (e) {
-      console.log("retAllDoc error");
-      console.log(e);
+      console.log("Failed to retrieve all documents", e);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const retrieveDocument = async (props: TRetrieveDocument) => {
+  /* for later use*/
+  /* setData((prevData) => { */
+  /*   if (!prevData) return null; */
+  /**/
+  /*   const newTransactions = queryData.map((data) => ({ */
+  /*     id: data.id, */
+  /*     date: data.date.toString(), */
+  /*     amount: data.amount, */
+  /*     type: data.type, */
+  /*     category: data.category, */
+  /*     note: data.note, */
+  /*   })); */
+  /**/
+  /*   return { */
+  /*     ...prevData, */
+  /*     transactions: newTransactions, // Assign the transformed transactions to the user data */
+  /*   }; */
+  /* }); */
+
+  const getDocument = async (props: TGetDocument) => {
     const { collectionName, id } = props;
     let data = null;
     try {
@@ -154,7 +201,6 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
         },
       );
       console.log("Transaction Added successfully! ");
-
       router.replace("/HomeTab");
     } catch (e) {
       console.log("Failed to add transaction", e);
@@ -167,13 +213,15 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     loading,
     userData,
     setUserData,
+    transactions,
+    setTransactions,
     currency,
     setCurrency,
     language,
     setLanguage,
     addUserDocument,
-    retrieveAllDocuments,
-    retrieveDocument,
+    getAllDocuments,
+    getDocument,
     addTransactionDoc,
   };
 

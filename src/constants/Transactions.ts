@@ -14,18 +14,14 @@ const dateSchema = z.date({
 });
 
 export const transactionSchema = z.object({
-  id: z.union([z.string(), z.array(z.number())]),
+  /* id: z.union([z.string(), z.array(z.number())]), */
+  id: z.string(),
   type: transactionTypeEnum,
   category: categoryLabelEnum,
   amount: z
     .number({ message: "Please enter an amount" })
     .max(500, { message: "Amount must not exceed 500" }),
   note: z.string().optional(),
-  /* date: z.union([ */
-  /*   z.literal("Today"), */
-  /*   z.literal("Yesterday"), */
-  /*   z.string().regex(/^\d{2}\/\d{2}\/\d{4}$/), // Ensures date follows the format DD/MM/YYYY */
-  /* ]), */
   date: z.string(),
 });
 

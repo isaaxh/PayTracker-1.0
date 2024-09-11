@@ -9,21 +9,20 @@ import UIButton from "@/components/ui/UIButton";
 import { getFormattedDate } from "@/utils/dateHelperFn";
 
 export default function TabTwoScreen() {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
   const { logout } = useAuth() as AuthContextProps;
   const {
     userData,
+    setUserData,
+    transactions,
     currency,
     language,
     addUserDocument,
-    retrieveDocument,
-    retrieveAllDocuments,
+    getDocument,
+    getAllDocuments,
     addTransactionDoc,
   } = useGlobal() as GlobalContextProps;
 
-  /* console.log(currency.value); */
-  /* console.log(language.value); */
-  console.log("userdata statstab: ", userData?.uid);
+  /* console.log("stats: ", transactions); */
 
   return (
     <View style={styles.container}>
@@ -46,9 +45,15 @@ export default function TabTwoScreen() {
       >
         <Text>Get date</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity onPress={retrieveDocument}> */}
-      {/*   <Text>retrieve doc</Text> */}
-      {/* </TouchableOpacity> */}
+      <TouchableOpacity
+        onPress={() =>
+          getAllDocuments({
+            collectionName: `users/${userData?.uid}/transactions`,
+          })
+        }
+      >
+        <Text>get all docs</Text>
+      </TouchableOpacity>
       {/* <TouchableOpacity onPress={() => retrieveDocument(props)}> */}
       {/*   <Text>addTransactionDoc</Text> */}
       {/* </TouchableOpacity> */}

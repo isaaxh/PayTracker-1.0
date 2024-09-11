@@ -21,13 +21,13 @@ import { router } from "expo-router";
 const AddTransactionForm = () => {
   const [date, setDate] = useState(new Date());
 
-  const { userData, addTransactionDoc, loading } =
+  const { userData, getAllDocuments, addTransactionDoc, loading } =
     useGlobal() as GlobalContextProps;
 
   const { control, handleSubmit, reset, formState } = useForm<TTransaction>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
-      id: uuid.v4(),
+      id: uuid.v4().toString(),
       date: date.toISOString(),
       note: "",
       amount: 0,
@@ -36,12 +36,7 @@ const AddTransactionForm = () => {
 
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
-      reset({
-        id: uuid.v4(),
-        date: date.toISOString(),
-        note: "",
-        amount: 0,
-      });
+      reset();
     }
   }, [formState, reset]);
 
@@ -52,6 +47,11 @@ const AddTransactionForm = () => {
     }
 
     addTransactionDoc({ uid: userData?.uid, transactionData: data });
+
+    getAllDocuments({
+      collectionName: `users/${userData?.uid}/transactions`,
+    });
+
     router.replace("/HomeTab");
   };
 

@@ -40,12 +40,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   });
   const [loading, setLoading] = useState(false);
 
-  const {
-    addUserDocument,
-    retrieveDocument,
-    retrieveAllDocuments,
-    setUserData,
-  } = useGlobal() as GlobalContextProps;
+  const { addUserDocument, setUserData, setTransactions } =
+    useGlobal() as GlobalContextProps;
 
   const auth = FIREBASE_AUTH;
 
@@ -90,6 +86,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     setAuthState({ isAuthenticated: null, user: null });
     setUserData(null);
+    setTransactions([]);
     FIREBASE_AUTH.signOut();
   };
 
