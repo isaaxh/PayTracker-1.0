@@ -10,5 +10,14 @@ export const useToast = () => {
       topOffset: Platform.OS === "ios" ? 60 : 40,
     });
   };
-  return { showTransactionAddedToast };
+
+  const showLoginFailedToast = () => {
+    Toast.show({
+      type: "error",
+      text1: "Opps",
+      text2: "Login failed",
+      topOffset: Platform.OS === "ios" ? 60 : 40,
+    });
+  };
+  return { showTransactionAddedToast, showLoginFailedToast };
 };
