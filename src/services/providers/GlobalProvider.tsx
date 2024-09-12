@@ -110,7 +110,6 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
           expenses: 0,
           total: 0,
         },
-        transactions: [],
       });
       console.log("Document written successfully!");
     } catch (e) {
