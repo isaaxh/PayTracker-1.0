@@ -1,13 +1,6 @@
 import GlobalContext from "@/contexts/GlobalContext";
 import { TSignupSchema, TUserData } from "@/utils/types";
-import {
-  Transaction,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { ReactNode, useState } from "react";
 import { FIREBASE_DB } from "../../../firebaseConfig";
 import { getFormattedDate } from "@/utils/dateHelperFn";
@@ -16,9 +9,7 @@ import {
   TTransactionType,
   transactionsSchema,
 } from "@/constants/Transactions";
-import { router } from "expo-router";
 import { TCategoryLabel } from "@/constants/Categories";
-import Toast from "react-native-toast-message";
 import { useToast } from "@/hooks/useToast";
 
 interface GlobalProviderProps {
@@ -111,7 +102,6 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
           total: 0,
         },
       });
-      console.log("Document written successfully!");
     } catch (e) {
       console.error("Error adding document: ", e);
     } finally {
@@ -147,34 +137,13 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
         setTransactions(() => {
           return [...(newTransactions.length ? newTransactions : [])];
         });
-        console.log("Transactions are valid!");
       }
-      console.log("Retrieved all documents successfully!");
     } catch (e) {
       console.log("Failed to retrieve all documents", e);
     } finally {
       setLoading(false);
     }
   };
-
-  /* for later use*/
-  /* setData((prevData) => { */
-  /*   if (!prevData) return null; */
-  /**/
-  /*   const newTransactions = queryData.map((data) => ({ */
-  /*     id: data.id, */
-  /*     date: data.date.toString(), */
-  /*     amount: data.amount, */
-  /*     type: data.type, */
-  /*     category: data.category, */
-  /*     note: data.note, */
-  /*   })); */
-  /**/
-  /*   return { */
-  /*     ...prevData, */
-  /*     transactions: newTransactions, // Assign the transformed transactions to the user data */
-  /*   }; */
-  /* }); */
 
   const getDocument = async (props: TGetDocument) => {
     const { collectionName, id } = props;
@@ -183,7 +152,6 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
       const docRef = doc(FIREBASE_DB, collectionName, id);
       const docSnap = await getDoc(docRef);
       data = docSnap.data();
-      console.log("Document retrieved successfully!");
     } catch (e) {
       console.log("Error retrieving document: ", e);
     }
@@ -210,7 +178,6 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
           note: transactionData.note,
         },
       );
-      console.log("Transaction Added successfully! ");
       showTransactionAddedToast();
     } catch (e) {
       console.log("Failed to add transaction", e);

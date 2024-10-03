@@ -109,7 +109,7 @@ const UIInput = <T extends FieldValues>(
               value={value}
               onChangeText={(text) => {
                 if (!isAmountInput) {
-                  onChange(text.trim());
+                  onChange(text);
                   return;
                 }
                 const cleanedValue = text

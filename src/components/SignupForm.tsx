@@ -20,8 +20,8 @@ const SignupForm = () => {
 
   const onSubmit = (data: TSignupSchema) => {
     signup({
-      name: data.name,
-      email: data.email,
+      name: data.name.trim(),
+      email: data.email.trim(),
       password: data.password,
       confirmPassword: data.confirmPassword,
     });

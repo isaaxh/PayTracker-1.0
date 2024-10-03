@@ -1,5 +1,4 @@
-import { StyleSheet, Switch, TouchableOpacity } from "react-native";
-import { useColorScheme } from "nativewind";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { useAuth } from "@/hooks/useAuth";
@@ -62,14 +61,10 @@ export default function TabTwoScreen() {
       >
         <Text>get all docs</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity onPress={() => retrieveDocument(props)}> */}
-      {/*   <Text>addTransactionDoc</Text> */}
-      {/* </TouchableOpacity> */}
-      {/* <TouchableOpacity onPress={() => addTransactionDoc()}> */}
-      {/*   <Text>addTransactionDoc</Text> */}
-      {/* </TouchableOpacity> */}
-      <UIButton onPress={showToast}>Show toast</UIButton>
-      <UIButton onPress={logout}>Log out</UIButton>
+      <View className="space-y-2">
+        <UIButton onPress={showToast}>Show toast</UIButton>
+        <UIButton onPress={logout}>Log out</UIButton>
+      </View>
     </View>
   );
 }

@@ -6,7 +6,7 @@ export const useFetchAllTransactions = () => {
   const { userData, getAllDocuments } = useGlobal() as GlobalContextProps;
 
   useEffect(() => {
-    fetchAllTransactions();
+    const subscribe = fetchAllTransactions();
   }, []);
 
   const fetchAllTransactions = async () => {

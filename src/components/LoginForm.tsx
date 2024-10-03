@@ -19,7 +19,7 @@ const LoginForm = () => {
   const { login, loading } = useAuth() as AuthContextProps;
 
   const onSubmit = (data: TLoginSchema) => {
-    login({ email: data.email, password: data.password });
+    login({ email: data.email.trim(), password: data.password });
   };
 
   return (
