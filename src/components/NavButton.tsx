@@ -47,12 +47,12 @@ const NavButton = ({ variant, customStyles }: NavButtonProps) => {
         <IconComponent
           name="arrow left"
           color={colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint}
-          size={20}
+          size={26}
         />
       ) : (
         <Entypo
           name="cross"
-          size={24}
+          size={26}
           color={colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint}
         />
       )}

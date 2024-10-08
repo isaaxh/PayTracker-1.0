@@ -21,7 +21,6 @@ export const useCalculate = () => {
     if (!userData) return;
 
     let totalSum = income - expense;
-
     setGrandTotal(totalSum);
     setUserData({
       ...userData,

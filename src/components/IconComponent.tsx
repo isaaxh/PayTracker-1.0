@@ -28,7 +28,7 @@ type IconComponentProps = {
 export default function Icon({
   name,
   variant = "Bold",
-  size = 24,
+  size = 26,
   color = "#eee",
 }: IconComponentProps) {
   let IconComponent = null;

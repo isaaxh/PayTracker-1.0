@@ -11,10 +11,6 @@ import { useCalculate } from "@/hooks/useCalculate";
 const TotalPayCard = () => {
   const { userData } = useGlobal() as GlobalContextProps;
 
-  const { grandTotal, income, expense } = useCalculate();
-  console.log("grandTotal in paycard: ", grandTotal);
-  console.log("income in paycard: ", income);
-  console.log("expense in paycard: ", expense);
   return (
     <LinearGradView>
       <Link href="/(protected)/(tabs)/StatsTab" asChild>

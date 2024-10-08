@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
@@ -24,7 +25,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: 75,
+          height: Platform.OS === "ios" ? 85 : 65,
           position: "absolute",
           bottom: 0,
           right: 0,

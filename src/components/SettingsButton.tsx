@@ -12,7 +12,7 @@ const SettingsButton = () => {
         <IconComponent
           name="setting"
           color={colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint}
-          size={20}
+          size={26}
         />
       </TouchableOpacity>
     </Link>

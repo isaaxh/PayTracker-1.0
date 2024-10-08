@@ -102,7 +102,7 @@ const UIInput = <T extends FieldValues>(
             <TextInput
               ref={ref}
               className={cn(
-                "flex-1 text-base text-textLight dark:text-textDark",
+                "flex-1 h-7 text-base text-textLight dark:text-textDark",
                 isAmountInput && "text-2xl",
               )}
               autoCapitalize="none"
