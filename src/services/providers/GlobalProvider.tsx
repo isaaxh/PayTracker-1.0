@@ -207,7 +207,6 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
       await updateDoc(userRef, {
         [fieldName]: updateValue,
       });
-      console.log("updateFieldInDoc: successful", fieldName);
     } catch (e) {
       console.log("updateFieldInDoc: failed", e);
     }

@@ -61,15 +61,11 @@ export const useCalculate = () => {
       updateValue: totalIncome,
     });
 
-    console.log("totalIncome: ", totalIncome);
-
     updateFieldInDoc({
       uid: userData.uid,
       fieldName: "monthlyTotal.income",
       updateValue: totalIncome,
     });
-
-    console.log("totalExpense: ", totalExpense);
 
     updateFieldInDoc({
       uid: userData.uid,
