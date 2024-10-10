@@ -1,6 +1,13 @@
 import GlobalContext from "@/contexts/GlobalContext";
 import { TSignupSchema, TUserData } from "@/utils/types";
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { ReactNode, useState } from "react";
 import { FIREBASE_DB } from "../../../firebaseConfig";
 import { getFormattedDate } from "@/utils/dateHelperFn";
@@ -26,6 +33,7 @@ export type GlobalContextProps = {
   getDocument: (props: TGetDocument) => void;
   getAllDocuments: (props: TGetAllDocument) => void;
   addTransactionDoc: (props: TAddTransactionDoc) => void;
+  updateFieldInDoc: (props: TUpdateFieldInDoc) => void;
   currency: currencyType;
   setCurrency: React.Dispatch<React.SetStateAction<currencyType>>;
   language: languageType;
@@ -69,6 +77,12 @@ type TGetAllDocument = {
 type TAddTransactionDoc = {
   transactionData: TTransaction;
   uid: string;
+};
+
+type TUpdateFieldInDoc = {
+  uid: string;
+  fieldName: string;
+  updateValue: string | number;
 };
 
 const AuthProvider = ({ children }: GlobalProviderProps) => {
@@ -186,6 +200,19 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     }
   };
 
+  const updateFieldInDoc = async (props: TUpdateFieldInDoc) => {
+    const { uid, fieldName, updateValue } = props;
+    const userRef = doc(FIREBASE_DB, "users", uid);
+    try {
+      await updateDoc(userRef, {
+        [fieldName]: updateValue,
+      });
+      console.log("updateFieldInDoc: successful", fieldName);
+    } catch (e) {
+      console.log("updateFieldInDoc: failed", e);
+    }
+  };
+
   const value: GlobalContextProps = {
     loading,
     userData,
@@ -200,6 +227,7 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     getAllDocuments,
     getDocument,
     addTransactionDoc,
+    updateFieldInDoc,
   };
 
   return (

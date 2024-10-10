@@ -12,8 +12,6 @@ import { useGlobal } from "@/hooks/useGlobal";
 import { FIREBASE_AUTH } from "../../../firebaseConfig";
 import AuthContext from "../contexts/AuthContext";
 import { getFormattedDate } from "@/utils/dateHelperFn";
-import { useToast } from "@/hooks/useToast";
-import { ToastProps } from "react-native-toast-message";
 
 interface AuthProviderProps {
   children: ReactNode;

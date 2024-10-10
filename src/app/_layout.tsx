@@ -33,8 +33,20 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
+    RobotoBlack: require("../../assets/fonts/Roboto-Black.ttf"),
+    RobotoBlackItalic: require("../../assets/fonts/Roboto-BlackItalic.ttf"),
+    RobotoBoldItalic: require("../../assets/fonts/Roboto-BoldItalic.ttf"),
+    RobotoItalic: require("../../assets/fonts/Roboto-Italic.ttf"),
+    RobotoLight: require("../../assets/fonts/Roboto-Light.ttf"),
+    RobotoLightItalic: require("../../assets/fonts/Roboto-LightItalic.ttf"),
+    RobotoMediumItalic: require("../../assets/fonts/Roboto-MediumItalic.ttf"),
+    RobotoThinItalic: require("../../assets/fonts/Roboto-ThinItalic.ttf"),
     ...FontAwesome.font,
   });
+
+  /* "RobotoRegular": ["./assets/fonts/Roboto-Regular.ttf"], */
+  /* "RobotoMedium": ["../../assets/fonts/Roboto-Medium.ttf"], */
+  /* "RobotoThin": ["../../assets/fonts/Roboto-Thin.ttf"] */
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {

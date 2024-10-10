@@ -1,39 +1,51 @@
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "./useGlobal";
 import { useEffect, useState } from "react";
+import { useFetchUserData } from "./useFetchUserData";
 
 export const useCalculate = () => {
-  const [grandTotal, setGrandTotal] = useState(0);
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
-  const { userData, setUserData, transactions } =
+  const [monthlyTotal, setMonthlyTotal] = useState(0);
+  const { userData, transactions, updateFieldInDoc } =
     useGlobal() as GlobalContextProps;
 
+  const { fetchUserData } = useFetchUserData();
+
   useEffect(() => {
-    calculateIncomeAndExpense();
+    if (transactions.length) {
+      calculateIncomeAndExpense();
+    }
   }, [transactions]);
 
   useEffect(() => {
-    calculateMonthlyPayout();
+    if (income || expense) {
+      calculateMonthlyPayout();
+    }
   }, [income, expense]);
 
-  const calculateMonthlyPayout = () => {
+  const calculateMonthlyPayout = async () => {
     if (!userData) return;
 
     let totalSum = income - expense;
-    setGrandTotal(totalSum);
-    setUserData({
-      ...userData,
-      monthlyTotal: { ...userData.monthlyTotal, total: totalSum },
+
+    updateFieldInDoc({
+      uid: userData.uid,
+      fieldName: "monthlyTotal.total",
+      updateValue: totalSum,
     });
+
+    setMonthlyTotal(totalSum);
+
+    fetchUserData();
   };
 
   const calculateIncomeAndExpense = () => {
-    if (!userData) return;
+    if (!userData || !transactions) return;
 
-    /* let grandTotalSum = 0; */
     let totalIncome = 0;
     let totalExpense = 0;
+
     transactions.forEach((item) =>
       item.type === "income"
         ? (totalIncome += item.amount)
@@ -43,16 +55,28 @@ export const useCalculate = () => {
     setIncome(totalIncome);
     setExpense(totalExpense);
 
-    setUserData({
-      ...userData,
-      grandTotal: totalIncome,
-      monthlyTotal: {
-        ...userData.monthlyTotal,
-        income: totalIncome,
-        expenses: totalExpense,
-      },
+    updateFieldInDoc({
+      uid: userData.uid,
+      fieldName: "grandTotal",
+      updateValue: totalIncome,
+    });
+
+    console.log("totalIncome: ", totalIncome);
+
+    updateFieldInDoc({
+      uid: userData.uid,
+      fieldName: "monthlyTotal.income",
+      updateValue: totalIncome,
+    });
+
+    console.log("totalExpense: ", totalExpense);
+
+    updateFieldInDoc({
+      uid: userData.uid,
+      fieldName: "monthlyTotal.expenses",
+      updateValue: totalExpense,
     });
   };
 
-  return { grandTotal, income, expense };
+  return { monthlyTotal, income, expense };
 };
