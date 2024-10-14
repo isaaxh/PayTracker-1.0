@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { I18nManager, StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import IconComponent from "../IconComponent";
 import { useColorScheme } from "nativewind";
@@ -92,18 +92,38 @@ const UIDropDown = <T extends FieldValues>(props: UIDropDownProps<T>) => {
               onChange(item.value);
               setIsFocus(false);
             }}
-            renderLeftIcon={() => (
-              <View className="mr-6">
-                <IconComponent
-                  name={iconName ?? ""}
-                  color={
-                    colorScheme === "dark"
-                      ? Colors.dark.tint
-                      : Colors.light.tint
-                  }
-                />
-              </View>
-            )}
+            renderLeftIcon={
+              I18nManager.isRTL
+                ? () => null
+                : () => (
+                    <View className="mr-6">
+                      <IconComponent
+                        name={iconName ?? ""}
+                        color={
+                          colorScheme === "dark"
+                            ? Colors.dark.tint
+                            : Colors.light.tint
+                        }
+                      />
+                    </View>
+                  )
+            }
+            renderRightIcon={
+              !I18nManager.isRTL
+                ? () => null
+                : () => (
+                    <View className="mr-6">
+                      <IconComponent
+                        name={iconName ?? ""}
+                        color={
+                          colorScheme === "dark"
+                            ? Colors.dark.tint
+                            : Colors.light.tint
+                        }
+                      />
+                    </View>
+                  )
+            }
           />
           {error && (
             <UIText

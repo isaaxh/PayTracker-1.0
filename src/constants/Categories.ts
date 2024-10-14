@@ -1,3 +1,4 @@
+import { i18n } from "@/services/i18n/i18n";
 import { z } from "zod";
 
 export const categorySchema = z.object({
@@ -47,7 +48,7 @@ export const categoriesSchema = z.array(categorySchema);
 export type TCategories = z.infer<typeof categoriesSchema>;
 
 export const categoryLabelsArray = categories.map((category) => ({
-  label: category.label,
+  label: i18n.t(category.label),
   value: category.label,
 }));
 

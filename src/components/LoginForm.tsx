@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import UIText from "./ui/UIText";
 import UIInput from "./ui/UIInput";
@@ -10,6 +10,8 @@ import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { Link } from "expo-router";
 import IconCard from "./IconCard";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useGlobal } from "@/hooks/useGlobal";
+import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 
 const LoginForm = () => {
   const { control, handleSubmit } = useForm<TLoginSchema>({
@@ -17,6 +19,7 @@ const LoginForm = () => {
   });
 
   const { login, loading } = useAuth() as AuthContextProps;
+  const { userData } = useGlobal() as GlobalContextProps;
 
   const onSubmit = (data: TLoginSchema) => {
     login({ email: data.email.trim(), password: data.password });

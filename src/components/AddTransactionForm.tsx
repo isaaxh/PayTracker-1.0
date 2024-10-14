@@ -17,6 +17,7 @@ import uuid from "react-native-uuid";
 import { useGlobal } from "@/hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { router } from "expo-router";
+import { i18n } from "@/services/i18n/i18n";
 
 const AddTransactionForm = () => {
   const [date, setDate] = useState(new Date());
@@ -58,7 +59,7 @@ const AddTransactionForm = () => {
   return (
     <>
       <View className="items-center justify-center w-full px-24">
-        <UIText variant="header3">Add Transaction</UIText>
+        <UIText variant="header3">{i18n.t("addTransaction")}</UIText>
         <View className="w-full mt-6">
           <UIInput
             name="amount"
@@ -76,14 +77,14 @@ const AddTransactionForm = () => {
             data={transactionTypeArray}
             name="type"
             control={control}
-            placeholder="Type"
+            placeholder={i18n.t("type")}
             iconName="task"
           />
           <UIDropDown
             data={categoryLabelsArray}
             name="category"
             control={control}
-            placeholder="Category"
+            placeholder={i18n.t("category")}
             iconName="category"
           />
           <UIInput
@@ -91,7 +92,7 @@ const AddTransactionForm = () => {
             control={control}
             variant="rectangular"
             size="large"
-            placeholder="Note"
+            placeholder={i18n.t("note")}
             showIcon={true}
             iconName="document text"
           />
@@ -108,7 +109,7 @@ const AddTransactionForm = () => {
             onPress={handleSubmit(onSubmit)}
             loading={loading}
           >
-            Save
+            {i18n.t("save")}
           </UIButton>
         </View>
       </View>

@@ -30,7 +30,8 @@ export const useCalculate = () => {
     let totalSum = income - expense;
 
     updateFieldInDoc({
-      uid: userData.uid,
+      id: userData.uid,
+      collectionName: "users",
       fieldName: "monthlyTotal.total",
       updateValue: totalSum,
     });
@@ -56,19 +57,22 @@ export const useCalculate = () => {
     setExpense(totalExpense);
 
     updateFieldInDoc({
-      uid: userData.uid,
+      id: userData.uid,
+      collectionName: "users",
       fieldName: "grandTotal",
       updateValue: totalIncome,
     });
 
     updateFieldInDoc({
-      uid: userData.uid,
+      id: userData.uid,
+      collectionName: "users",
       fieldName: "monthlyTotal.income",
       updateValue: totalIncome,
     });
 
     updateFieldInDoc({
-      uid: userData.uid,
+      id: userData.uid,
+      collectionName: "users",
       fieldName: "monthlyTotal.expenses",
       updateValue: totalExpense,
     });

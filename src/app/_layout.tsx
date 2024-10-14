@@ -16,6 +16,9 @@ import GlobalProvider from "@/services/providers/GlobalProvider";
 import AuthProvider, {
   AuthContextProps,
 } from "@/services/providers/AuthProvider";
+import { i18n } from "@/services/i18n/i18n";
+import { getLocales } from "expo-localization";
+import { I18nManager } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -29,6 +32,12 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+// get device language.
+i18n.locale = getLocales()[0].languageCode ?? "en";
+
+//When a value is missing from a language it'll fall back to another language with the key present.
+i18n.enableFallback = true;
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({

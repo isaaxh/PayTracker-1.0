@@ -34,16 +34,16 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/fonts/Roboto-Bold.ttf"
-          ]
+          "fonts": ["./assets/fonts/Roboto-Bold.ttf"]
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
+      "supportsRTL": true,
       "eas": {
         "projectId": "54aa5527-9c7f-4f76-8cb9-a7661914614b"
       }

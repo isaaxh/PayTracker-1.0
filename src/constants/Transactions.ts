@@ -1,11 +1,12 @@
 import { z } from "zod";
 import { categoryLabelEnum } from "./Categories";
+import { i18n } from "@/services/i18n/i18n";
 
 export const transactionTypeEnum = z.enum(["income", "expense"]);
 
 export const transactionTypeArray = [
-  { label: "income", value: "income" },
-  { label: "expense", value: "expense" },
+  { label: i18n.t("income"), value: "income" },
+  { label: i18n.t("expense"), value: "expense" },
 ];
 
 const dateSchema = z.date({

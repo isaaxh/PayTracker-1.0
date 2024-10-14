@@ -7,22 +7,13 @@ import { useGlobal } from "@/hooks/useGlobal";
 import UIButton from "@/components/ui/UIButton";
 import { getFormattedDate } from "@/utils/dateHelperFn";
 import Toast from "react-native-toast-message";
+import { i18n } from "@/services/i18n/i18n";
 
 export default function TabTwoScreen() {
   const { logout } = useAuth() as AuthContextProps;
-  const {
-    userData,
-    setUserData,
-    transactions,
-    currency,
-    language,
-    addUserDocument,
-    getDocument,
-    getAllDocuments,
-    addTransactionDoc,
-  } = useGlobal() as GlobalContextProps;
+  const { userData, currency, language, getAllDocuments } =
+    useGlobal() as GlobalContextProps;
 
-  /* console.log("stats: ", transactions); */
   const showToast = () => {
     Toast.show({
       type: "error",
@@ -45,6 +36,12 @@ export default function TabTwoScreen() {
       <View>
         <Text>{currency.value}</Text>
       </View>
+
+      <View>
+        <Text>
+          {i18n.t("welcome")} {i18n.t("name")}
+        </Text>
+      </View>
       <TouchableOpacity
         onPress={() => {
           console.log(getFormattedDate());
@@ -64,6 +61,9 @@ export default function TabTwoScreen() {
       <View className="space-y-2">
         <UIButton onPress={showToast}>Show toast</UIButton>
         <UIButton onPress={logout}>Log out</UIButton>
+        <UIButton onPress={() => console.log(i18n.locale)}>
+          Device Language
+        </UIButton>
       </View>
     </View>
   );

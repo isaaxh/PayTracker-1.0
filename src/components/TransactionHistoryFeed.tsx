@@ -5,7 +5,7 @@ import TransactionList from "./TransactionList";
 
 const TransactionHistoryFeed = () => {
   return (
-    <View className="">
+    <View>
       <TransactionHeader />
       <TransactionList />
     </View>

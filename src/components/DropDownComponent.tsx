@@ -23,8 +23,6 @@ export type OptionType<T> = {
 
 const DropDownComponent = <T extends string>(props: DropdownProps<T>) => {
   const { placeholder, value, setValue, data } = props;
-  /* const [value, setValue] = useState<string | null>(null); */
-  /* const { setLanguage, language } = useGlobal() as GlobalContextProps; */
   const [isFocus, setIsFocus] = useState(false);
   const { colorScheme } = useColorScheme();
 

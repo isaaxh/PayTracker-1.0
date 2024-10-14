@@ -19,6 +19,11 @@ const TransactionList = () => {
 
   return (
     <>
+      {!loading && !transactions.length && (
+        <View className="pt-12 justify-center items-center">
+          <Text style={{ color: "#ffffff" }}>No transaction history</Text>
+        </View>
+      )}
       {loading ? (
         <ActivityIndicator />
       ) : (
@@ -46,11 +51,6 @@ const TransactionList = () => {
             />
           }
         />
-      )}
-      {!loading && !transactions.length && (
-        <View className="justify-center items-center">
-          <Text style={{ color: "#ffffff" }}>No transactions</Text>
-        </View>
       )}
     </>
   );

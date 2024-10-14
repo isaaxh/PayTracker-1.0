@@ -2,9 +2,10 @@ import { View } from "react-native";
 import React from "react";
 import IconComponent from "./IconComponent";
 import UIText from "./ui/UIText";
+import { i18n } from "@/services/i18n/i18n";
 
 type SummaryComponentProps = {
-  label: "Income" | "Expenses";
+  label: "income" | "expense";
   amount: number;
 };
 
@@ -13,15 +14,15 @@ const SummaryComponent = ({ label, amount }: SummaryComponentProps) => {
     <View className="flex-row items-center gap-x-3">
       <View className="bg-white p-1 rounded-full bg-bgTransparent">
         <IconComponent
-          name={label === "Income" ? "arrow up" : "arrow down"}
+          name={label === "income" ? "arrow up" : "arrow down"}
           variant="Linear"
-          color={label === "Income" ? "#a3e635" : "#ef4444"}
+          color={label === "income" ? "#a3e635" : "#ef4444"}
           size={20}
         />
       </View>
       <View className="items-center">
         <UIText variant="subHeader3" alwaysDarkText={true}>
-          {label}
+          {i18n.t(label)}
         </UIText>
         <UIText textStyles="font-bold" alwaysDarkText={true}>
           {amount.toFixed(2)}

@@ -18,6 +18,7 @@ import {
 } from "@/constants/Transactions";
 import { TCategoryLabel } from "@/constants/Categories";
 import { useToast } from "@/hooks/useToast";
+import { i18n } from "../i18n/i18n";
 
 interface GlobalProviderProps {
   children: ReactNode;
@@ -43,11 +44,11 @@ export type GlobalContextProps = {
 export type languageType =
   | {
       label: "English";
-      value: "ENG";
+      value: "en";
     }
   | {
       label: "Arabic";
-      value: "AR";
+      value: "ar";
     };
 export type currencyType =
   | {
@@ -80,7 +81,8 @@ type TAddTransactionDoc = {
 };
 
 type TUpdateFieldInDoc = {
-  uid: string;
+  id: string;
+  collectionName: string;
   fieldName: string;
   updateValue: string | number;
 };
@@ -98,6 +100,7 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     value: "ENG",
   });
   const { showTransactionAddedToast } = useToast();
+  const { showToast } = useToast();
 
   const addUserDocument = async (props: TAddUserDocument) => {
     setLoading(true);
@@ -192,23 +195,43 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
           note: transactionData.note,
         },
       );
-      showTransactionAddedToast();
     } catch (e) {
       console.log("Failed to add transaction", e);
+      showToast({
+        type: "error",
+        text1: i18n.t("oops"),
+        text2: i18n.t("transactionFailed"),
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const updateFieldInDoc = async (props: TUpdateFieldInDoc) => {
-    const { uid, fieldName, updateValue } = props;
-    const userRef = doc(FIREBASE_DB, "users", uid);
+    const { id, collectionName, fieldName, updateValue } = props;
+    const userRef = doc(FIREBASE_DB, collectionName, id);
     try {
+      showToast({
+        type: "info",
+        text1: i18n.t("inProgress"),
+        text2: i18n.t("pleaseWait"),
+      });
       await updateDoc(userRef, {
         [fieldName]: updateValue,
       });
+
+      showToast({
+        type: "success",
+        text1: i18n.t("successful"),
+        text2: i18n.t("updateSuccessful"),
+      });
     } catch (e) {
       console.log("updateFieldInDoc: failed", e);
+      showToast({
+        type: "error",
+        text1: i18n.t("oops"),
+        text2: i18n.t("updateFailed"),
+      });
     }
   };
 

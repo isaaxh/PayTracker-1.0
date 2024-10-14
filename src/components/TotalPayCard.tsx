@@ -8,6 +8,7 @@ import { useGlobal } from "@/hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useCalculate } from "@/hooks/useCalculate";
 import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { i18n } from "@/services/i18n/i18n";
 
 const TotalPayCard = () => {
   const { userData } = useGlobal() as GlobalContextProps;
@@ -21,26 +22,26 @@ const TotalPayCard = () => {
       <Link href="/(protected)/(tabs)/StatsTab" asChild>
         <TouchableOpacity className="py-7 px-2 items-center gap-y-2">
           <View>
-            <UIText alwaysDarkText={true}>Monthly Payout</UIText>
+            <UIText alwaysDarkText={true}>{i18n.t("monthlyPayout")}</UIText>
           </View>
           <View className="flex-row items-center mb-4">
-            <UIText variant="headerLg" alwaysDarkText={true}>
-              SAR {userData?.monthlyTotal.total.toFixed(2) ?? 0.0}
-            </UIText>
             {/* <UIText variant="headerLg" alwaysDarkText={true}> */}
-            {/*   SAR {monthlyTotal.toFixed(2) ?? 0.0} */}
+            {/*   SAR {userData?.monthlyTotal.total.toFixed(2) ?? 0.0} */}
             {/* </UIText> */}
+            <UIText variant="headerLg" alwaysDarkText={true}>
+              SAR {monthlyTotal.toFixed(2) ?? 0.0}
+            </UIText>
           </View>
           <View className="flex-row w-full px-4 justify-between">
             <SummaryComponent
-              label="Income"
-              amount={userData?.monthlyTotal.income ?? 0.0}
-              /* amount={income ?? 0} */
+              label="income"
+              /* amount={userData?.monthlyTotal.income ?? 0.0} */
+              amount={income ?? 0}
             />
             <SummaryComponent
-              label="Expenses"
-              amount={userData?.monthlyTotal.expenses ?? 0.0}
-              /* amount={expenses ?? 0} */
+              label="expense"
+              /* amount={userData?.monthlyTotal.expenses ?? 0.0} */
+              amount={expense ?? 0}
             />
           </View>
         </TouchableOpacity>
