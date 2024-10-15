@@ -12,13 +12,17 @@ import "react-native-reanimated";
 import React from "react";
 import { useColorScheme } from "nativewind";
 import { useAuth } from "@/hooks/useAuth";
-import GlobalProvider from "@/services/providers/GlobalProvider";
+import GlobalProvider, {
+  GlobalContextProps,
+} from "@/services/providers/GlobalProvider";
 import AuthProvider, {
   AuthContextProps,
 } from "@/services/providers/AuthProvider";
 import { i18n } from "@/services/i18n/i18n";
 import { getLocales } from "expo-localization";
 import { I18nManager } from "react-native";
+import { useGlobal } from "@/hooks/useGlobal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -32,12 +36,6 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
-// get device language.
-i18n.locale = getLocales()[0].languageCode ?? "en";
-
-//When a value is missing from a language it'll fall back to another language with the key present.
-i18n.enableFallback = true;
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -81,6 +79,30 @@ const StackLayout = () => {
   } = useAuth() as AuthContextProps;
   const segments = useSegments();
   const router = useRouter();
+  const { language, setLanguage, setCurrency } =
+    useGlobal() as GlobalContextProps;
+
+  i18n.enableFallback = true;
+
+  useEffect(() => {
+    i18n.locale = language.value;
+  }, [language]);
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      const savedLanguage = await AsyncStorage.getItem("language");
+      const savedCurrency = await AsyncStorage.getItem("currency");
+
+      if (savedLanguage) {
+        setLanguage(JSON.parse(savedLanguage));
+      }
+      if (savedCurrency) {
+        setCurrency(JSON.parse(savedCurrency));
+      }
+    };
+
+    loadSettings();
+  }, []);
 
   useEffect(() => {
     const inAuthGroup = segments[0] === "(protected)";

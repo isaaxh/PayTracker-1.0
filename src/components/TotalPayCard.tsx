@@ -11,7 +11,7 @@ import { useFetchUserData } from "@/hooks/useFetchUserData";
 import { i18n } from "@/services/i18n/i18n";
 
 const TotalPayCard = () => {
-  const { userData } = useGlobal() as GlobalContextProps;
+  const { userData, currency } = useGlobal() as GlobalContextProps;
 
   const { loading } = useFetchUserData();
 
@@ -29,7 +29,7 @@ const TotalPayCard = () => {
             {/*   SAR {userData?.monthlyTotal.total.toFixed(2) ?? 0.0} */}
             {/* </UIText> */}
             <UIText variant="headerLg" alwaysDarkText={true}>
-              SAR {monthlyTotal.toFixed(2) ?? 0.0}
+              {currency.value} {monthlyTotal.toFixed(2) ?? 0.0}
             </UIText>
           </View>
           <View className="flex-row w-full px-4 justify-between">

@@ -19,6 +19,8 @@ import {
 import { TCategoryLabel } from "@/constants/Categories";
 import { useToast } from "@/hooks/useToast";
 import { i18n } from "../i18n/i18n";
+import { TCurrencySchema, TLanguageSchema } from "@/constants/Settings";
+import { ColorSchemeName } from "nativewind/dist/style-sheet/color-scheme";
 
 interface GlobalProviderProps {
   children: ReactNode;
@@ -35,30 +37,15 @@ export type GlobalContextProps = {
   getAllDocuments: (props: TGetAllDocument) => void;
   addTransactionDoc: (props: TAddTransactionDoc) => void;
   updateFieldInDoc: (props: TUpdateFieldInDoc) => void;
-  currency: currencyType;
-  setCurrency: React.Dispatch<React.SetStateAction<currencyType>>;
-  language: languageType;
-  setLanguage: React.Dispatch<React.SetStateAction<languageType>>;
+  currency: TCurrencySchema;
+  setCurrency: React.Dispatch<React.SetStateAction<TCurrencySchema>>;
+  language: TLanguageSchema;
+  setLanguage: React.Dispatch<React.SetStateAction<TLanguageSchema>>;
+  theme: TTheme;
+  setTheme: React.Dispatch<React.SetStateAction<TTheme>>;
 };
 
-export type languageType =
-  | {
-      label: "English";
-      value: "en";
-    }
-  | {
-      label: "Arabic";
-      value: "ar";
-    };
-export type currencyType =
-  | {
-      label: "Saudi Riyals";
-      value: "SAR";
-    }
-  | {
-      label: "US Dollar";
-      value: "USD";
-    };
+type TTheme = ColorSchemeName;
 
 type TAddUserDocument = {
   data: TSignupSchema;
@@ -91,14 +78,15 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<TUserData | null>(null);
   const [transactions, setTransactions] = useState<TTransaction[] | []>([]);
-  const [currency, setCurrency] = useState<currencyType>({
-    label: "Saudi Riyals",
+  const [currency, setCurrency] = useState<TCurrencySchema>({
+    label: "Saudi Riyal",
     value: "SAR",
   });
-  const [language, setLanguage] = useState<languageType>({
+  const [language, setLanguage] = useState<TLanguageSchema>({
     label: "English",
-    value: "ENG",
+    value: "en",
   });
+  const [theme, setTheme] = useState<TTheme>("dark");
   const { showTransactionAddedToast } = useToast();
   const { showToast } = useToast();
 
@@ -245,6 +233,8 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     setCurrency,
     language,
     setLanguage,
+    theme,
+    setTheme,
     addUserDocument,
     getAllDocuments,
     getDocument,

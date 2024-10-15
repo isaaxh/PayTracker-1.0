@@ -8,7 +8,7 @@ import { categoryLabelsArray } from "@/constants/Categories";
 import {
   TTransaction,
   transactionSchema,
-  transactionTypeArray,
+  transactionTypeList,
 } from "@/constants/Transactions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -74,7 +74,7 @@ const AddTransactionForm = () => {
       <View className="flex-1 w-full px-8 mt-12">
         <View className="flex-1">
           <UIDropDown
-            data={transactionTypeArray}
+            data={transactionTypeList}
             name="type"
             control={control}
             placeholder={i18n.t("type")}

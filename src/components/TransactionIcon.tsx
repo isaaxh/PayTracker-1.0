@@ -10,7 +10,7 @@ type TransactionIconProps = {
 const TransactionIcon = ({ category }: TransactionIconProps) => {
   return (
     <View
-      className="bg-yellow-400 h-12 w-12 items-center justify-center rounded-full"
+      className="bg-yellow-400 h-12 w-12 mr-4 items-center justify-center rounded-full"
       style={{ backgroundColor: category?.color ?? "#000000" }}
     >
       <IconComponent name={category?.iconName ?? ""} color="#fefefe" />

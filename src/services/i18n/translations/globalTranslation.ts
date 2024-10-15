@@ -14,6 +14,7 @@ export const globalTranslations = {
         miscellaneous: "miscellaneous",
       },
       save: "Save",
+      saveChanges: "Save Changes",
     },
     toastTranslations: {
       inProgress: "In Progress",
@@ -40,6 +41,7 @@ export const globalTranslations = {
         miscellaneous: "متنوع",
       },
       save: "احفظ",
+      saveChanges: "احفظ التغييرات",
     },
     toastTranslations: {
       inProgress: "قيد التنفيذ",

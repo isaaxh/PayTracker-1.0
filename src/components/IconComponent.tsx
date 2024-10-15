@@ -1,21 +1,27 @@
-import { Setting } from "iconsax-react-native";
-import { Grid2 } from "iconsax-react-native";
-import { StatusUp } from "iconsax-react-native";
-import { Profile } from "iconsax-react-native";
-import { EmojiHappy } from "iconsax-react-native";
-import { ArrowUp } from "iconsax-react-native";
-import { ArrowDown } from "iconsax-react-native";
-import { ArrowCircleLeft2 } from "iconsax-react-native";
-import { ArrowCircleRight2 } from "iconsax-react-native";
-import { Ticket } from "iconsax-react-native";
-import { GasStation } from "iconsax-react-native";
-import { Heart } from "iconsax-react-native";
-import { Mobile } from "iconsax-react-native";
-import { TaskSquare } from "iconsax-react-native";
-import { Category2 } from "iconsax-react-native";
-import { DocumentText } from "iconsax-react-native";
-import { Calendar2 } from "iconsax-react-native";
-import { Element3 } from "iconsax-react-native";
+import {
+  Setting,
+  Grid2,
+  StatusUp,
+  Profile,
+  EmojiHappy,
+  ArrowUp,
+  ArrowDown,
+  ArrowCircleLeft2,
+  ArrowCircleRight2,
+  Ticket,
+  GasStation,
+  Heart,
+  TaskSquare,
+  Mobile,
+  Category2,
+  DocumentText,
+  Calendar2,
+  Element3,
+  Global,
+  DollarSquare,
+  Sun1,
+  Moon,
+} from "iconsax-react-native";
 import { ComponentProps } from "react";
 
 type IconComponentProps = {
@@ -83,6 +89,18 @@ export default function Icon({
       break;
     case "calender":
       IconComponent = Calendar2;
+      break;
+    case "global":
+      IconComponent = Global;
+      break;
+    case "dollar":
+      IconComponent = DollarSquare;
+      break;
+    case "moon":
+      IconComponent = Moon;
+      break;
+    case "sun":
+      IconComponent = Sun1;
       break;
   }
 

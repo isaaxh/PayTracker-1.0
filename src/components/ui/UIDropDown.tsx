@@ -7,8 +7,8 @@ import Colors from "@/constants/Colors";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import UIText from "./UIText";
 
-type UIDropDownProps<T extends FieldValues> = {
-  data: dataItemType[];
+type UIDropDownProps<T extends FieldValues, U extends dataItemType> = {
+  data: U[];
   name: Path<T>;
   control: Control<T>;
   iconName?: string;
@@ -20,7 +20,9 @@ type dataItemType = {
   value: string;
 };
 
-const UIDropDown = <T extends FieldValues>(props: UIDropDownProps<T>) => {
+const UIDropDown = <T extends FieldValues, U extends dataItemType>(
+  props: UIDropDownProps<T, U>,
+) => {
   const { data, name, control, iconName, placeholder } = props;
   const [isFocus, setIsFocus] = useState(false);
   const { colorScheme } = useColorScheme();

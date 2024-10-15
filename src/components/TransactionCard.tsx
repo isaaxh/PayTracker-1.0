@@ -7,6 +7,8 @@ import { Link } from "expo-router";
 import { TTransaction } from "@/constants/Transactions";
 import { formatDate } from "@/utils/dateHelperFn";
 import { i18n } from "@/services/i18n/i18n";
+import { useGlobal } from "@/hooks/useGlobal";
+import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
@@ -20,6 +22,7 @@ const TransactionCard = ({
   date,
   note,
 }: TransactionIconProps) => {
+  const { currency } = useGlobal() as GlobalContextProps;
   const category: TCategory | undefined = categories.find(
     (cat) => categoryLabel === cat.label,
   );
@@ -37,13 +40,15 @@ const TransactionCard = ({
     >
       <TouchableOpacity className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor flex-row px-6 py-6 mb-3 rounded-3xl items-center">
         <TransactionIcon category={category} />
-        <View className="flex-1 ml-3">
-          <UIText textStyles="font-bold">{i18n.t(categoryLabel)}</UIText>
+        <View className="flex-1">
+          <UIText textStyles="font-bold">
+            {i18n.locale === "en" ? capitalizedLabel : i18n.t(categoryLabel)}
+          </UIText>
           {note !== "" ? <UIText variant="subHeader">{note}</UIText> : null}
         </View>
         <View className="items-end">
           <UIText variant="subHeader2">
-            {type === "income" ? "+" : "-"} SAR {amount}
+            {type === "income" ? "+" : "-"} {currency.value} {amount}
           </UIText>
           <UIText variant="subHeader">
             {formatDate(new Date(date)).split(" ")[0]}
