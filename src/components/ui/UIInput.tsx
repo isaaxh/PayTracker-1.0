@@ -1,5 +1,5 @@
 import { TextInput, TextInputProps, View } from "react-native";
-import React, { ForwardedRef, useState } from "react";
+import React, { ForwardedRef } from "react";
 import { cn } from "@/utils/cn";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import UIText from "./UIText";
@@ -7,7 +7,8 @@ import Colors from "@/constants/Colors";
 import { useColorScheme } from "nativewind";
 import IconComponent from "../IconComponent";
 import { VariantProps, cva } from "class-variance-authority";
-import NumericInput from "react-numeric-input";
+import { GlobalContextProps } from "@/services/providers/GlobalProvider";
+import { useGlobal } from "@/hooks/useGlobal";
 
 type UIInputProps<T extends FieldValues> = {
   name: Path<T>;
@@ -70,6 +71,7 @@ const UIInput = <T extends FieldValues>(
     isAmountInput,
   } = props;
   const { colorScheme } = useColorScheme();
+  const { appSettings } = useGlobal() as GlobalContextProps;
 
   return (
     <Controller
@@ -98,7 +100,9 @@ const UIInput = <T extends FieldValues>(
                 }
               />
             ) : null}
-            {isAmountInput && <UIText variant="subHeader3">SAR</UIText>}
+            {isAmountInput && (
+              <UIText variant="subHeader3">{appSettings.currency.value}</UIText>
+            )}
             <TextInput
               ref={ref}
               className={cn(

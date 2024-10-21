@@ -10,8 +10,8 @@ import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { Link } from "expo-router";
 import IconCard from "./IconCard";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useGlobal } from "@/hooks/useGlobal";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
+import { i18n } from "@/services/i18n/i18n";
+import LoadingComponent from "@/components/LoadingComponent";
 
 const LoginForm = () => {
   const { control, handleSubmit } = useForm<TLoginSchema>({
@@ -19,7 +19,6 @@ const LoginForm = () => {
   });
 
   const { login, loading } = useAuth() as AuthContextProps;
-  const { userData } = useGlobal() as GlobalContextProps;
 
   const onSubmit = (data: TLoginSchema) => {
     login({ email: data.email.trim(), password: data.password });
@@ -28,27 +27,27 @@ const LoginForm = () => {
   return (
     <>
       <View className="mx-4 mt-6">
-        <UIText variant="header">Enter your email</UIText>
+        <UIText variant="header">{i18n.t("enterYourEmail")}</UIText>
         <UIText textStyles="text-left mb-3" variant="bodyText">
-          Enter your email to log in to your account
+          {i18n.t("loginInstructions")}
         </UIText>
         <View className="mt-3">
           <UIInput
             name="email"
             control={control}
-            placeholder="Enter email here"
+            placeholder={i18n.t("enterEmailHere")}
           />
           <UIInput
             name="password"
             control={control}
-            placeholder="Enter password here"
+            placeholder={i18n.t("enterPasswordHere")}
             secureTextEntry={true}
             isPassword
           />
         </View>
 
         <View className="flex-row justify-between items-center px-1">
-          <UIText variant="bodyText">Remember me</UIText>
+          <UIText variant="bodyText">{i18n.t("rememberMe")}</UIText>
           <Link href="/" asChild>
             <UIButton
               hitSlop={5}
@@ -57,11 +56,17 @@ const LoginForm = () => {
               buttonStyles="p-0"
               textStyles="text-blue-500"
             >
-              Forgot password?
+              {i18n.t("forgotPassword")}
             </UIButton>
           </Link>
         </View>
       </View>
+
+      {/* <View className="w-full justify-center items-center"> */}
+      {/*   {loading && <LoadingComponent />} */}
+      {/*   <LoadingComponent /> */}
+      {/* </View> */}
+
       <View className="justify-end items-center mb-6 mx-4 mt-auto">
         <UIButton
           onPress={handleSubmit(onSubmit)}
@@ -69,10 +74,10 @@ const LoginForm = () => {
           buttonStyles="mx-0 mb-3"
           loading={loading}
         >
-          Login
+          {i18n.t("login")}
         </UIButton>
         <View className="flex-row items-center">
-          <UIText variant="bodyText">Don't have an account? </UIText>
+          <UIText variant="bodyText">{i18n.t("dontHaveAnAccount")} </UIText>
           <Link href="/SignupScreen" asChild>
             <UIButton
               hitSlop={5}
@@ -81,14 +86,14 @@ const LoginForm = () => {
               buttonStyles="p-0 m-0"
               textStyles="text-blue-500"
             >
-              Sign Up
+              {i18n.t("signup")}
             </UIButton>
           </Link>
         </View>
       </View>
       <View className="flex-row justify-center items-center gap-3 px-6 mb-6">
         <View className="border-b flex-1 border-b-gray-400" />
-        <UIText variant="bodyText">Or login with</UIText>
+        <UIText variant="bodyText">{i18n.t("orLoginWith")}</UIText>
         <View className="border-b flex-1 border-b-gray-400" />
       </View>
       <View className="flex-row justify-center items-center mx-4 mb-8">

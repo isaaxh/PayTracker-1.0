@@ -7,13 +7,12 @@ import { Link } from "expo-router";
 import { useGlobal } from "@/hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useCalculate } from "@/hooks/useCalculate";
-import { useFetchUserData } from "@/hooks/useFetchUserData";
 import { i18n } from "@/services/i18n/i18n";
+import { convertCurrency } from "@/utils/currencyHelperFn";
+import { USDRate } from "@/constants/Settings";
 
 const TotalPayCard = () => {
-  const { userData, currency } = useGlobal() as GlobalContextProps;
-
-  const { loading } = useFetchUserData();
+  const { appSettings } = useGlobal() as GlobalContextProps;
 
   const { monthlyTotal, income, expense } = useCalculate();
 
@@ -25,24 +24,18 @@ const TotalPayCard = () => {
             <UIText alwaysDarkText={true}>{i18n.t("monthlyPayout")}</UIText>
           </View>
           <View className="flex-row items-center mb-4">
-            {/* <UIText variant="headerLg" alwaysDarkText={true}> */}
-            {/*   SAR {userData?.monthlyTotal.total.toFixed(2) ?? 0.0} */}
-            {/* </UIText> */}
             <UIText variant="headerLg" alwaysDarkText={true}>
-              {currency.value} {monthlyTotal.toFixed(2) ?? 0.0}
+              {appSettings.currency.value}{" "}
+              {convertCurrency({
+                currency: appSettings.currency.value,
+                rate: USDRate,
+                amount: monthlyTotal,
+              })}
             </UIText>
           </View>
           <View className="flex-row w-full px-4 justify-between">
-            <SummaryComponent
-              label="income"
-              /* amount={userData?.monthlyTotal.income ?? 0.0} */
-              amount={income ?? 0}
-            />
-            <SummaryComponent
-              label="expense"
-              /* amount={userData?.monthlyTotal.expenses ?? 0.0} */
-              amount={expense ?? 0}
-            />
+            <SummaryComponent label="income" amount={income ?? 0} />
+            <SummaryComponent label="expense" amount={expense ?? 0} />
           </View>
         </TouchableOpacity>
       </Link>

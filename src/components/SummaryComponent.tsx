@@ -3,6 +3,10 @@ import React from "react";
 import IconComponent from "./IconComponent";
 import UIText from "./ui/UIText";
 import { i18n } from "@/services/i18n/i18n";
+import { useGlobal } from "@/hooks/useGlobal";
+import { GlobalContextProps } from "@/services/providers/GlobalProvider";
+import { USDRate } from "@/constants/Settings";
+import { convertCurrency } from "@/utils/currencyHelperFn";
 
 type SummaryComponentProps = {
   label: "income" | "expense";
@@ -10,6 +14,7 @@ type SummaryComponentProps = {
 };
 
 const SummaryComponent = ({ label, amount }: SummaryComponentProps) => {
+  const { appSettings } = useGlobal() as GlobalContextProps;
   return (
     <View className="flex-row items-center gap-x-3">
       <View className="bg-white p-1 rounded-full bg-bgTransparent">
@@ -25,7 +30,11 @@ const SummaryComponent = ({ label, amount }: SummaryComponentProps) => {
           {i18n.t(label)}
         </UIText>
         <UIText textStyles="font-bold" alwaysDarkText={true}>
-          {amount.toFixed(2)}
+          {convertCurrency({
+            currency: appSettings.currency.value,
+            rate: USDRate,
+            amount: amount,
+          })}
         </UIText>
       </View>
     </View>

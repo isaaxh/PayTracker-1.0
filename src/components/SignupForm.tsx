@@ -10,6 +10,7 @@ import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { Link } from "expo-router";
 import IconCard from "./IconCard";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { i18n } from "@/services/i18n/i18n";
 
 const SignupForm = () => {
   const { control, handleSubmit } = useForm<TSignupSchema>({
@@ -30,32 +31,32 @@ const SignupForm = () => {
   return (
     <>
       <View className="mx-4 mt-6">
-        <UIText variant="header">Create an account</UIText>
+        <UIText variant="header">{i18n.t("createAnAccount")}</UIText>
         <UIText textStyles="text-left mb-3" variant="bodyText">
-          Enter your account details
+          {i18n.t("enterYourAccountDetails")}
         </UIText>
         <View className="mt-3">
           <UIInput
             name="name"
             control={control}
-            placeholder="Enter full name here"
+            placeholder={i18n.t("enterFullNameHere")}
           />
           <UIInput
             name="email"
             control={control}
-            placeholder="Enter email here"
+            placeholder={i18n.t("enterEmailHere")}
           />
           <UIInput
             name="password"
             control={control}
-            placeholder="Enter password here"
+            placeholder={i18n.t("enterPasswordHere")}
             secureTextEntry={true}
             isPassword
           />
           <UIInput
             name="confirmPassword"
             control={control}
-            placeholder="Confirm password here"
+            placeholder={i18n.t("confirmPasswordHere")}
             secureTextEntry={true}
             isPassword
           />
@@ -68,10 +69,10 @@ const SignupForm = () => {
           buttonStyles="mx-0 mb-3"
           loading={loading}
         >
-          Create Account
+          {i18n.t("createAccount")}
         </UIButton>
         <View className="flex-row items-center">
-          <UIText variant="bodyText">Already have an account? </UIText>
+          <UIText variant="bodyText">{i18n.t("alreadyHaveAnAccount")}</UIText>
           <Link href="/" asChild>
             <UIButton
               hitSlop={5}
@@ -80,14 +81,14 @@ const SignupForm = () => {
               buttonStyles="p-0 m-0"
               textStyles="text-blue-500"
             >
-              Log In
+              {i18n.t("login")}
             </UIButton>
           </Link>
         </View>
       </View>
       <View className="flex-row justify-center items-center gap-3 px-6 mb-6">
         <View className="border-b flex-1 border-b-gray-400" />
-        <UIText variant="bodyText">Or register with</UIText>
+        <UIText variant="bodyText">{i18n.t("orRegisterWith")}</UIText>
         <View className="border-b flex-1 border-b-gray-400" />
       </View>
       <View className="flex-row justify-center items-center mx-4 mb-8">

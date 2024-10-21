@@ -43,8 +43,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const { addUserDocument, setUserData, setTransactions } =
     useGlobal() as GlobalContextProps;
 
-  /* const { showLoginFailedToast } = useToast(); */
-
   const auth = FIREBASE_AUTH;
 
   const login = async (data: TLoginSchema) => {
@@ -55,7 +53,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     } catch (e: any) {
       console.log(e);
       alert("login failed:" + e.message);
-      /* showLoginFailedToast(); */
     } finally {
       setLoading(false);
     }

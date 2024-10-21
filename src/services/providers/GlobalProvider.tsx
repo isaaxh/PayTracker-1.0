@@ -19,7 +19,7 @@ import {
 import { TCategoryLabel } from "@/constants/Categories";
 import { useToast } from "@/hooks/useToast";
 import { i18n } from "../i18n/i18n";
-import { TCurrencySchema, TLanguageSchema } from "@/constants/Settings";
+import { TAppSettingsSchema } from "@/constants/Settings";
 import { ColorSchemeName } from "nativewind/dist/style-sheet/color-scheme";
 
 interface GlobalProviderProps {
@@ -37,15 +37,9 @@ export type GlobalContextProps = {
   getAllDocuments: (props: TGetAllDocument) => void;
   addTransactionDoc: (props: TAddTransactionDoc) => void;
   updateFieldInDoc: (props: TUpdateFieldInDoc) => void;
-  currency: TCurrencySchema;
-  setCurrency: React.Dispatch<React.SetStateAction<TCurrencySchema>>;
-  language: TLanguageSchema;
-  setLanguage: React.Dispatch<React.SetStateAction<TLanguageSchema>>;
-  theme: TTheme;
-  setTheme: React.Dispatch<React.SetStateAction<TTheme>>;
+  appSettings: TAppSettingsSchema;
+  setAppSettings: React.Dispatch<React.SetStateAction<TAppSettingsSchema>>;
 };
-
-type TTheme = ColorSchemeName;
 
 type TAddUserDocument = {
   data: TSignupSchema;
@@ -78,16 +72,18 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<TUserData | null>(null);
   const [transactions, setTransactions] = useState<TTransaction[] | []>([]);
-  const [currency, setCurrency] = useState<TCurrencySchema>({
-    label: "Saudi Riyal",
-    value: "SAR",
+  const [appSettings, setAppSettings] = useState<TAppSettingsSchema>({
+    theme: { label: "Dark", value: "dark" },
+    language: {
+      label: "English",
+      value: "en",
+    },
+    currency: {
+      label: "Saudi Riyal",
+      value: "SAR",
+    },
   });
-  const [language, setLanguage] = useState<TLanguageSchema>({
-    label: "English",
-    value: "en",
-  });
-  const [theme, setTheme] = useState<TTheme>("dark");
-  const { showTransactionAddedToast } = useToast();
+
   const { showToast } = useToast();
 
   const addUserDocument = async (props: TAddUserDocument) => {
@@ -184,7 +180,7 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
         },
       );
     } catch (e) {
-      console.log("Failed to add transaction", e);
+      console.log("Error adding transaction", e);
       showToast({
         type: "error",
         text1: i18n.t("oops"),
@@ -199,22 +195,11 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     const { id, collectionName, fieldName, updateValue } = props;
     const userRef = doc(FIREBASE_DB, collectionName, id);
     try {
-      showToast({
-        type: "info",
-        text1: i18n.t("inProgress"),
-        text2: i18n.t("pleaseWait"),
-      });
       await updateDoc(userRef, {
         [fieldName]: updateValue,
       });
-
-      showToast({
-        type: "success",
-        text1: i18n.t("successful"),
-        text2: i18n.t("updateSuccessful"),
-      });
     } catch (e) {
-      console.log("updateFieldInDoc: failed", e);
+      console.log("updateFieldInDoc: Error updating", e);
       showToast({
         type: "error",
         text1: i18n.t("oops"),
@@ -229,12 +214,8 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     setUserData,
     transactions,
     setTransactions,
-    currency,
-    setCurrency,
-    language,
-    setLanguage,
-    theme,
-    setTheme,
+    appSettings,
+    setAppSettings,
     addUserDocument,
     getAllDocuments,
     getDocument,

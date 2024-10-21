@@ -29,7 +29,7 @@ export const useCalculate = () => {
 
     let totalSum = income - expense;
 
-    updateFieldInDoc({
+    await updateFieldInDoc({
       id: userData.uid,
       collectionName: "users",
       fieldName: "monthlyTotal.total",

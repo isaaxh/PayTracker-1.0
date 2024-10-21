@@ -19,10 +19,8 @@ import AuthProvider, {
   AuthContextProps,
 } from "@/services/providers/AuthProvider";
 import { i18n } from "@/services/i18n/i18n";
-import { getLocales } from "expo-localization";
-import { I18nManager } from "react-native";
 import { useGlobal } from "@/hooks/useGlobal";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAsync } from "@/hooks/useAsync";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -79,29 +77,26 @@ const StackLayout = () => {
   } = useAuth() as AuthContextProps;
   const segments = useSegments();
   const router = useRouter();
-  const { language, setLanguage, setCurrency } =
-    useGlobal() as GlobalContextProps;
+  const { appSettings, setAppSettings } = useGlobal() as GlobalContextProps;
+  const { loadSettings } = useAsync();
+  const { setColorScheme } = useColorScheme();
 
   i18n.enableFallback = true;
 
   useEffect(() => {
-    i18n.locale = language.value;
-  }, [language]);
+    i18n.locale = appSettings.language.value;
+    setColorScheme(appSettings.theme.value);
+  }, [appSettings.language, appSettings.theme]);
 
   useEffect(() => {
-    const loadSettings = async () => {
-      const savedLanguage = await AsyncStorage.getItem("language");
-      const savedCurrency = await AsyncStorage.getItem("currency");
-
-      if (savedLanguage) {
-        setLanguage(JSON.parse(savedLanguage));
-      }
-      if (savedCurrency) {
-        setCurrency(JSON.parse(savedCurrency));
+    const loadAppSettings = async () => {
+      const savedAppSettings = await loadSettings();
+      if (savedAppSettings) {
+        setAppSettings(savedAppSettings);
       }
     };
 
-    loadSettings();
+    loadAppSettings();
   }, []);
 
   useEffect(() => {

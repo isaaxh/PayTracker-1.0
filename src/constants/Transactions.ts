@@ -4,7 +4,7 @@ import { i18n } from "@/services/i18n/i18n";
 
 export const transactionTypeEnum = z.enum(["income", "expense"]);
 
-export const transactionTypeArray = [
+export const transactionTypeList = [
   { label: i18n.t("income"), value: "income" },
   { label: i18n.t("expense"), value: "expense" },
 ];

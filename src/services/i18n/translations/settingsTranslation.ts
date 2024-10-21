@@ -8,6 +8,10 @@ export const settingsTranslations = {
     selectCurrency: "Select Currency",
     saudiRiyal: "Saudi Riyal",
     usDollar: "US Dollar",
+    selectTheme: "Select Theme",
+    dark: "Dark",
+    light: "Light",
+    system: "system",
   },
   ar: {
     settings: "الإعدادات",
@@ -18,5 +22,9 @@ export const settingsTranslations = {
     selectCurrency: "اختر العملة",
     saudiRiyal: "الريال السعودي",
     usDollar: "الدولار الأمريكي",
+    selectTheme: "اختر السمة",
+    dark: "داكن",
+    light: "فاتح",
+    system: "النظام",
   },
 };

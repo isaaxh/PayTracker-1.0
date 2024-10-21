@@ -21,7 +21,6 @@ export const useFetchUserData = () => {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setUserData(docSnap.data() as TUserData);
-        console.log("User data fetch successful");
       } else {
         console.log("User data does not exist");
       }

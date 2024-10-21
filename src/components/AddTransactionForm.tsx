@@ -43,7 +43,7 @@ const AddTransactionForm = () => {
 
   const onSubmit = (data: TTransaction) => {
     if (!userData) {
-      console.log("Cannot add transaction: user id not available!", userData);
+      console.log("Cannot add transaction: user id not available!");
       return;
     }
 

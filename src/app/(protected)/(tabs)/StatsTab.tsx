@@ -8,12 +8,13 @@ import UIButton from "@/components/ui/UIButton";
 import { getFormattedDate } from "@/utils/dateHelperFn";
 import Toast from "react-native-toast-message";
 import { i18n } from "@/services/i18n/i18n";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TabTwoScreen() {
   const { logout } = useAuth() as AuthContextProps;
-  const { userData, currency, language, getAllDocuments } =
+  const { userData, appSettings, getAllDocuments } =
     useGlobal() as GlobalContextProps;
-
   const showToast = () => {
     Toast.show({
       type: "error",
@@ -21,6 +22,20 @@ export default function TabTwoScreen() {
       text2: "Something went wrong",
     });
   };
+
+  /* const [keys, setKeys] = useState<readonly string[]>([]); */
+  /* useEffect(() => { */
+  /*   const getAllKeys = async () => { */
+  /*     try { */
+  /*       const keys = await AsyncStorage.getAllKeys(); */
+  /*       setKeys([...keys]); */
+  /*       console.log("async storage stats:", keys); */
+  /*     } catch (e) { */
+  /*       console.log("async storage stats:", e); */
+  /*     } */
+  /*   }; */
+  /*   getAllKeys(); */
+  /* }, []); */
 
   return (
     <View style={styles.container}>
@@ -30,11 +45,21 @@ export default function TabTwoScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
+      {/* {keys.map((key) => ( */}
+      {/*   <Text key={key}>{key}</Text> */}
+      {/* ))} */}
       <View>
-        <Text>{language.value}</Text>
+        <Text>----------</Text>
+      </View>
+
+      <View>
+        <Text>{appSettings.language.value}</Text>
       </View>
       <View>
-        <Text>{currency.value}</Text>
+        <Text>{appSettings.currency.value}</Text>
+      </View>
+      <View>
+        <Text>{appSettings.theme.value}</Text>
       </View>
 
       <View>
@@ -61,9 +86,6 @@ export default function TabTwoScreen() {
       <View className="space-y-2">
         <UIButton onPress={showToast}>Show toast</UIButton>
         <UIButton onPress={logout}>Log out</UIButton>
-        <UIButton onPress={() => console.log(i18n.locale)}>
-          Device Language
-        </UIButton>
       </View>
     </View>
   );

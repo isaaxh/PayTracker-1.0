@@ -9,6 +9,8 @@ import { formatDate } from "@/utils/dateHelperFn";
 import { i18n } from "@/services/i18n/i18n";
 import { useGlobal } from "@/hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
+import { USDRate } from "@/constants/Settings";
+import { convertCurrency } from "@/utils/currencyHelperFn";
 
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
@@ -22,7 +24,7 @@ const TransactionCard = ({
   date,
   note,
 }: TransactionIconProps) => {
-  const { currency } = useGlobal() as GlobalContextProps;
+  const { appSettings, currency } = useGlobal() as GlobalContextProps;
   const category: TCategory | undefined = categories.find(
     (cat) => categoryLabel === cat.label,
   );
@@ -48,7 +50,12 @@ const TransactionCard = ({
         </View>
         <View className="items-end">
           <UIText variant="subHeader2">
-            {type === "income" ? "+" : "-"} {currency.value} {amount}
+            {type === "income" ? "+" : "-"} {appSettings.currency.value}{" "}
+            {convertCurrency({
+              currency: appSettings.currency.value,
+              rate: USDRate,
+              amount: amount,
+            })}
           </UIText>
           <UIText variant="subHeader">
             {formatDate(new Date(date)).split(" ")[0]}
