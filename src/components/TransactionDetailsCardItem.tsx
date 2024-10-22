@@ -15,7 +15,7 @@ function TransactionDetailsCardItem<T extends React.ReactNode>(
 
   return (
     <View className="flex-row justify-between">
-      <UIText variant={"header3"}>{label}:</UIText>
+      <UIText variant={"subHeader3"}>{label}:</UIText>
       <UIText variant={"base"}>
         {typeof content === "string" ? capitalizeText(content) : content}
       </UIText>
