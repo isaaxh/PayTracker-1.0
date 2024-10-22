@@ -22,7 +22,7 @@ export const formatDate = (date: Date): string => {
   /* } else { */
   /*   return inputDate.format("YYYY-MM-DD"); */
   /* } */
-  return inputDate.format("YYYY-MM-DD HH:mm");
+  return inputDate.format("YYYY-MM-DD · HH:mm");
 };
 
 export function convertToTimezone(date: Date, offsetInHours: number) {

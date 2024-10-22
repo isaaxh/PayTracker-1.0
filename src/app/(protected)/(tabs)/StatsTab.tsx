@@ -51,7 +51,6 @@ export default function TabTwoScreen() {
       <View>
         <Text>----------</Text>
       </View>
-
       <View>
         <Text>{appSettings.language.value}</Text>
       </View>

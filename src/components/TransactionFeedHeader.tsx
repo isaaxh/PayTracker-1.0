@@ -4,7 +4,7 @@ import UIText from "./ui/UIText";
 import { Link } from "expo-router";
 import { i18n } from "@/services/i18n/i18n";
 
-const TransactionHeader = () => {
+const TransactionFeedHeader = () => {
   return (
     <View className="flex-row justify-between items-center pb-1">
       <UIText variant="header3">{i18n.t("transactions")}</UIText>
@@ -17,4 +17,4 @@ const TransactionHeader = () => {
   );
 };
 
-export default TransactionHeader;
+export default TransactionFeedHeader;

@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import React from "react";
-import TransactionHeader from "./TransactionHeader";
+import TransactionHeader from "./TransactionFeedHeader";
 import TransactionList from "./TransactionList";
 
 const TransactionHistoryFeed = () => {

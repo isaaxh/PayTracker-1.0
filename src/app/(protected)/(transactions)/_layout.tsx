@@ -11,8 +11,7 @@ function TransactionsLayoutNav() {
         name="AllTransactionsScreen"
         options={{ headerTitle: "All Transactions" }}
       />
-      <Stack.Screen name="[transaction]" />
-      <Stack.Screen name="LoginScreen" />
+      <Stack.Screen name="[id]" />
     </Stack>
   );
 }

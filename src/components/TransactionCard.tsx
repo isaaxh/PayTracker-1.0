@@ -24,7 +24,7 @@ const TransactionCard = ({
   date,
   note,
 }: TransactionIconProps) => {
-  const { appSettings, currency } = useGlobal() as GlobalContextProps;
+  const { appSettings } = useGlobal() as GlobalContextProps;
   const category: TCategory | undefined = categories.find(
     (cat) => categoryLabel === cat.label,
   );
@@ -35,7 +35,7 @@ const TransactionCard = ({
   return (
     <Link
       href={{
-        pathname: `/(transactions)/${id}`,
+        pathname: `/(protected)/(transactions)/[id]`,
         params: { id: id },
       }}
       asChild

@@ -20,7 +20,6 @@ import { TCategoryLabel } from "@/constants/Categories";
 import { useToast } from "@/hooks/useToast";
 import { i18n } from "../i18n/i18n";
 import { TAppSettingsSchema } from "@/constants/Settings";
-import { ColorSchemeName } from "nativewind/dist/style-sheet/color-scheme";
 
 interface GlobalProviderProps {
   children: ReactNode;
@@ -33,7 +32,7 @@ export type GlobalContextProps = {
   transactions: TTransaction[];
   setTransactions: React.Dispatch<React.SetStateAction<TTransaction[]>>;
   addUserDocument: (props: TAddUserDocument) => void;
-  getDocument: (props: TGetDocument) => void;
+  getDocument: <T>(props: TGetDocument) => Promise<T | null>;
   getAllDocuments: (props: TGetAllDocument) => void;
   addTransactionDoc: (props: TAddTransactionDoc) => void;
   updateFieldInDoc: (props: TUpdateFieldInDoc) => void;
@@ -146,13 +145,15 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     }
   };
 
-  const getDocument = async (props: TGetDocument) => {
+  const getDocument = async <T,>(props: TGetDocument): Promise<T | null> => {
     const { collectionName, id } = props;
-    let data = null;
+    let data: T | null = null;
     try {
       const docRef = doc(FIREBASE_DB, collectionName, id);
       const docSnap = await getDoc(docRef);
-      data = docSnap.data();
+      if (docSnap.exists()) {
+        data = docSnap.data() as T;
+      }
     } catch (e) {
       console.log("Error retrieving document: ", e);
     }
