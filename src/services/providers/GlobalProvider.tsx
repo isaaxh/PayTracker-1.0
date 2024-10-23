@@ -2,6 +2,7 @@ import GlobalContext from "@/contexts/GlobalContext";
 import { TSignupSchema, TUserData } from "@/utils/types";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -36,6 +37,7 @@ export type GlobalContextProps = {
   getAllDocuments: (props: TGetAllDocument) => void;
   addTransactionDoc: (props: TAddTransactionDoc) => void;
   updateFieldInDoc: (props: TUpdateFieldInDoc) => void;
+  removeDocument: (props: TRemoveDocument) => void;
   appSettings: TAppSettingsSchema;
   setAppSettings: React.Dispatch<React.SetStateAction<TAppSettingsSchema>>;
 };
@@ -65,6 +67,11 @@ type TUpdateFieldInDoc = {
   collectionName: string;
   fieldName: string;
   updateValue: string | number;
+};
+
+type TRemoveDocument = {
+  id: string;
+  collectionName: string;
 };
 
 const AuthProvider = ({ children }: GlobalProviderProps) => {
@@ -209,6 +216,19 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     }
   };
 
+  const removeDocument = async (props: TRemoveDocument) => {
+    const { id, collectionName } = props;
+
+    try {
+      const docRef = doc(FIREBASE_DB, collectionName, id);
+      await deleteDoc(docRef);
+
+      console.log("Document deleted successfully");
+    } catch (e) {
+      console.log("Error deleting document", e);
+    }
+  };
+
   const value: GlobalContextProps = {
     loading,
     userData,
@@ -222,6 +242,7 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     getDocument,
     addTransactionDoc,
     updateFieldInDoc,
+    removeDocument,
   };
 
   return (

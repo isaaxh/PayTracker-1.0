@@ -3,14 +3,20 @@ import React, { useEffect, useState } from "react";
 import { TTransaction } from "@/constants/Transactions";
 import { useGlobal } from "@/hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import TransactionDetailsCard from "./TransactionDetailsCard";
 import UIButton from "./ui/UIButton";
 
 const TransactionDetailsBody = () => {
   const { id } = useLocalSearchParams();
   const [transaction, setTransaction] = useState<TTransaction | null>(null);
-  const { userData, getDocument } = useGlobal() as GlobalContextProps;
+  const {
+    userData,
+    getDocument,
+    removeDocument,
+    transactions,
+    setTransactions,
+  } = useGlobal() as GlobalContextProps;
 
   useEffect(() => {
     const getTransactionDoc = async () => {
@@ -30,6 +36,25 @@ const TransactionDetailsBody = () => {
     getTransactionDoc();
   }, []);
 
+  const onPressDelete = () => {
+    if (transaction) {
+      const filteredTransactions = transactions.filter(
+        (trans) => transaction?.id !== trans.id,
+      );
+
+      removeDocument({
+        id: transaction?.id,
+        collectionName: `users/${userData?.uid}/transactions`,
+      });
+
+      setTransactions(filteredTransactions);
+    } else {
+      console.log("no transaction found");
+    }
+
+    router.back();
+  };
+
   return (
     <View className="flex-1 w-full px-6 ">
       <TransactionDetailsCard transaction={transaction} />
@@ -37,7 +62,7 @@ const TransactionDetailsBody = () => {
         <UIButton variant={"outline"} size={"large"}>
           Edit
         </UIButton>
-        <UIButton variant={"fill"} size={"large"}>
+        <UIButton onPress={onPressDelete} variant={"fill"} size={"large"}>
           Delete
         </UIButton>
       </View>

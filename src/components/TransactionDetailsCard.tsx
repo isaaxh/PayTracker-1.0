@@ -21,7 +21,7 @@ const TransactionDetailsCard = (props: TransactionDetailsCardProps) => {
       </View>
       <TransactionDetailsCardItem
         label={"Transaction ID"}
-        content={transaction?.id.slice(-12, -1)}
+        content={transaction?.id.slice(-12)}
       />
       <TransactionDetailsCardItem label={"Type"} content={transaction?.type} />
       <TransactionDetailsCardItem
