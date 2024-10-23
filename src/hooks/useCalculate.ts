@@ -13,23 +13,25 @@ export const useCalculate = () => {
   const { fetchUserData } = useFetchUserData();
 
   useEffect(() => {
-    if (transactions.length) {
-      calculateIncomeAndExpense();
-    }
+    /* if (transactions.length) { */
+    /*   calculateIncomeAndExpense(); */
+    /* } */
+    calculateIncomeAndExpense();
   }, [transactions]);
 
   useEffect(() => {
-    if (income || expense) {
-      calculateMonthlyPayout();
-    }
+    /* if (income || expense) { */
+    /*   calculateMonthlyPayout(); */
+    /* } */
+    calculateMonthlyPayout();
   }, [income, expense]);
 
-  const calculateMonthlyPayout = async () => {
+  const calculateMonthlyPayout = () => {
     if (!userData) return;
 
     let totalSum = income - expense;
 
-    await updateFieldInDoc({
+    updateFieldInDoc({
       id: userData.uid,
       collectionName: "users",
       fieldName: "monthlyTotal.total",
