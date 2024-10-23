@@ -50,7 +50,8 @@
     "react-native-web": "~0.19.10",
     "tailwind-merge": "^2.4.0",
     "zod": "^3.23.8",
-    "expo-updates": "~0.25.27"
+    "expo-updates": "~0.25.27",
+    "@shopify/flash-list": "1.6.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
