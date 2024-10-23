@@ -1,10 +1,4 @@
-import {
-  Text,
-  ActivityIndicator,
-  FlatList,
-  RefreshControl,
-  View,
-} from "react-native";
+import { RefreshControl, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import React from "react";
 import TransactionCard from "./TransactionCard";
