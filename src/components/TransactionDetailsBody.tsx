@@ -5,6 +5,7 @@ import { useGlobal } from "@/hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useLocalSearchParams } from "expo-router";
 import TransactionDetailsCard from "./TransactionDetailsCard";
+import UIButton from "./ui/UIButton";
 
 const TransactionDetailsBody = () => {
   const { id } = useLocalSearchParams();
@@ -30,8 +31,16 @@ const TransactionDetailsBody = () => {
   }, []);
 
   return (
-    <View className="w-full">
+    <View className="flex-1 w-full px-6 ">
       <TransactionDetailsCard transaction={transaction} />
+      <View className="mt-auto mb-4 space-y-3">
+        <UIButton variant={"outline"} size={"large"}>
+          Edit
+        </UIButton>
+        <UIButton variant={"fill"} size={"large"}>
+          Delete
+        </UIButton>
+      </View>
     </View>
   );
 };
