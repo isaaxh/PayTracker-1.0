@@ -10,6 +10,7 @@ import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
 import { Control, Controller } from "react-hook-form";
 import { TTransaction } from "@/constants/Transactions";
+import { Timestamp } from "firebase/firestore";
 
 type CustomDateTimePickerProps = {
   date: Date;

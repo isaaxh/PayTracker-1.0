@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { categoryLabelEnum } from "./Categories";
 import { i18n } from "@/services/i18n/i18n";
+import { Timestamp } from "firebase/firestore";
 
 export const transactionTypeEnum = z.enum(["income", "expense"]);
 
@@ -9,10 +10,9 @@ export const transactionTypeList = [
   { label: i18n.t("expense"), value: "expense" },
 ];
 
-const dateSchema = z.date({
-  required_error: "Please select a date and time",
-  invalid_type_error: "That's not a date!",
-});
+export const TimestampType = z.custom<Timestamp>(
+  (value) => value instanceof Timestamp,
+);
 
 export const transactionSchema = z.object({
   /* id: z.union([z.string(), z.array(z.number())]), */
@@ -23,7 +23,7 @@ export const transactionSchema = z.object({
     .number({ message: "Please enter an amount" })
     .max(500, { message: "Amount must not exceed 500" }),
   note: z.string().optional(),
-  date: z.string(),
+  date: TimestampType,
 });
 
 export type TTransaction = z.infer<typeof transactionSchema>;

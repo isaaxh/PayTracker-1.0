@@ -1,11 +1,15 @@
 import GlobalContext from "@/contexts/GlobalContext";
 import { TSignupSchema, TUserData } from "@/utils/types";
 import {
+  Timestamp,
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
+  query,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -55,6 +59,8 @@ type TGetDocument = {
 
 type TGetAllDocument = {
   collectionName: string;
+  sortBy: string;
+  sortOrder: "asc" | "desc";
 };
 
 type TAddTransactionDoc = {
@@ -118,22 +124,26 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
 
   const getAllDocuments = async (props: TGetAllDocument) => {
     setLoading(true);
-    const { collectionName } = props;
+    const { collectionName, sortBy, sortOrder } = props;
+
     try {
-      const querySnapshot = await getDocs(
-        collection(FIREBASE_DB, collectionName),
-      );
+      const docRef = collection(FIREBASE_DB, collectionName);
+
+      const q = query(docRef, orderBy(sortBy, sortOrder), limit(10));
+
+      const querySnapshot = await getDocs(q);
+
       const queryData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
       }));
 
       const newTransactions: TTransaction[] = queryData.map((data) => ({
-        id: data.id,
-        date: data.date.toString(),
+        id: data.id as string,
+        date: (data.date as Timestamp) || null,
         amount: data.amount as number,
         type: data.type as TTransactionType,
         category: data.category as TCategoryLabel,
-        note: data.note,
+        note: data.note as string,
       }));
 
       const result = transactionsSchema.safeParse(newTransactions);

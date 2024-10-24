@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 
 export const getFormattedDate = () => {
@@ -10,7 +11,19 @@ export const getFormattedDate = () => {
   return formattedDate;
 };
 
-export const formatDate = (date: Date): string => {
+export function convertToTimezone(date: Date, offsetInHours: number) {
+  // Convert the date to UTC (get the time in milliseconds since the Unix epoch)
+  const utcTime = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
+
+  // Add the offset (in milliseconds)
+  const targetTime = utcTime + offsetInHours * 60 * 60 * 1000;
+
+  // Create a new Date object with the adjusted time
+  return new Date(targetTime);
+}
+
+export const formatDate = (timestamp: Timestamp | Date): string => {
+  const date = timestamp instanceof Timestamp ? timestamp.toDate() : timestamp;
   const today = moment();
   const yesterday = moment().subtract(1, "days").startOf("day");
   const inputDate = moment(date);
@@ -24,14 +37,3 @@ export const formatDate = (date: Date): string => {
   /* } */
   return inputDate.format("YYYY-MM-DD · HH:mm");
 };
-
-export function convertToTimezone(date: Date, offsetInHours: number) {
-  // Convert the date to UTC (get the time in milliseconds since the Unix epoch)
-  const utcTime = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
-
-  // Add the offset (in milliseconds)
-  const targetTime = utcTime + offsetInHours * 60 * 60 * 1000;
-
-  // Create a new Date object with the adjusted time
-  return new Date(targetTime);
-}

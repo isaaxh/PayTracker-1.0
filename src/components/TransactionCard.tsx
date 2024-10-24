@@ -57,9 +57,8 @@ const TransactionCard = ({
               amount: amount,
             })}
           </UIText>
-          <UIText variant="subHeader">
-            {formatDate(new Date(date)).split(" ")[0]}
-          </UIText>
+          {/* <UIText variant="subHeader">{formatDate(date).split(" ")[2]}</UIText> */}
+          <UIText variant="subHeader">{formatDate(date).split(" ")[0]}</UIText>
         </View>
       </TouchableOpacity>
     </Link>

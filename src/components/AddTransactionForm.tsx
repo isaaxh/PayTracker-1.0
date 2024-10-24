@@ -18,18 +18,22 @@ import { useGlobal } from "@/hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { router } from "expo-router";
 import { i18n } from "@/services/i18n/i18n";
+import { Timestamp } from "firebase/firestore";
+import { useFetchAllTransactions } from "@/hooks/useFetchAllTransactions";
 
 const AddTransactionForm = () => {
   const [date, setDate] = useState(new Date());
 
-  const { userData, getAllDocuments, addTransactionDoc, loading } =
+  const { userData, addTransactionDoc, loading } =
     useGlobal() as GlobalContextProps;
+
+  const { fetchAllTransactions } = useFetchAllTransactions();
 
   const { control, handleSubmit, reset, formState } = useForm<TTransaction>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       id: uuid.v4().toString(),
-      date: date.toISOString(),
+      date: Timestamp.fromDate(date),
       note: "",
       amount: 0,
     },
@@ -43,15 +47,18 @@ const AddTransactionForm = () => {
 
   const onSubmit = (data: TTransaction) => {
     if (!userData) {
-      console.log("Cannot add transaction: user id not available!");
+      console.log("Cannot add transaction: user id not found!");
       return;
     }
 
-    addTransactionDoc({ uid: userData?.uid, transactionData: data });
+    const parsedTransaction = transactionSchema.parse(data);
 
-    getAllDocuments({
-      collectionName: `users/${userData?.uid}/transactions`,
+    addTransactionDoc({
+      uid: userData?.uid,
+      transactionData: parsedTransaction,
     });
+
+    fetchAllTransactions();
 
     router.back();
   };

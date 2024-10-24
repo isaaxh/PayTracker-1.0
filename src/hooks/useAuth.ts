@@ -7,6 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { TUserData } from "@/utils/types";
 import { useGlobal } from "./useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
+import { useFetchAllTransactions } from "./useFetchAllTransactions";
 
 export const useAuth = () => {
   const {
@@ -14,8 +15,9 @@ export const useAuth = () => {
     setAuthState,
   } = useContext(AuthContext) as AuthContextProps;
 
-  const { userData, setUserData, transactions, getAllDocuments } =
+  const { userData, setUserData, transactions } =
     useGlobal() as GlobalContextProps;
+  const { fetchAllTransactions } = useFetchAllTransactions();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
@@ -46,15 +48,9 @@ export const useAuth = () => {
   }, [user, setUserData]);
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      if (transactions?.length) return;
+    /* if (transactions.length) return; */
 
-      getAllDocuments({
-        collectionName: `users/${userData?.uid}/transactions`,
-      });
-    };
-
-    fetchTransactions();
+    fetchAllTransactions();
   }, [userData]);
 
   return useContext(AuthContext);
