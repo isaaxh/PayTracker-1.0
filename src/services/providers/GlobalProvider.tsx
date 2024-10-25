@@ -129,7 +129,7 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     try {
       const docRef = collection(FIREBASE_DB, collectionName);
 
-      const q = query(docRef, orderBy(sortBy, sortOrder), limit(10));
+      const q = query(docRef, orderBy(sortBy, sortOrder));
 
       const querySnapshot = await getDocs(q);
 
@@ -232,8 +232,6 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
     try {
       const docRef = doc(FIREBASE_DB, collectionName, id);
       await deleteDoc(docRef);
-
-      console.log("Document deleted successfully");
     } catch (e) {
       console.log("Error deleting document", e);
     }

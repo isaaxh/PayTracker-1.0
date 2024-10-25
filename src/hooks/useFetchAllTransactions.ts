@@ -6,6 +6,10 @@ export const useFetchAllTransactions = () => {
 
   const fetchAllTransactions = async () => {
     try {
+      if (!userData) {
+        console.log("no user data found");
+        return;
+      }
       getAllDocuments({
         collectionName: `users/${userData?.uid}/transactions`,
         sortBy: "date",
