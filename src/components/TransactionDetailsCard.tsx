@@ -26,7 +26,7 @@ const TransactionDetailsCard = (props: TransactionDetailsCardProps) => {
       <TransactionDetailsCardItem label={"Type"} content={transaction?.type} />
       <TransactionDetailsCardItem
         label={"Date"}
-        content={transaction ? formatDate(new Date(transaction.date)) : ""}
+        content={transaction && formatDate(transaction.date)}
       />
       <TransactionDetailsCardItem
         label={"Category"}
@@ -34,7 +34,9 @@ const TransactionDetailsCard = (props: TransactionDetailsCardProps) => {
       />
       <TransactionDetailsCardItem
         label={"Amount"}
-        content={`${appSettings.currency.value} ${transaction?.amount ?? ""}`}
+        content={
+          transaction && `${appSettings.currency.value} ${transaction.amount}`
+        }
       />
       <TransactionDetailsCardItem
         label={"Note"}
