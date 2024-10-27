@@ -1,11 +1,14 @@
-import { View, Text } from "react-native";
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import ProfileSettingsHeader from "@/components/ProfileSettingsHeader";
+import ProfileSettingsBody from "@/components/ProfileSettingsBody";
 
 const ProfileScreen = () => {
   return (
-    <View>
-      <Text>ProfileScreen</Text>
-    </View>
+    <SafeAreaView className="bg-bgColor dark:bg-darkBgColor flex-1">
+      <ProfileSettingsHeader />
+      <ProfileSettingsBody />
+    </SafeAreaView>
   );
 };
 
