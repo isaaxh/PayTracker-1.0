@@ -45,6 +45,7 @@ const SignupForm = () => {
             name="email"
             control={control}
             placeholder={i18n.t("enterEmailHere")}
+            keyboardType="email-address"
           />
           <UIInput
             name="password"
@@ -72,7 +73,7 @@ const SignupForm = () => {
           {i18n.t("createAccount")}
         </UIButton>
         <View className="flex-row items-center">
-          <UIText variant="bodyText">{i18n.t("alreadyHaveAnAccount")}</UIText>
+          <UIText variant="bodyText">{i18n.t("alreadyHaveAnAccount")}? </UIText>
           <Link href="/" asChild>
             <UIButton
               hitSlop={5}

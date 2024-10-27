@@ -36,6 +36,7 @@ const LoginForm = () => {
             name="email"
             control={control}
             placeholder={i18n.t("enterEmailHere")}
+            keyboardType="email-address"
           />
           <UIInput
             name="password"
