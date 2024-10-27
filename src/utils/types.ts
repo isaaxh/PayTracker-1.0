@@ -30,6 +30,7 @@ export type TSignupSchema = z.infer<typeof signupSchema>;
 export const userDataSchema = z.object({
   uid: z.string(),
   displayName: z.string(),
+  imgUri: z.string().optional(),
   email: z.string(),
   createdAt: z.string(),
   grandTotal: z.number(),
