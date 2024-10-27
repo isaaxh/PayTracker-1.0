@@ -25,6 +25,13 @@
     },
     "preview": {
       "distribution": "internal",
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "ios": {
+        "simulator": true
+      },
       "env": {
         "EXPO_PUBLIC_FB_API_KEY": "AIzaSyBWSGrNe54OKX4rLKBcUH22VwNXH9UFo4U",
         "EXPO_PUBLIC_FB_AUTH_DOMAIN": "paytracker-3887d.firebaseapp.com",
