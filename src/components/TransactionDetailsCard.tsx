@@ -37,6 +37,7 @@ const TransactionDetailsCard = (props: TransactionDetailsCardProps) => {
         content={
           transaction && `${appSettings.currency.value} ${transaction.amount}`
         }
+        type={transaction?.type}
       />
       <TransactionDetailsCardItem
         label={"Note"}

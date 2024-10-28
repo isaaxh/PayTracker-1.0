@@ -6,17 +6,30 @@ import { capitalizeText } from "@/utils/helperFns";
 type TransactionDetailsCardItemProps<T extends React.ReactNode> = {
   label: string;
   content: T;
+  type?: string;
 };
 
 function TransactionDetailsCardItem<T extends React.ReactNode>(
   props: TransactionDetailsCardItemProps<T>,
 ) {
-  const { label, content } = props;
+  const { label, content, type } = props;
+
+  const expenseStyles = "text-red-600";
+  const incomeStyles = "text-green-600";
 
   return (
     <View className="flex-row justify-between">
       <UIText variant={"subHeader3"}>{label}:</UIText>
-      <UIText variant={"base"}>
+      <UIText
+        variant={"base"}
+        textStyles={
+          type === "expense"
+            ? expenseStyles
+            : type === "income"
+            ? incomeStyles
+            : ""
+        }
+      >
         {!content
           ? "-"
           : typeof content === "string" && label !== "Transaction ID"
