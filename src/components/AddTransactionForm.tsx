@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import UIText from "./ui/UIText";
 import UIDropDown from "./ui/UIDropDown";
@@ -53,6 +53,8 @@ const AddTransactionForm = () => {
 
     const parsedTransaction = transactionSchema.parse(data);
 
+    console.log(parsedTransaction);
+
     addTransactionDoc({
       uid: userData?.uid,
       transactionData: parsedTransaction,
@@ -103,11 +105,34 @@ const AddTransactionForm = () => {
             showIcon={true}
             iconName="document text"
           />
-          <CustomDateTimePicker
-            control={control}
-            date={date}
-            setDate={setDate}
-          />
+          {Platform.OS === "ios" ? (
+            <>
+              <CustomDateTimePicker
+                control={control}
+                mode={"datetime"}
+                date={date}
+                setDate={setDate}
+                placeholder="Select time"
+              />
+            </>
+          ) : (
+            <>
+              <CustomDateTimePicker
+                control={control}
+                mode={"date"}
+                date={date}
+                setDate={setDate}
+                placeholder="Select date"
+              />
+              <CustomDateTimePicker
+                control={control}
+                mode={"time"}
+                date={date}
+                setDate={setDate}
+                placeholder="Select time"
+              />
+            </>
+          )}
         </View>
         <View className="w-full py-7 items-center">
           <UIButton

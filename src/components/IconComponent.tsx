@@ -21,6 +21,7 @@ import {
   DollarSquare,
   Sun1,
   Moon,
+  Clock,
 } from "iconsax-react-native";
 import { ComponentProps } from "react";
 
@@ -101,6 +102,9 @@ export default function Icon({
       break;
     case "sun":
       IconComponent = Sun1;
+      break;
+    case "Clock":
+      IconComponent = Clock;
       break;
   }
 

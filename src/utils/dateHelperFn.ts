@@ -1,3 +1,4 @@
+import { TMode } from "@/components/CustomDateTimePicker";
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 
@@ -22,7 +23,10 @@ export function convertToTimezone(date: Date, offsetInHours: number) {
   return new Date(targetTime);
 }
 
-export const formatDate = (timestamp: Timestamp | Date): string => {
+export const formatDate = (
+  timestamp: Timestamp | Date,
+  mode?: TMode,
+): string => {
   const date = timestamp instanceof Timestamp ? timestamp.toDate() : timestamp;
   const today = moment();
   const yesterday = moment().subtract(1, "days").startOf("day");
@@ -35,5 +39,11 @@ export const formatDate = (timestamp: Timestamp | Date): string => {
   /* } else { */
   /*   return inputDate.format("YYYY-MM-DD"); */
   /* } */
-  return inputDate.format("YYYY-MM-DD · HH:mm");
+  if (mode === "date") {
+    return inputDate.format("YYYY-MM-DD");
+  } else if (mode === "time") {
+    return inputDate.format("hh:mm A");
+  }
+
+  return inputDate.format("YYYY-MM-DD · hh:mm A");
 };
