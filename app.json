@@ -37,7 +37,29 @@
           "fonts": ["./assets/fonts/Roboto-Bold.ttf"]
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      [
+        "@react-native-community/datetimepicker",
+        {
+          "android": {
+            "datePicker": {
+              "colorAccent": {
+                "light": "#FF5722"
+              },
+              "textColorPrimary": {
+                "light": "#FF5722"
+              }
+            },
+            "timePicker": {
+              "background": { "light": "#FF5722", "dark": "#383838" },
+              "numbersBackgroundColor": {
+                "light": "#FF5722",
+                "dark": "#383838"
+              }
+            }
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
