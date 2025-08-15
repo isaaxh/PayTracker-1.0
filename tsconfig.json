@@ -5,15 +5,14 @@
     "baseUrl": ".",
     "paths": {
       "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"],
-      "@/*": ["src/*"],
-      "@/app/*": ["src/app/*"],
-      "@/components/*": ["src/components/*"],
-      "@/ui/*": ["src/components/ui/*"],
-      "@/utils/*": ["src/utils/*"],
-      "@/constants/*": ["src/constants/*"],
-      "@/services/*": ["src/services/*"],
-      "@/contexts/*": ["src/services/contexts/*"],
-      "@/assets/*": ["assets/*"]
+      "@/app/*": ["./app/*"],
+      "@/components/*": ["./components/*"],
+      "@/ui/*": ["./components/ui/*"],
+      "@/utils/*": ["./utils/*"],
+      "@/constants/*": ["./constants/*"],
+      "@/services/*": ["./services/*"],
+      "@/contexts/*": ["./services/contexts/*"],
+      "@/assets/*": ["./assets/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

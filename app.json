@@ -35,10 +35,13 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Roboto-Bold.ttf"]
+          "fonts": [
+            "./assets/fonts/Roboto-Bold.ttf"
+          ]
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
