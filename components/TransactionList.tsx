@@ -17,7 +17,7 @@ const TransactionList = () => {
   return (
     <View style={{ height: "100%", width: "100%" }}>
       {!loading && !transactions.length && (
-        <View className='pt-12 justify-center items-center'>
+        <View className='items-center justify-center pt-12'>
           <UIText>{i18n.t("noTransactionHistory")}</UIText>
         </View>
       )}

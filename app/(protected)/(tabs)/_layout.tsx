@@ -25,7 +25,8 @@ export default function TabLayout() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: Platform.OS === "ios" ? 85 : 65,
+          height: 85,
+          paddingTop: 10,
           position: "absolute",
           bottom: 0,
           right: 0,
@@ -76,7 +77,11 @@ export default function TabLayout() {
         options={{
           title: "Add Transaction",
           tabBarIcon: () => (
-            <LinearGradView containerStyles={"mb-11 rounded-full p-3"}>
+            <LinearGradView
+              containerStyles={
+                "rounded-full w-16 h-16 absolute -bottom-4 items-center justify-center"
+              }
+            >
               <TabBarIcon
                 name='add'
                 color={Colors.dark.text}
