@@ -15,16 +15,12 @@ const TransactionList = () => {
   const { fetchAllTransactions } = useFetchAllTransactions();
 
   return (
-    <View style={{ height: "100%", width: "100%" }}>
-      {!loading && !transactions.length && (
-        <View className='items-center justify-center pt-12'>
-          <UIText>{i18n.t("noTransactionHistory")}</UIText>
-        </View>
-      )}
+    <View className='w-full h-full'>
       <FlashList
         className='py-2'
         contentContainerStyle={{ paddingBottom: 370 }}
         showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
         data={transactions}
         estimatedItemSize={96}
         renderItem={({ item }) => (
@@ -38,13 +34,17 @@ const TransactionList = () => {
             note={item.note}
           />
         )}
-        keyExtractor={(item) => item.id}
         refreshControl={
           <RefreshControl
             refreshing={loading}
             onRefresh={fetchAllTransactions}
           />
         }
+        ListEmptyComponent={() => (
+          <View className='items-center justify-center pt-12'>
+            <UIText>{i18n.t("noTransactionHistory")}</UIText>
+          </View>
+        )}
       />
     </View>
   );

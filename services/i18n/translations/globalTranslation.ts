@@ -1,5 +1,10 @@
 export const globalTranslations = {
   en: {
+    customHeaderTranslations: {
+      allTransactions: 'All Transactions',
+      settings: 'Settings',
+      profile: 'Profile',
+    },
     transactionTranslations: {
       addTransaction: "Add Transaction",
       type: "Type",
@@ -35,6 +40,11 @@ export const globalTranslations = {
     },
   },
   ar: {
+    customHeaderTranslations: {
+      allTransactions: 'جميع المعاملات',
+      settings: 'الإعدادات',
+      profile: 'الملف الشخصي',
+    },
     transactionTranslations: {
       addTransaction: "إضافة عملية",
       type: "نوع",

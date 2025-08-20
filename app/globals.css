@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+
+  .flex-start {
+    @apply flex items-start justify-center;
+  }
+}
+
+@layer components {
+  .cart-btn {
+    @apply flex items-center justify-center rounded-full size-10 bg-dark-100;
+  }
+
+  .cart-badge {
+    @apply absolute flex items-center justify-center rounded-full -top-2 -right-1 size-5 bg-primary;
+  }
+
+  .cart-item {
+    @apply flex flex-row items-end justify-between p-3 mb-4 bg-white shadow-md rounded-xl shadow-dark-100/10;
+  }
+
+  .cart-item__image {
+    @apply flex items-center justify-center rounded-lg size-24 bg-primary/10;
+  }
+
+  .cart-item__actions {
+    @apply flex flex-row items-center justify-center rounded-md size-5 bg-primary/10;
+  }
+
+  .custom-btn {
+    @apply flex flex-row justify-center w-full p-3 rounded-full bg-primary;
+  }
+
+  .custom-header {
+    @apply flex flex-row items-center justify-between w-full mb-10;
+  }
+
+  .label {
+    @apply w-full pl-2 text-base text-gray-500 text-start font-quicksand-medium;
+  }
+
+  .input {
+    @apply w-full p-3 text-base leading-5 border-b rounded-lg font-quicksand-semibold text-dark-100;
+  }
+
+  .filter {
+    @apply px-6 py-3 mr-2 rounded-full shadow-sm shadow-black/10;
+  }
+
+  .menu-card {
+    @apply relative py-9 px-3.5 pt-24 flex items-center justify-end bg-white shadow-md shadow-black/10 rounded-3xl;
+  }
+
+  .profile-field {
+    @apply flex flex-row items-center justify-start mb-4;
+  }
+
+  .profile-field__icon {
+    @apply flex items-center justify-center mr-3 rounded-full size-12 bg-primary/10;
+  }
+
+  .searchbar {
+    @apply relative flex flex-row items-center justify-center w-full gap-5 bg-white rounded-full shadow-md shadow-black/10 font-quicksand-medium text-dark-100;
+  }
+
+  .tab-icon {
+    @apply flex items-center justify-center min-h-full gap-1 mt-12 min-w-20;
+  }
+
+  .offer-card {
+    @apply flex items-center w-full h-48 gap-5 my-3 overflow-hidden shadow-lg rounded-xl;
+  }
+
+  .offer-card__info {
+    @apply flex flex-col items-start justify-center flex-1 h-full gap-4;
+  }
+
+  .profile-avatar {
+    @apply relative border-2 border-white rounded-full size-28;
+  }
+
+  .profile-edit {
+    @apply absolute right-0 flex items-center justify-center p-2 border-2 border-white rounded-full bottom-2 bg-primary size-8;
+  }
+
+  .h1-bold {
+    @apply text-3xl font-quicksand-bold;
+  }
+
+  .h3-bold {
+    @apply text-xl font-quicksand-bold;
+  }
+
+  .base-bold {
+    @apply text-lg font-quicksand-bold !important;
+  }
+
+  .base-semibold {
+    @apply text-lg font-quicksand-semibold;
+  }
+
+  .base-regular {
+    @apply text-lg font-quicksand;
+  }
+
+  .paragraph-bold {
+    @apply text-base font-quicksand-bold;
+  }
+
+  .paragraph-semibold {
+    @apply text-base font-quicksand-semibold;
+  }
+
+  .paragraph-medium {
+    @apply text-base font-quicksand-medium;
+  }
+
+  .body-medium {
+    @apply text-sm font-quicksand-medium;
+  }
+
+  .body-regular {
+    @apply text-sm font-quicksand;
+  }
+
+  .small-bold {
+    @apply text-xs font-quicksand-bold;
+  }
+}

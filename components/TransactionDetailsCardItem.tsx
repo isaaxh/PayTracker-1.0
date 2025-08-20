@@ -19,9 +19,9 @@ function TransactionDetailsCardItem<T extends React.ReactNode>(
 
   return (
     <View className='flex-row justify-between'>
-      <UIText variant={"subHeader3"}>{label}:</UIText>
+      <UIText variant={"caption"}>{label}</UIText>
       <UIText
-        variant={"base"}
+        variant={"labelSm"}
         textStyles={
           type === "expense"
             ? expenseStyles

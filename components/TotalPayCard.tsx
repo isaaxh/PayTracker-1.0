@@ -18,13 +18,13 @@ const TotalPayCard = () => {
 
   return (
     <LinearGradView>
-      <Link href="/(protected)/(tabs)/StatsTab" asChild>
-        <TouchableOpacity className="py-7 px-2 items-center gap-y-2">
+      <Link href='/(protected)/(tabs)/StatsTab' asChild>
+        <TouchableOpacity className='items-center px-2 py-7 gap-y-2'>
           <View>
             <UIText alwaysDarkText={true}>{i18n.t("monthlyPayout")}</UIText>
           </View>
-          <View className="flex-row items-center mb-4">
-            <UIText variant="headerLg" alwaysDarkText={true}>
+          <View className='flex-row items-center mb-4'>
+            <UIText variant='headingXL' alwaysDarkText={true}>
               {appSettings.currency.value}{" "}
               {convertCurrency({
                 currency: appSettings.currency.value,
@@ -33,9 +33,9 @@ const TotalPayCard = () => {
               })}
             </UIText>
           </View>
-          <View className="flex-row w-full px-4 justify-between">
-            <SummaryComponent label="income" amount={income ?? 0} />
-            <SummaryComponent label="expense" amount={expense ?? 0} />
+          <View className='flex-row justify-between w-full px-4'>
+            <SummaryComponent label='income' amount={income ?? 0} />
+            <SummaryComponent label='expense' amount={expense ?? 0} />
           </View>
         </TouchableOpacity>
       </Link>

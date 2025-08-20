@@ -114,13 +114,13 @@ const SettingsForm = () => {
         placeholder={i18n.t("selectCurrency")}
         iconName='dollar'
       />
-      <View className='w-full py-7 items-center space-y-3'>
-        <UIButton variant='outline' size='large' onPress={logout}>
+      <View className='items-center w-full space-y-3 py-7'>
+        <UIButton variant='outline' size='lg' onPress={logout}>
           {i18n.t("logout")}
         </UIButton>
         <UIButton
           variant='fill'
-          size='large'
+          size='lg'
           onPress={handleSubmit(onSubmit)}
           loading={formState.isSubmitting}
         >

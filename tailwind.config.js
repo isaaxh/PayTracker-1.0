@@ -7,6 +7,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        quicksand: ["Quicksand-Regular", "sans-serif"],
+        "quicksand-bold": ["Quicksand-Bold", "sans-serif"],
+        "quicksand-semibold": ["Quicksand-SemiBold", "sans-serif"],
+        "quicksand-light": ["Quicksand-Light", "sans-serif"],
+        "quicksand-medium": ["Quicksand-Medium", "sans-serif"],
+      },
       colors: {
         accentColor: "#29874c",
         textLight: "#31445e",

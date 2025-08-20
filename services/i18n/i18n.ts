@@ -6,6 +6,7 @@ import { authTranslations } from "./translations/authTranslation";
 
 const translations = {
   en: {
+    ...globalTranslations.en.customHeaderTranslations,
     ...globalTranslations.en.transactionTranslations,
     ...globalTranslations.en.transactionTranslations.categories,
     ...globalTranslations.en.toastTranslations,
@@ -16,6 +17,7 @@ const translations = {
     ...settingsTranslations.en,
   },
   ar: {
+    ...globalTranslations.ar.customHeaderTranslations,
     ...globalTranslations.ar.transactionTranslations,
     ...globalTranslations.ar.transactionTranslations.categories,
     ...globalTranslations.ar.toastTranslations,

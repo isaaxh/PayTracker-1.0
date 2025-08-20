@@ -26,7 +26,7 @@ const TransactionCard = ({
 }: TransactionIconProps) => {
   const { appSettings } = useGlobal() as GlobalContextProps;
   const category: TCategory | undefined = categories.find(
-    (cat) => categoryLabel === cat.label,
+    (cat) => categoryLabel === cat.label
   );
 
   const capitalizedLabel =
@@ -40,16 +40,16 @@ const TransactionCard = ({
       }}
       asChild
     >
-      <TouchableOpacity className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor flex-row px-6 py-6 mb-3 rounded-3xl items-center">
+      <TouchableOpacity className='flex-row items-center px-6 py-6 mb-3 bg-bgSecondaryColor dark:bg-darkBgSecondaryColor rounded-3xl'>
         <TransactionIcon category={category} />
-        <View className="flex-1">
-          <UIText textStyles="font-bold">
+        <View className='flex-1'>
+          <UIText textStyles='font-bold'>
             {i18n.locale === "en" ? capitalizedLabel : i18n.t(categoryLabel)}
           </UIText>
-          {note !== "" ? <UIText variant="subHeader">{note}</UIText> : null}
+          {note !== "" ? <UIText variant='bodySm'>{note}</UIText> : null}
         </View>
-        <View className="items-end">
-          <UIText variant="subHeader2">
+        <View className='items-end'>
+          <UIText variant='labelSm'>
             {type === "income" ? "+" : "-"} {appSettings.currency.value}{" "}
             {convertCurrency({
               currency: appSettings.currency.value,
@@ -58,7 +58,7 @@ const TransactionCard = ({
             })}
           </UIText>
           {/* <UIText variant="subHeader">{formatDate(date).split(" ")[2]}</UIText> */}
-          <UIText variant="subHeader">{formatDate(date).split(" ")[0]}</UIText>
+          <UIText variant='caption'>{formatDate(date).split(" ")[0]}</UIText>
         </View>
       </TouchableOpacity>
     </Link>

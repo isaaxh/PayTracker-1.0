@@ -79,7 +79,7 @@ export default function TabLayout() {
           tabBarIcon: () => (
             <LinearGradView
               containerStyles={
-                "rounded-full w-16 h-16 absolute -bottom-4 items-center justify-center"
+                "rounded-full w-16 h-16 absolute -bottom-6 items-center justify-center"
               }
             >
               <TabBarIcon

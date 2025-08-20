@@ -12,14 +12,14 @@ const HomeHeader = () => {
     authState: { user },
   } = useAuth() as AuthContextProps;
   return (
-    <View className='flex-row justify-between items-center w-full px-6 py-4'>
+    <View className='flex-row items-center justify-between w-full px-6 py-4'>
       <ProfileButton />
       <View className='flex-1 px-3'>
-        <UIText variant='subHeader' textStyles='font-medium'>
+        <UIText variant='bodySm' textStyles='font-medium'>
           {i18n.t("welcome")}!
         </UIText>
         <UIText
-          variant='header3'
+          variant='headingSm'
           textStyles={I18nManager.isRTL ? "text-left" : ""}
         >
           {user?.displayName?.toString().split(" ")[0]}

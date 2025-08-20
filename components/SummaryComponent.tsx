@@ -16,20 +16,20 @@ type SummaryComponentProps = {
 const SummaryComponent = ({ label, amount }: SummaryComponentProps) => {
   const { appSettings } = useGlobal() as GlobalContextProps;
   return (
-    <View className="flex-row items-center gap-x-3">
-      <View className="bg-white p-1 rounded-full bg-bgTransparent">
+    <View className='flex-row items-center gap-x-3'>
+      <View className='p-1 bg-white rounded-full bg-bgTransparent'>
         <IconComponent
           name={label === "income" ? "arrow up" : "arrow down"}
-          variant="Linear"
+          variant='Linear'
           color={label === "income" ? "#a3e635" : "#ef4444"}
           size={20}
         />
       </View>
-      <View className="items-center">
-        <UIText variant="subHeader3" alwaysDarkText={true}>
+      <View className='items-center'>
+        <UIText variant='bodySm' alwaysDarkText={true}>
           {i18n.t(label)}
         </UIText>
-        <UIText textStyles="font-bold" alwaysDarkText={true}>
+        <UIText textStyles='font-quicksand-bold' alwaysDarkText={true}>
           {convertCurrency({
             currency: appSettings.currency.value,
             rate: USDRate,
