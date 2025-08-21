@@ -8,10 +8,9 @@ import { TLoginSchema, loginSchema } from "utils/types";
 import { useAuth } from "hooks/useAuth";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { Link } from "expo-router";
-import IconCard from "./IconCard";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { i18n } from "@/services/i18n/i18n";
-import LoadingComponent from "components/LoadingComponent";
+import SocialAuthBtns from "./SocialAuthBtns";
 
 const LoginForm = () => {
   const { control, handleSubmit } = useForm<TLoginSchema>({
@@ -26,9 +25,11 @@ const LoginForm = () => {
 
   return (
     <>
-      <View className='mx-4 mt-6'>
-        <UIText variant='header'>{i18n.t("enterYourEmail")}</UIText>
-        <UIText textStyles='text-left mb-3' variant='bodyText'>
+      <View className='mx-4 mt-10'>
+        <UIText variant='headingMd' textStyles='mb-2'>
+          {i18n.t("enterYourEmail")}
+        </UIText>
+        <UIText textStyles='text-left mb-3' variant='bodySm'>
           {i18n.t("loginInstructions")}
         </UIText>
         <View className='mt-3'>
@@ -47,13 +48,13 @@ const LoginForm = () => {
           />
         </View>
 
-        <View className='flex-row justify-between items-center px-1'>
-          <UIText variant='bodyText'>{i18n.t("rememberMe")}</UIText>
+        <View className='flex-row items-center justify-between px-1'>
+          <UIText variant='bodyMd'>{i18n.t("rememberMe")}</UIText>
           <Link href='/' asChild>
             <UIButton
               hitSlop={5}
               variant='bare'
-              size='small'
+              size='sm'
               buttonStyles='p-0'
               textStyles='text-blue-500'
             >
@@ -63,28 +64,28 @@ const LoginForm = () => {
         </View>
       </View>
 
-      {/* <View className="w-full justify-center items-center"> */}
+      {/* <View className="items-center justify-center w-full"> */}
       {/*   {loading && <LoadingComponent />} */}
       {/*   <LoadingComponent /> */}
       {/* </View> */}
 
-      <View className='justify-end items-center mb-6 mx-4 mt-auto'>
+      <View className='items-center justify-end mx-4 mt-auto mb-6'>
         <UIButton
           onPress={handleSubmit(onSubmit)}
-          size='large'
+          size='lg'
           buttonStyles='mx-0 mb-3'
           loading={loading}
         >
           {i18n.t("login")}
         </UIButton>
         <View className='flex-row items-center'>
-          <UIText variant='bodyText'>{i18n.t("dontHaveAnAccount")} </UIText>
+          <UIText variant='bodySm'>{i18n.t("dontHaveAnAccount")} </UIText>
           <Link href='/SignupScreen' asChild>
             <UIButton
               hitSlop={5}
               variant='bare'
-              size='small'
-              buttonStyles='p-0 m-0'
+              size='sm'
+              buttonStyles='px-0 pl-1'
               textStyles='text-blue-500'
             >
               {i18n.t("signup")}
@@ -92,16 +93,12 @@ const LoginForm = () => {
           </Link>
         </View>
       </View>
-      <View className='flex-row justify-center items-center gap-3 px-6 mb-6'>
-        <View className='border-b flex-1 border-b-gray-400' />
-        <UIText variant='bodyText'>{i18n.t("orLoginWith")}</UIText>
-        <View className='border-b flex-1 border-b-gray-400' />
+      <View className='flex-row items-center justify-center gap-3 px-6 mb-6'>
+        <View className='flex-1 border-b border-b-gray-400' />
+        <UIText variant='bodySm'>{i18n.t("orLoginWith")}</UIText>
+        <View className='flex-1 border-b border-b-gray-400' />
       </View>
-      <View className='flex-row justify-center items-center mx-4 mb-8'>
-        <IconCard iconName='google' />
-        <IconCard iconName='apple' />
-        <IconCard iconName='facebook' />
-      </View>
+      <SocialAuthBtns />
     </>
   );
 };

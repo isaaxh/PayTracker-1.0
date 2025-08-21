@@ -1,5 +1,5 @@
 import { TextInput, TextInputProps, View } from "react-native";
-import React, { ForwardedRef } from "react";
+import React, { ForwardedRef, forwardRef } from "react";
 import { cn } from "utils/cn";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import UIText from "./UIText";
@@ -54,12 +54,12 @@ const inputStyles = cva(
       variant: "rounded",
       size: "default",
     },
-  },
+  }
 );
 
-const UIInput = <T extends FieldValues>(
+const UIInputInner = <T extends FieldValues>(
   props: UIInputProps<T>,
-  ref: ForwardedRef<TextInput>,
+  ref: ForwardedRef<TextInput>
 ) => {
   const {
     variant,
@@ -69,6 +69,7 @@ const UIInput = <T extends FieldValues>(
     containerStyles,
     showIcon,
     isAmountInput,
+    ...rest
   } = props;
   const { colorScheme } = useColorScheme();
   const { appSettings } = useGlobal() as GlobalContextProps;
@@ -81,15 +82,15 @@ const UIInput = <T extends FieldValues>(
         field: { onChange, onBlur, value },
         fieldState: { error },
       }) => (
-        <View className="mb-3">
+        <View className='mb-3'>
           <View
             className={cn(
               inputStyles({ variant: variant, size: size }),
               containerStyles,
               showIcon && "space-x-6",
               error
-                ? "border-red-400 bg-red-100"
-                : "border-gray-200 dark:border-zinc-700 dark:bg-darkBgSecondaryColor",
+                ? "border-red-400 bg-red-100 dark:bg-red-900 dark:border-red-700"
+                : "border-gray-200 dark:border-zinc-700 dark:bg-darkBgSecondaryColor"
             )}
           >
             {showIcon ? (
@@ -101,15 +102,15 @@ const UIInput = <T extends FieldValues>(
               />
             ) : null}
             {isAmountInput && (
-              <UIText variant="subHeader3">{appSettings.currency.value}</UIText>
+              <UIText variant='bodyMd'>{appSettings.currency.value}</UIText>
             )}
             <TextInput
               ref={ref}
               className={cn(
                 "flex-1 h-7 text-base text-textLight dark:text-textDark",
-                isAmountInput && "text-2xl",
+                isAmountInput && "text-2xl"
               )}
-              autoCapitalize="none"
+              autoCapitalize='none'
               value={value}
               onChangeText={(text) => {
                 if (!isAmountInput) {
@@ -128,15 +129,16 @@ const UIInput = <T extends FieldValues>(
                 colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint
               }
               keyboardType={isAmountInput ? "numeric" : "default"}
-              {...props}
+              returnKeyLabel='done'
+              {...rest}
             />
           </View>
           {error && (
             <UIText
-              variant="bodyText"
+              variant='caption'
               textStyles={cn(
-                "text-left ml-2 self-stretch text-red-400",
-                isAmountInput && "text-center ml-0",
+                "text-left ml-2 mt-2 self-stretch text-red-400",
+                isAmountInput && "text-center ml-0"
               )}
             >
               {error.message}
@@ -147,5 +149,9 @@ const UIInput = <T extends FieldValues>(
     />
   );
 };
+
+const UIInput = forwardRef(UIInputInner) as <T extends FieldValues>(
+  props: UIInputProps<T> & { ref?: ForwardedRef<TextInput> }
+) => React.ReactElement;
 
 export default UIInput;
