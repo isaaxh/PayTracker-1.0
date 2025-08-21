@@ -65,7 +65,7 @@ const UIText = forwardRef<Text, UITextProps>((Props: UITextProps, ref) => {
       className={cn(
         txtStyles({ variant }),
         textStyles,
-        alwaysDarkText ? "text-textDark" : ""
+        alwaysDarkText && "text-textDark"
       )}
       {...props}
     >
