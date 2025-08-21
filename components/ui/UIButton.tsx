@@ -7,7 +7,6 @@ import { textVariants } from "./UIText";
 
 type UIButtonProps = {
   children?: ReactNode;
-  loading?: boolean;
   containerStyles?: string;
   buttonStyles?: string;
   textStyles?: string;
@@ -59,12 +58,12 @@ const UIButton = forwardRef<View, UIButtonProps>(
       children,
       variant,
       size,
-      loading,
       iconProps = { name: "home", size: 50, color: "#000000" },
       containerStyles,
       buttonStyles,
       textStyles,
       multiText,
+      disabled,
       ...props
     } = Props;
 
@@ -85,12 +84,11 @@ const UIButton = forwardRef<View, UIButtonProps>(
           ref={forwardedRef}
           onPressIn={() => setPressed(true)}
           onPressOut={() => setPressed(false)}
-          disabled={loading}
           className={cn(
             btnStyles({ variant: variant, size: size }),
             buttonStyles,
-            isPressed ? "opacity-60" : "",
-            loading ? "opacity-20" : ""
+            isPressed && "opacity-60",
+            disabled && "opacity-40"
           )}
           {...props}
         >
