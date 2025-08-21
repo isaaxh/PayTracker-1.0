@@ -68,7 +68,7 @@ const AddTransactionForm = () => {
   return (
     <>
       <View className='items-center justify-center w-full px-24'>
-        <UIText variant='header3'>{i18n.t("addTransaction")}</UIText>
+        <UIText variant='headingSm'>{i18n.t("addTransaction")}</UIText>
         <View className='w-full mt-6'>
           <UIInput
             name='amount'
@@ -137,7 +137,7 @@ const AddTransactionForm = () => {
         <View className='w-full py-7 items-center'>
           <UIButton
             variant='fill'
-            size='large'
+            size='lg'
             onPress={handleSubmit(onSubmit)}
             loading={loading}
           >
