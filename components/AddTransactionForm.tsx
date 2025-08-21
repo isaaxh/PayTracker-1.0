@@ -29,7 +29,12 @@ const AddTransactionForm = () => {
 
   const { fetchAllTransactions } = useFetchAllTransactions();
 
-  const { control, handleSubmit, reset, formState } = useForm<TTransaction>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isDirty, isSubmitting, isSubmitSuccessful },
+  } = useForm<TTransaction>({
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       id: uuid.v4().toString(),
@@ -40,10 +45,10 @@ const AddTransactionForm = () => {
   });
 
   useEffect(() => {
-    if (formState.isSubmitSuccessful) {
+    if (isSubmitSuccessful) {
       reset();
     }
-  }, [formState, reset]);
+  }, [reset]);
 
   const onSubmit = (data: TTransaction) => {
     if (!userData) {
@@ -52,8 +57,6 @@ const AddTransactionForm = () => {
     }
 
     const parsedTransaction = transactionSchema.parse(data);
-
-    console.log(parsedTransaction);
 
     addTransactionDoc({
       uid: userData?.uid,
@@ -139,7 +142,7 @@ const AddTransactionForm = () => {
             variant='fill'
             size='lg'
             onPress={handleSubmit(onSubmit)}
-            loading={loading}
+            disabled={!isDirty || isSubmitting || loading}
           >
             {i18n.t("save")}
           </UIButton>

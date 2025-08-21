@@ -70,7 +70,7 @@ const SignupForm = () => {
           onPress={handleSubmit(onSubmit)}
           size='lg'
           buttonStyles='mx-0 mb-3'
-          loading={loading}
+          disabled={loading}
         >
           {i18n.t("createAccount")}
         </UIButton>

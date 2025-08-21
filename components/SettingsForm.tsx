@@ -27,7 +27,11 @@ const SettingsForm = () => {
   const { colorScheme, setColorScheme } = useColorScheme();
   const { updateSettings, saveSettings } = useAsync();
 
-  const { control, handleSubmit, formState } = useForm<TSettingsSchema>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isDirty, isSubmitting },
+  } = useForm<TSettingsSchema>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
       theme: appSettings.theme.value,
@@ -122,7 +126,7 @@ const SettingsForm = () => {
           variant='fill'
           size='lg'
           onPress={handleSubmit(onSubmit)}
-          loading={formState.isSubmitting}
+          disabled={!isDirty || isSubmitting}
         >
           {i18n.t("saveChanges")}
         </UIButton>
