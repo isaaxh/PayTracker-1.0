@@ -33,7 +33,7 @@ type UIInputPropsWithoutIcon = {
 const inputVariants = {
   variant: {
     bare: [""],
-    rounded: ["border rounded-2xl"],
+    rounded: ["border rounded-xl"],
     fullyRounded: ["items-end space-x-2 rounded-full py-3 px-12"],
     rectangular: ["rounded-md"],
   },

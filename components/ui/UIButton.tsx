@@ -41,7 +41,7 @@ const buttonVariants = {
   size: {
     sm: "px-3 py-1 items-center rounded-md",
     default: "px-6 py-3 items-center rounded-lg",
-    lg: "px-4 py-4 flex-1 items-center rounded-3xl",
+    lg: "px-4 py-4 flex-1 items-center rounded-xl",
   },
 };
 
