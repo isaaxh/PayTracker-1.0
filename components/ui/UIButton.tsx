@@ -3,6 +3,7 @@ import React, { ReactNode, forwardRef, useState } from "react";
 import { VariantProps, cva } from "class-variance-authority";
 import { cn } from "utils/cn";
 import Icon, { TIconProps } from "../Icon";
+import { textVariants } from "./UIText";
 
 type UIButtonProps = {
   children?: ReactNode;
@@ -10,9 +11,9 @@ type UIButtonProps = {
   containerStyles?: string;
   buttonStyles?: string;
   textStyles?: string;
+  iconProps?: TIconProps;
 } & PressableProps &
   OptionalButtonProps &
-  iconProps &
   VariantProps<typeof btnStyles>;
 
 type OptionalButtonProps =
@@ -24,30 +25,23 @@ type OptionalButtonProps =
       multiText?: false;
     };
 
-type iconProps = {
-  iconName?: TIconProps["name"];
-  iconSize?: TIconProps["size"];
-  iconColor?: TIconProps["color"];
-};
-
 const buttonVariants = {
   text: {
-    baseText: "text-center font-GiloryRegular",
-    smallText: "text-xs font-GilorySemiBold",
-    defaultText: "text-base text-gray-600 font-GiloryMedium",
-    largeText: "text-base font-GilorySemiBold",
+    textSm: textVariants.variant.bodySm,
+    textDefault: textVariants.variant.button,
+    textLink: textVariants.variant.link,
   },
+
   variant: {
-    bare: [""],
-    outline: ["border border-gray-400"],
-    fill: ["bg-bgSecondaryColor"],
-    icon: [""],
+    bare: "bg-transparent shadow-none",
+    outline: "border border-gray-400",
+    fill: "bg-bgSecondaryColor text-white",
+    icon: "p-2 rounded-full bg-gray-100",
   },
   size: {
-    bare: [""],
-    small: ["px-3 py-1"],
-    default: ["py-2 px-4"],
-    large: ["py-4 mx-4 flex-1 items-center rounded-3xl"],
+    sm: "px-3 py-1 items-center rounded-md",
+    default: "px-6 py-3 items-center rounded-lg",
+    lg: "px-4 py-4 flex-1 items-center rounded-3xl",
   },
 };
 
@@ -66,9 +60,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
       variant,
       size,
       loading,
-      iconName,
-      iconSize = 24,
-      iconColor = "#000000",
+      iconProps = { name: "home", size: 50, color: "#000000" },
       containerStyles,
       buttonStyles,
       textStyles,
@@ -84,7 +76,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
 
     const [isPressed, setPressed] = useState(false);
 
-    const textKey = `${size}Text` as keyof typeof buttonVariants.text;
+    const textKey = `text${size}` as keyof typeof buttonVariants.text;
     const textStyle = buttonVariants.text[textKey];
 
     return (
@@ -103,12 +95,13 @@ const UIButton = forwardRef<View, UIButtonProps>(
           {...props}
         >
           {variant === "icon" ? (
-            <Icon name={iconName} size={iconSize} color={iconColor} />
+            <Icon {...iconProps} />
           ) : multiText ? (
             <>
               <Text
                 className={cn(
-                  buttonVariants.text.baseText,
+                  buttonVariants.text.textDefault,
+                  variant === "outline" && "text-textLight dark:text-textDark",
                   textStyle,
                   textStyles
                 )}
@@ -117,7 +110,8 @@ const UIButton = forwardRef<View, UIButtonProps>(
               </Text>
               <Text
                 className={cn(
-                  buttonVariants.text.baseText,
+                  buttonVariants.text.textDefault,
+                  variant === "outline" && "text-textLight dark:text-textDark",
                   textStyle,
                   textStyles
                 )}
@@ -128,7 +122,8 @@ const UIButton = forwardRef<View, UIButtonProps>(
           ) : (
             <Text
               className={cn(
-                buttonVariants.text.baseText,
+                buttonVariants.text.textDefault,
+                variant === "outline" && "text-textLight dark:text-textDark",
                 textStyle,
                 textStyles
               )}
