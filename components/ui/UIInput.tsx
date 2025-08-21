@@ -126,7 +126,11 @@ const UIInputInner = <T extends FieldValues>(
               }}
               onBlur={onBlur}
               placeholderTextColor={
-                colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint
+                error
+                  ? Colors.error
+                  : colorScheme === "dark"
+                  ? Colors.dark.tint
+                  : Colors.light.tint
               }
               keyboardType={isAmountInput ? "numeric" : "default"}
               returnKeyLabel='done'
