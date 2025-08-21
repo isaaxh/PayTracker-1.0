@@ -21,7 +21,7 @@ type dataItemType = {
 };
 
 const UIDropDown = <T extends FieldValues, U extends dataItemType>(
-  props: UIDropDownProps<T, U>,
+  props: UIDropDownProps<T, U>
 ) => {
   const { data, name, control, iconName, placeholder } = props;
   const [isFocus, setIsFocus] = useState(false);
@@ -35,7 +35,7 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
         field: { onChange, value, onBlur },
         fieldState: { error },
       }) => (
-        <View className="mb-3">
+        <View className='mb-3'>
           <Dropdown
             style={[
               styles.dropdown,
@@ -81,8 +81,8 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
             maxHeight={300}
             showsVerticalScrollIndicator={false}
             autoScroll={false}
-            labelField="label"
-            valueField="value"
+            labelField='label'
+            valueField='value'
             placeholder={!isFocus ? placeholder ?? "Select item" : "..."}
             value={value}
             onFocus={() => setIsFocus(true)}
@@ -98,7 +98,7 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
               I18nManager.isRTL
                 ? () => null
                 : () => (
-                    <View className="mr-6">
+                    <View className='mr-6'>
                       <IconComponent
                         name={iconName ?? ""}
                         color={
@@ -114,7 +114,7 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
               !I18nManager.isRTL
                 ? () => null
                 : () => (
-                    <View className="mr-6">
+                    <View className='mr-6'>
                       <IconComponent
                         name={iconName ?? ""}
                         color={
@@ -129,7 +129,7 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
           />
           {error && (
             <UIText
-              variant="bodyText"
+              variant='caption'
               textStyles={"text-left ml-2 self-stretch text-red-400"}
             >
               {error.message}
