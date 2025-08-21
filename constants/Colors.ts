@@ -21,4 +21,6 @@ export default {
     tabIconDefault: tintInactiveColorDark,
     tabIconSelected: tintColorDark,
   },
+  error: "#dc2626",
+  success: "#16a34a",
 };
