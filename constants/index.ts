@@ -1,0 +1,1 @@
+export { iconRegistry, type TIconsaxName } from './icons';
