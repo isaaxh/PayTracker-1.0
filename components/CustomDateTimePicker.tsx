@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  Pressable,
-  Platform,
-} from "react-native";
+import { View, Pressable, Platform } from "react-native";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { convertToTimezone, formatDate } from "utils/dateHelperFn";
-import IconComponent from "./IconComponent";
 import UIText from "./ui/UIText";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
@@ -18,6 +11,8 @@ import { Control, Controller } from "react-hook-form";
 import { TTransaction } from "@/constants/Transactions";
 import { cn } from "utils/cn";
 import { Timestamp } from "firebase/firestore";
+import RenderIcon from "./RenderIcon";
+import { TIconsaxIconProps } from "./IconsaxIcon";
 
 type CustomDateTimePickerProps = {
   date: Date;
@@ -53,11 +48,13 @@ const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
       }) => (
         <>
           <View className='bg-bgSecondaryColor dark:bg-darkBgSecondaryColor flex-row items-center rounded-md  px-5 py-3 mb-3 space-x-6'>
-            <IconComponent
-              name={mode === "time" ? "Clock" : "calender"}
-              color={
-                colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint
-              }
+            <RenderIcon
+              iconLibrary='iconsax'
+              iconProps={{
+                name: mode === "time" ? "clock" : "calender",
+                color:
+                  colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
+              }}
             />
             {Platform.OS !== "ios" && (
               <Pressable
@@ -103,7 +100,7 @@ const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
           </View>
           {error && (
             <UIText
-              variant='bodyText'
+              variant='bodySm'
               textStyles={cn("text-left ml-2 self-stretch text-red-400")}
             >
               {error.message}

@@ -1,12 +1,13 @@
 import { View, TextInput, TextInputProps } from "react-native";
 import React, { forwardRef } from "react";
-import IconComponent from "../IconComponent";
+import IconComponent from "../IconsaxIcon";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
 import { cn } from "utils/cn";
 import UIText from "./UIText";
 import { Control, Controller } from "react-hook-form";
 import { TTransaction } from "@/constants/Transactions";
+import RenderIcon from "../RenderIcon";
 
 type UITextInputProps = {
   note: string;
@@ -35,11 +36,15 @@ const UITextInput = forwardRef<TextInput, UITextInputProps>(
                   : "border-gray-200 dark:border-zinc-700 dark:bg-darkBgSecondaryColor"
               )}
             >
-              <IconComponent
-                name='document text'
-                color={
-                  colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint
-                }
+              <RenderIcon
+                iconLibrary='iconsax'
+                iconProps={{
+                  name: "document text",
+                  color:
+                    colorScheme === "dark"
+                      ? Colors.dark.tint
+                      : Colors.light.tint,
+                }}
               />
               <TextInput
                 ref={forwardRef}
@@ -57,7 +62,7 @@ const UITextInput = forwardRef<TextInput, UITextInputProps>(
             </View>
             {error && (
               <UIText
-                variant='bodyText'
+                variant='bodySm'
                 textStyles={"text-left ml-2 self-stretch text-red-400"}
               >
                 {error.message}

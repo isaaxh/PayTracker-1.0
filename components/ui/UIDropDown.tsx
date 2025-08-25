@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { I18nManager, StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import IconComponent from "../IconComponent";
+import IconComponent from "../IconsaxIcon";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import UIText from "./UIText";
+import { TIconsaxName } from "@/constants/icons";
+import RenderIcon from "../RenderIcon";
 
 type UIDropDownProps<T extends FieldValues, U extends dataItemType> = {
   data: U[];
   name: Path<T>;
   control: Control<T>;
-  iconName?: string;
+  iconName?: TIconsaxName;
   placeholder?: string;
 };
 
@@ -99,13 +101,15 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
                 ? () => null
                 : () => (
                     <View className='mr-6'>
-                      <IconComponent
-                        name={iconName ?? ""}
-                        color={
-                          colorScheme === "dark"
-                            ? Colors.dark.tint
-                            : Colors.light.tint
-                        }
+                      <RenderIcon
+                        iconLibrary='iconsax'
+                        iconProps={{
+                          name: iconName ?? "EmojiHappy",
+                          color:
+                            colorScheme === "dark"
+                              ? Colors.dark.tint
+                              : Colors.light.tint,
+                        }}
                       />
                     </View>
                   )
@@ -115,13 +119,15 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
                 ? () => null
                 : () => (
                     <View className='mr-6'>
-                      <IconComponent
-                        name={iconName ?? ""}
-                        color={
-                          colorScheme === "dark"
-                            ? Colors.dark.tint
-                            : Colors.light.tint
-                        }
+                      <RenderIcon
+                        iconLibrary='iconsax'
+                        iconProps={{
+                          name: iconName ?? "EmojiHappy",
+                          color:
+                            colorScheme === "dark"
+                              ? Colors.dark.tint
+                              : Colors.light.tint,
+                        }}
                       />
                     </View>
                   )
@@ -161,7 +167,7 @@ const styles = StyleSheet.create({
   },
   itemContainerStyle: {},
   icon: {
-    marginRight: 15,
+    marginRight: 16,
   },
   label: {
     position: "absolute",

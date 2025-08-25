@@ -5,10 +5,11 @@ import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import UIText from "./UIText";
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "nativewind";
-import IconComponent from "../IconComponent";
+import { TIconsaxIconProps } from "../IconsaxIcon";
 import { VariantProps, cva } from "class-variance-authority";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "hooks/useGlobal";
+import RenderIcon from "../RenderIcon";
 
 type UIInputProps<T extends FieldValues> = {
   name: Path<T>;
@@ -18,6 +19,7 @@ type UIInputProps<T extends FieldValues> = {
   buttonStyles?: string;
   textStyles?: string;
   isAmountInput?: boolean;
+  iconProps?: TIconsaxIconProps;
 } & VariantProps<typeof inputStyles> &
   (UIInputPropsWithIcon | UIInputPropsWithoutIcon) &
   TextInputProps;
@@ -94,11 +96,15 @@ const UIInputInner = <T extends FieldValues>(
             )}
           >
             {showIcon ? (
-              <IconComponent
-                name={props.iconName}
-                color={
-                  colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint
-                }
+              <RenderIcon
+                iconLibrary='iconsax'
+                iconProps={{
+                  name: props.iconProps?.name ?? "EmojiHappy",
+                  color:
+                    colorScheme === "dark"
+                      ? Colors.dark.tint
+                      : Colors.light.tint,
+                }}
               />
             ) : null}
             {isAmountInput && (

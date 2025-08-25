@@ -1,12 +1,12 @@
 import UIButton from "./ui/UIButton";
-import { TIconProps } from "./Icon";
+import { TFontAwesomeIconProps } from "./FontAwesomeIcon";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
 
 type IconCardProps = {
-  iconName: TIconProps["name"];
-  iconSize?: TIconProps["size"];
-  iconColor?: TIconProps["color"];
+  iconName: TFontAwesomeIconProps["name"];
+  iconSize?: TFontAwesomeIconProps["size"];
+  iconColor?: TFontAwesomeIconProps["color"];
 };
 
 const IconCard = (props: IconCardProps) => {
@@ -19,6 +19,7 @@ const IconCard = (props: IconCardProps) => {
   return (
     <UIButton
       variant='icon'
+      iconLibrary='fontAwesome'
       iconProps={{
         name: iconName,
         size: iconSize,

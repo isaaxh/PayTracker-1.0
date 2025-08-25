@@ -4,9 +4,9 @@ import { useNavigation } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import { cva } from "class-variance-authority";
 import { cn } from "utils/cn";
-import IconComponent from "./IconComponent";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
+import RenderIcon from "./RenderIcon";
 
 interface NavButtonProps {
   variant: "back" | "cancel";
@@ -44,10 +44,14 @@ const NavButton = ({ variant, customStyles }: NavButtonProps) => {
       onPress={() => navigation.goBack()}
     >
       {variant === "back" ? (
-        <IconComponent
-          name='arrow left'
-          color={colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint}
-          size={26}
+        <RenderIcon
+          iconLibrary='iconsax'
+          iconProps={{
+            name: "arrow left",
+            color:
+              colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
+            size: 26,
+          }}
         />
       ) : (
         <Entypo
