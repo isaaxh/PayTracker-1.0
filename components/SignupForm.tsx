@@ -68,9 +68,10 @@ const SignupForm = () => {
       <View className='items-center justify-end mx-4 mt-auto mb-6'>
         <UIButton
           onPress={handleSubmit(onSubmit)}
-          size='lg'
+          size='large'
           buttonStyles='mx-0 mb-3'
           disabled={loading}
+          primary
         >
           {i18n.t("createAccount")}
         </UIButton>
@@ -79,10 +80,10 @@ const SignupForm = () => {
           <Link href='/' asChild>
             <UIButton
               hitSlop={5}
-              variant='bare'
-              size='sm'
-              buttonStyles='p-0 pl-1'
-              textStyles='text-blue-500'
+              variant='link'
+              size='small'
+              textSize={"link"}
+              buttonStyles='px-0 py-0 pl-1'
             >
               {i18n.t("login")}
             </UIButton>

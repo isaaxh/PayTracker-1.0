@@ -20,8 +20,9 @@ import { router } from "expo-router";
 import { useAsync } from "hooks/useAsync";
 import { useAuth } from "hooks/useAuth";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
+import Colors from "@/constants/Colors";
 
-const SettingsForm = () => {
+const ProfileSettingsForm = () => {
   const { appSettings, setAppSettings } = useGlobal() as GlobalContextProps;
   const { logout } = useAuth() as AuthContextProps;
   const { colorScheme, setColorScheme } = useColorScheme();
@@ -96,32 +97,49 @@ const SettingsForm = () => {
   };
 
   return (
-    <View>
-      <UIDropDown
-        data={themeList}
-        name='theme'
-        control={control}
-        placeholder={i18n.t("selectTheme")}
-        iconName={colorScheme === "dark" ? "sun" : "moon"}
-      />
-      <UIDropDown
-        data={languageList}
-        name='language'
-        control={control}
-        placeholder={i18n.t("selectLanguage")}
-        iconName='global'
-      />
-      <UIDropDown
-        data={currencyList}
-        name='currency'
-        control={control}
-        placeholder={i18n.t("selectCurrency")}
-        iconName='dollar'
-      />
-      <View className='items-center w-full space-y-3 py-7'>
-        <UIButton variant='outline' size='large' onPress={logout}>
+    <View className='flex-1 justify-between'>
+      <View className=''>
+        <UIButton
+          variant={"iconText"}
+          iconLibrary='iconsax'
+          iconProps={{ name: "profile" }}
+          size={"large"}
+          buttonStyles='mb-3'
+        >
+          Personal Information
+        </UIButton>
+        <UIDropDown
+          data={themeList}
+          name='theme'
+          control={control}
+          placeholder={i18n.t("selectTheme")}
+          iconName={colorScheme === "dark" ? "sun" : "moon"}
+        />
+        <UIDropDown
+          data={languageList}
+          name='language'
+          control={control}
+          placeholder={i18n.t("selectLanguage")}
+          iconName='global'
+        />
+        <UIDropDown
+          data={currencyList}
+          name='currency'
+          control={control}
+          placeholder={i18n.t("selectCurrency")}
+          iconName='dollar'
+        />
+        <UIButton
+          variant={"iconText"}
+          iconLibrary='iconsax'
+          iconProps={{ name: "logout" }}
+          size={"large"}
+          onPress={logout}
+        >
           {i18n.t("logout")}
         </UIButton>
+      </View>
+      <View className='pb-7 w-full'>
         <UIButton
           variant='fill'
           size='large'
@@ -135,4 +153,4 @@ const SettingsForm = () => {
   );
 };
 
-export default SettingsForm;
+export default ProfileSettingsForm;

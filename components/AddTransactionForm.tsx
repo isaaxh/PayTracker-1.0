@@ -140,9 +140,10 @@ const AddTransactionForm = () => {
         <View className='w-full py-7 items-center'>
           <UIButton
             variant='fill'
-            size='lg'
+            size='large'
             onPress={handleSubmit(onSubmit)}
             disabled={!isDirty || isSubmitting || loading}
+            primary
           >
             {i18n.t("save")}
           </UIButton>
