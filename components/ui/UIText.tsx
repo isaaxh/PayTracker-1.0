@@ -18,16 +18,8 @@ interface UITextProps extends TextProps, VariantProps<typeof txtStyles> {
 
 export const textVariants = {
   variant: {
-    base: ["font-quicksand text-base text-black dark:text-white"], // 16px
-    // headerLg: ["text-4xl font-quicksand-bold"], // 24px
-    // header: ["text-2xl mt-4 mb-1.5 font-quicksand-bold"], // 24px
-    // header2: ["text-xl font-quicksand-bold"], // 20px
-    // header3: ["text-lg font-quicksand-medium"], // 16px
-    // subHeader: ["text-xs font-quicksand-semibold"], // 16px
-    // subHeader2: ["text-sm font-quicksand-bold"], // 12px
-    // subHeader3: ["text-sm"], // 12px
-    // bodyText: ["text-xs"], // 12px
-
+    base: ["font-quicksand text-base text-textLight dark:text-textDark"], // 16px
+    // HEADINGS
     headingXL: ["text-4xl font-quicksand-bold"], // 36px - big hero
     headingLg: ["text-3xl font-quicksand-bold"], // 30px
     headingMd: ["text-2xl font-quicksand-bold"], // 24px - section title
@@ -46,7 +38,7 @@ export const textVariants = {
 
     // UTILITY
     button: ["text-base font-quicksand-medium"], // button text
-    link: ["text-sm font-quicksand-semibold text-blue-500"], // links
+    link: ["text-sm font-quicksand-semibold"], // links
   },
 };
 
