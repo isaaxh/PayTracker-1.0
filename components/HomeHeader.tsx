@@ -1,7 +1,7 @@
 import { I18nManager, View } from "react-native";
 import React from "react";
 import ProfileButton from "./ProfileButton";
-import SettingsButton from "./SettingsButton";
+import NotificationButton from "./NotificationButton";
 import UIText from "./ui/UIText";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { useAuth } from "hooks/useAuth";
@@ -25,7 +25,7 @@ const HomeHeader = () => {
           {user?.displayName?.toString().split(" ")[0]}
         </UIText>
       </View>
-      <SettingsButton />
+      <NotificationButton />
     </View>
   );
 };
