@@ -59,10 +59,15 @@ const TransactionDetailsBody = () => {
     <View className='flex-1 w-full px-6 '>
       <TransactionDetailsCard transaction={transaction} />
       <View className='mt-auto mb-4 space-y-3'>
-        <UIButton variant={"outline"} size={"large"}>
+        <UIButton variant={"fill"} size={"large"}>
           Edit
         </UIButton>
-        <UIButton onPress={onPressDelete} variant={"fill"} size={"large"}>
+        <UIButton
+          onPress={onPressDelete}
+          variant={"fill"}
+          size={"large"}
+          type={"danger"}
+        >
           Delete
         </UIButton>
       </View>

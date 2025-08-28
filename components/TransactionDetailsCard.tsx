@@ -15,9 +15,9 @@ const TransactionDetailsCard = (props: TransactionDetailsCardProps) => {
   const { transaction } = props;
   const { appSettings } = useGlobal() as GlobalContextProps;
   return (
-    <View className="border rounded-xl border-gray-300 dark:border-zinc-700 py-4 px-4">
-      <View className="mb-3">
-        <UIText variant={"header3"}>Transaction Details</UIText>
+    <View className='border rounded-xl border-gray-300 dark:border-zinc-700 py-4 px-4'>
+      <View className='mb-3'>
+        <UIText variant={"headingXs"}>Transaction Details</UIText>
       </View>
       <TransactionDetailsCardItem
         label={"Transaction ID"}
