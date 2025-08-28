@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import React from "react";
-import IconComponent from "./IconComponent";
 import { TCategory } from "@/constants/Categories";
+import RenderIcon from "./RenderIcon";
 
 type TransactionIconProps = {
   category: TCategory | undefined;
@@ -10,10 +10,18 @@ type TransactionIconProps = {
 const TransactionIcon = ({ category }: TransactionIconProps) => {
   return (
     <View
-      className="bg-yellow-400 h-12 w-12 mr-4 items-center justify-center rounded-full"
+      className='bg-yellow-400 h-12 w-12 mr-4 items-center justify-center rounded-full'
       style={{ backgroundColor: category?.color ?? "#000000" }}
     >
-      <IconComponent name={category?.iconName ?? ""} color="#fefefe" />
+      <RenderIcon
+        iconLibrary='iconsax'
+        iconProps={{
+          name: category?.iconName ?? "money",
+          color: "#fefefe",
+        }}
+        name={category?.iconName ?? ""}
+        color='#fefefe'
+      />
     </View>
   );
 };

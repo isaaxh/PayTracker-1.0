@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { I18nManager, StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import IconComponent from "../IconsaxIcon";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";

@@ -20,7 +20,6 @@ import { router } from "expo-router";
 import { useAsync } from "hooks/useAsync";
 import { useAuth } from "hooks/useAuth";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
-import Colors from "@/constants/Colors";
 
 const ProfileSettingsForm = () => {
   const { appSettings, setAppSettings } = useGlobal() as GlobalContextProps;
