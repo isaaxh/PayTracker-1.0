@@ -13,7 +13,7 @@ function ProtectedLayoutNav() {
         name='AddTransactionModal'
         options={{ presentation: "modal" }}
       />
-      <Stack.Screen name='SettingScreen' />
+      <Stack.Screen name='NotificationScreen' />
       <Stack.Screen name='ProfileScreen' />
       <Stack.Screen name='PersonalInfoScreen' />
       <Stack.Screen name='ChangePassScreen' />
