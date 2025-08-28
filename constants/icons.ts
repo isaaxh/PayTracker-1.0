@@ -23,7 +23,8 @@ import {
     Sun1,
     Moon,
     Clock,
-    LogoutCurve
+    LogoutCurve,
+    Lock1
 } from "iconsax-react-native";
 
 export const iconRegistry = {
@@ -50,7 +51,8 @@ export const iconRegistry = {
     moon: Moon,
     sun: Sun1,
     clock: Clock,
-    logout: LogoutCurve
+    logout: LogoutCurve,
+    lock: Lock1
 } as const;
 
 export type TIconsaxName = keyof typeof iconRegistry;
