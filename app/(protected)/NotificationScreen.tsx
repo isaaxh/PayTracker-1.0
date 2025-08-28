@@ -1,15 +1,15 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SettingsBody from "components/SettingsBody";
+import SettingsBody from "@/components/NotificationBody";
 import CustomHeader from "@/components/CustomHeader";
 
-const SettingScreen = () => {
+const NotificationScreen = () => {
   return (
     <SafeAreaView className='items-center flex-1 bg-bgColor dark:bg-darkBgColor'>
-      <CustomHeader title='settings' />
+      <CustomHeader title='notifications' />
       <SettingsBody />
     </SafeAreaView>
   );
 };
 
-export default SettingScreen;
+export default NotificationScreen;

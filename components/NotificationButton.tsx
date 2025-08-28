@@ -20,11 +20,13 @@ const NotificationButton = () => {
               colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
           }}
         />
-        <View className='absolute items-center justify-center w-5 h-5 rounded-full bg-danger top-0.5 right-0.5 shrink-0 grow-0'>
-          <UIText variant={"bodySm"} textStyles='text-white'>
-            {notificationCounter}
-          </UIText>
-        </View>
+        {notificationCounter && (
+          <View className='absolute items-center justify-center w-5 h-5 rounded-full bg-danger top-0.5 right-0.5 shrink-0 grow-0'>
+            <UIText variant={"bodySm"} textStyles='text-white'>
+              {notificationCounter}
+            </UIText>
+          </View>
+        )}
       </TouchableOpacity>
     </Link>
   );

@@ -2,7 +2,7 @@ export const globalTranslations = {
   en: {
     customHeaderTranslations: {
       allTransactions: 'All Transactions',
-      settings: 'Settings',
+      notifications: 'Notifications',
       profile: 'Profile',
       personalInfo: 'Personal Information',
       changePass: 'Change Password'
@@ -44,7 +44,7 @@ export const globalTranslations = {
   ar: {
     customHeaderTranslations: {
       allTransactions: 'جميع المعاملات',
-      settings: 'الإعدادات',
+      notifications: 'اشعارات',
       profile: 'الملف الشخصي',
       personalInfo: 'معلومات شخصي',
       changePass: 'تغيير كلمة المرور'
