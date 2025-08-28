@@ -16,7 +16,57 @@
   }
 }
 
+/* const styles = StyleSheet.create({
+  container: {
+    marginBottom: 18,
+  },
+  containerStyle: {
+    borderColor: "transparent",
+    backgroundColor: "#000000",
+    borderRadius: 8,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: "transparent",
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 20,
+  },
+  itemContainerStyle: {},
+  icon: {
+    marginRight: 15,
+  },
+  label: {
+    position: "absolute",
+    backgroundColor: "white",
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+}); */
+
 @layer components {
+  .custom-dropdown {
+    @apply h-[50px] border-[0.5px] border-transparent rounded-lg px-5;
+  }
+
+  /* samples */
   .cart-btn {
     @apply flex items-center justify-center rounded-full size-10 bg-dark-100;
   }

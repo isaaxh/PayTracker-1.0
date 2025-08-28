@@ -12,16 +12,26 @@ const ProfileSettingsCard = (props: ProfileSettingsCardProps) => {
   return (
     <View>
       <View>
-        <UIText>IMG:</UIText>
-        <UIText>{userData?.imgUri}</UIText>
+        <UIText
+          variant={"headingSm"}
+          // textStyles='text-gray-400'
+        >
+          Personal Information
+        </UIText>
       </View>
-      <View className='flex-row space-x-3'>
-        <UIText>Name:</UIText>
-        <UIText>{userData?.displayName}</UIText>
-      </View>
-      <View>
-        <UIText>Email:</UIText>
-        <UIText>{userData?.email}</UIText>
+      <View className='px-4 py-5 my-3 space-y-3 bg-bgSecondaryColor dark:bg-darkBgSecondaryColor rounded-xl'>
+        <View className='flex-row space-x-3'>
+          <UIText>Full Name</UIText>
+          <UIText>{userData?.displayName}</UIText>
+        </View>
+        <View className='flex-row space-x-3'>
+          <UIText>Date of birth</UIText>
+          <UIText>{userData?.createdAt}</UIText>
+        </View>
+        <View className='flex-row space-x-3'>
+          <UIText>Email</UIText>
+          <UIText>{userData?.email}</UIText>
+        </View>
       </View>
     </View>
   );

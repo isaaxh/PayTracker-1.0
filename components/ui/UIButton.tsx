@@ -2,18 +2,25 @@ import { Pressable, PressableProps, Text, View } from "react-native";
 import React, { ReactNode, forwardRef, useState } from "react";
 import { VariantProps, cva } from "class-variance-authority";
 import { cn } from "utils/cn";
-import Icon, { TIconProps } from "../Icon";
 import { textVariants } from "./UIText";
+import RenderIcon, { RenderIconProps } from "../RenderIcon";
+import { TFontAwesomeIconProps } from "../FontAwesomeIcon";
+import { TIconsaxIconProps } from "../IconsaxIcon";
+import Colors from "@/constants/Colors";
+import { getTextColorKey } from "@/utils/helperFns";
 
 type UIButtonProps = {
   children?: ReactNode;
   containerStyles?: string;
   buttonStyles?: string;
   textStyles?: string;
-  iconProps?: TIconProps;
+  primary?: boolean;
+  danger?: boolean;
+  success?: boolean;
 } & PressableProps &
   OptionalButtonProps &
-  VariantProps<typeof btnStyles>;
+  ConditionalIconProps &
+  TVariantProps;
 
 type OptionalButtonProps =
   | {
@@ -24,45 +31,91 @@ type OptionalButtonProps =
       multiText?: false;
     };
 
-const buttonVariants = {
-  text: {
-    textSm: textVariants.variant.bodySm,
-    textDefault: textVariants.variant.button,
-    textLink: textVariants.variant.link,
-  },
+type ConditionalIconProps =
+  | ({
+      variant: "icon" | "iconText";
+    } & RenderIconProps)
+  | {
+      variant?: "link" | "outline" | "fill" | "secondary";
+      iconLibrary?: never;
+      iconProps?: never;
+    };
 
+export type TVariantProps = VariantProps<typeof btnStyles>;
+
+const buttonVariants = {
+  textColor: {
+    default: "text-textLight dark:text-textDark",
+    light: "text-textLight",
+    dark: "text-textDark",
+    success: "text-success",
+    danger: "text-danger",
+    link: "text-textLink",
+  },
+  textSize: {
+    small: ["text-textLight dark:text-textDark", textVariants.variant.bodySm],
+    default: ["text-textLight dark:text-textDark", textVariants.variant.button],
+    link: [textVariants.variant.link],
+  },
   variant: {
-    bare: "bg-transparent shadow-none",
+    link: "bg-transparent shadow-none",
     outline: "border border-gray-400",
-    fill: "bg-bgSecondaryColor text-white",
-    icon: "p-2 rounded-full bg-gray-100",
+    fill: "bg-bgSecondaryColor dark:bg-darkBgSecondaryColor",
+    icon: "bg-bgSecondaryColor dark:bg-darkBgSecondaryColor",
+    iconText:
+      "bg-bgSecondaryColor dark:bg-darkBgSecondaryColor items-start border-[0.5px] h-[50px] border-transparent",
   },
   size: {
-    sm: "px-3 py-1 items-center rounded-md",
-    default: "px-6 py-3 items-center rounded-lg",
-    lg: "px-4 py-4 flex-1 items-center rounded-xl",
+    small: "px-3 py-2",
+    default: "px-6 py-3",
+    large: "px-5 py-4 flex-1",
+  },
+  type: {
+    danger: "bg-danger",
+    success: "bg-success",
   },
 };
 
-const btnStyles = cva(["rounded"], {
+const btnStyles = cva(["rounded-lg", "items-center", "justify-center"], {
   variants: buttonVariants,
+  compoundVariants: [
+    {
+      variant: "outline",
+      type: "danger",
+      className: "bg-transparent shadow-none border-danger",
+    },
+    {
+      variant: "outline",
+      type: "success",
+      className: "bg-transparent border-success",
+    },
+  ],
   defaultVariants: {
     variant: "fill",
     size: "default",
+    textSize: "default",
+    textColor: "default",
   },
 });
 
 const UIButton = forwardRef<View, UIButtonProps>(
   (Props: UIButtonProps, forwardedRef) => {
     const {
-      children,
       variant,
       size,
-      iconProps = { name: "home", size: 50, color: "#000000" },
+      textSize,
+      textColor,
+      type,
+      primary,
+      danger,
+      success,
+      iconLibrary,
+      iconProps,
+      multiText,
+      children,
       containerStyles,
       buttonStyles,
       textStyles,
-      multiText,
       disabled,
       ...props
     } = Props;
@@ -75,43 +128,107 @@ const UIButton = forwardRef<View, UIButtonProps>(
 
     const [isPressed, setPressed] = useState(false);
 
-    const textKey = `text${size}` as keyof typeof buttonVariants.text;
-    const textStyle = buttonVariants.text[textKey];
+    const textInnerStyle = [
+      buttonVariants.textSize[textSize || "default"],
+      buttonVariants.textColor[getTextColorKey({ textColor, variant, type })],
+    ];
+
+    const renderIcon = () => {
+      if (variant !== "icon" && variant !== "iconText") return null;
+
+      if (iconLibrary === "fontAwesome") {
+        return (
+          <RenderIcon
+            iconLibrary='fontAwesome'
+            iconProps={
+              primary
+                ? {
+                    color: Colors.light.text,
+                    ...iconProps,
+                  }
+                : (iconProps as TFontAwesomeIconProps)
+            }
+          />
+        );
+      }
+
+      if (iconLibrary === "iconsax") {
+        return (
+          <RenderIcon
+            iconLibrary='iconsax'
+            iconProps={
+              primary
+                ? {
+                    color: Colors.light.text,
+                    ...iconProps,
+                  }
+                : (iconProps as TIconsaxIconProps)
+            }
+          />
+        );
+      }
+
+      return null;
+    };
 
     return (
-      <View className={cn("flex-row", containerStyles)}>
+      <View
+        className={cn(
+          "flex-row",
+          "items-center",
+          "justify-center",
+          containerStyles
+        )}
+      >
         <Pressable
           ref={forwardedRef}
           onPressIn={() => setPressed(true)}
           onPressOut={() => setPressed(false)}
           className={cn(
-            btnStyles({ variant: variant, size: size }),
+            btnStyles({ variant: variant, size: size, type: type }),
             buttonStyles,
+            primary && "bg-bgColor",
             isPressed && "opacity-60",
             disabled && "opacity-40"
           )}
           {...props}
         >
-          {variant === "icon" ? (
-            <Icon {...iconProps} />
+          {variant === "iconText" ? (
+            <View className='flex-row items-start justify-center space-x-2'>
+              <View className='mr-4'>{renderIcon()}</View>
+              <Text
+                className={cn(
+                  textVariants.variant.button,
+                  textInnerStyle,
+                  textStyles,
+                  primary && "text-textLight",
+                  (type === "danger" || type === "success") && "text-textDark"
+                )}
+              >
+                {children}
+              </Text>
+            </View>
+          ) : variant === "icon" ? (
+            renderIcon()
           ) : multiText ? (
             <>
               <Text
                 className={cn(
-                  buttonVariants.text.textDefault,
-                  variant === "outline" && "text-textLight dark:text-textDark",
-                  textStyle,
-                  textStyles
+                  textVariants.variant.button,
+                  textInnerStyle,
+                  textStyles,
+                  primary && "text-textLight",
+                  (type === "danger" || type === "success") && "text-textDark"
                 )}
               >
                 {children}
               </Text>
               <Text
                 className={cn(
-                  buttonVariants.text.textDefault,
-                  variant === "outline" && "text-textLight dark:text-textDark",
-                  textStyle,
-                  textStyles
+                  textInnerStyle,
+                  textStyles,
+                  primary && "text-textLight",
+                  (type === "danger" || type === "success") && "text-textDark"
                 )}
               >
                 {text2}
@@ -120,10 +237,10 @@ const UIButton = forwardRef<View, UIButtonProps>(
           ) : (
             <Text
               className={cn(
-                buttonVariants.text.textDefault,
-                variant === "outline" && "text-textLight dark:text-textDark",
-                textStyle,
-                textStyles
+                textInnerStyle,
+                textStyles,
+
+                primary && "text-textLight"
               )}
             >
               {children}

@@ -8,11 +8,13 @@ const CustomHeader = ({ title }: { title: string }) => {
   return (
     <View className='flex-row items-center justify-between w-full px-6 py-4'>
       <NavButton variant='back' />
-      <View className='flex-1 px-6'>
-        <UIText variant='headingMd' textStyles='my-0'>
-          {i18n.t(title)}
-        </UIText>
-      </View>
+      {title !== "profile" && (
+        <View className='flex-1 px-6'>
+          <UIText variant='headingMd' textStyles='my-0'>
+            {i18n.t(title)}
+          </UIText>
+        </View>
+      )}
     </View>
   );
 };
