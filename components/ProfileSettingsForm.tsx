@@ -1,4 +1,4 @@
-import { View, I18nManager } from "react-native";
+import { View, I18nManager, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import UIDropDown from "./ui/UIDropDown";
 import {
@@ -16,16 +16,19 @@ import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as Updates from "expo-updates";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { useAsync } from "hooks/useAsync";
 import { useAuth } from "hooks/useAuth";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
+import RenderIcon from "./RenderIcon";
+import UIText from "./ui/UIText";
 
 const ProfileSettingsForm = () => {
   const { appSettings, setAppSettings } = useGlobal() as GlobalContextProps;
   const { logout } = useAuth() as AuthContextProps;
   const { colorScheme, setColorScheme } = useColorScheme();
   const { updateSettings, saveSettings } = useAsync();
+  const { userData } = useGlobal() as GlobalContextProps;
 
   const {
     control,
@@ -96,17 +99,43 @@ const ProfileSettingsForm = () => {
   };
 
   return (
-    <View className='flex-1 justify-between'>
+    <View className='justify-between flex-1'>
+      <View className='items-center -mb-12'>
+        <View className='items-center justify-center inline-block p-2 mb-3 bg-orange-300 rounded-full'>
+          <RenderIcon
+            iconLibrary='iconsax'
+            iconProps={{
+              name: "profile",
+              color: "#ffffff",
+              size: "86",
+            }}
+          />
+        </View>
+        <UIText variant={"headingLg"}>{userData?.displayName}</UIText>
+      </View>
       <View className=''>
-        <UIButton
-          variant={"iconText"}
-          iconLibrary='iconsax'
-          iconProps={{ name: "profile" }}
-          size={"large"}
-          buttonStyles='mb-3'
-        >
-          Personal Information
-        </UIButton>
+        <Link href='/(protected)/PersonalInfoScreen' asChild>
+          <UIButton
+            variant={"iconText"}
+            iconLibrary='iconsax'
+            iconProps={{ name: "profile" }}
+            size={"large"}
+            buttonStyles='mb-3'
+          >
+            Personal Information
+          </UIButton>
+        </Link>
+        <Link href='/(protected)/ChangePassScreen' asChild>
+          <UIButton
+            variant={"iconText"}
+            iconLibrary='iconsax'
+            iconProps={{ name: "lock" }}
+            size={"large"}
+            buttonStyles='mb-3'
+          >
+            Change password
+          </UIButton>
+        </Link>
         <UIDropDown
           data={themeList}
           name='theme'
@@ -134,11 +163,12 @@ const ProfileSettingsForm = () => {
           iconProps={{ name: "logout" }}
           size={"large"}
           onPress={logout}
+          textColor={"danger"}
         >
           {i18n.t("logout")}
         </UIButton>
       </View>
-      <View className='pb-7 w-full'>
+      <View className='w-full pb-7'>
         <UIButton
           variant='fill'
           size='large'
