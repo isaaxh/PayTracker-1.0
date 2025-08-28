@@ -4,6 +4,8 @@ export const globalTranslations = {
       allTransactions: 'All Transactions',
       settings: 'Settings',
       profile: 'Profile',
+      personalInfo: 'Personal Information',
+      changePass: 'Change Password'
     },
     transactionTranslations: {
       addTransaction: "Add Transaction",
@@ -44,6 +46,8 @@ export const globalTranslations = {
       allTransactions: 'جميع المعاملات',
       settings: 'الإعدادات',
       profile: 'الملف الشخصي',
+      personalInfo: 'معلومات شخصي',
+      changePass: 'تغيير كلمة المرور'
     },
     transactionTranslations: {
       addTransaction: "إضافة عملية",
