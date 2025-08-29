@@ -14,6 +14,7 @@ import { convertCurrency } from "utils/currencyHelperFn";
 
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
+  showDate?: boolean;
 } & TTransaction;
 
 const TransactionCard = ({
@@ -23,6 +24,7 @@ const TransactionCard = ({
   amount,
   date,
   note,
+  showDate,
 }: TransactionIconProps) => {
   const { appSettings } = useGlobal() as GlobalContextProps;
   const category: TCategory | undefined = categories.find(
@@ -57,8 +59,11 @@ const TransactionCard = ({
               amount: amount,
             })}
           </UIText>
-          <UIText variant='caption'>{formatDate(date, "time")}</UIText>
-          {/* <UIText variant='caption'>{formatDate(date).split(" ")[0]}</UIText> */}
+          {showDate ? (
+            <UIText variant='caption'>{formatDate(date).split(" ")[0]}</UIText>
+          ) : (
+            <UIText variant='caption'>{formatDate(date, "time")}</UIText>
+          )}
         </View>
       </TouchableOpacity>
     </Link>

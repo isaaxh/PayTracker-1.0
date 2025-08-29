@@ -11,9 +11,12 @@ import {
   useFetchFilteredTransactions,
 } from "hooks/useFetchFilteredTransactions";
 
-type TransactionListProps = {} & FetchFilteredTransactionsProps;
+type TransactionListProps = {
+  showSections?: boolean;
+} & FetchFilteredTransactionsProps;
 
 const TransactionList = ({
+  showSections = true,
   sortOrder = "desc",
   docLimit,
 }: TransactionListProps) => {
@@ -54,18 +57,21 @@ const TransactionList = ({
             type={item.type as TTransactionType}
             category={item.category}
             note={item.note}
+            showDate={!showSections}
           />
         )}
-        renderSectionHeader={({ section: { title } }) => (
-          <View className='fixed inset-0 flex px-4 py-2 bg-bgColor/90 dark:bg-darkBgColor/95 blur-xl'>
-            <UIText
-              variant={"labelLg"}
-              textStyles='text-tintLight dark:text-tintDark'
-            >
-              {title}
-            </UIText>
-          </View>
-        )}
+        renderSectionHeader={({ section: { title } }) =>
+          showSections ? (
+            <View className='fixed inset-0 flex px-4 py-2 bg-bgColor/90 dark:bg-darkBgColor/95 blur-xl'>
+              <UIText
+                variant={"labelLg"}
+                textStyles='text-tintLight dark:text-tintDark'
+              >
+                {title}
+              </UIText>
+            </View>
+          ) : null
+        }
         refreshControl={
           <RefreshControl
             refreshing={loading}
