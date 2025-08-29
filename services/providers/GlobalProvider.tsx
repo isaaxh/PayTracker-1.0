@@ -80,7 +80,7 @@ type TRemoveDocument = {
   collectionName: string;
 };
 
-const AuthProvider = ({ children }: GlobalProviderProps) => {
+const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<TUserData | null>(null);
   const [transactions, setTransactions] = useState<TTransaction[] | []>([]);
@@ -128,7 +128,6 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
 
     try {
       const docRef = collection(FIREBASE_DB, collectionName);
-
       const q = query(docRef, orderBy(sortBy, sortOrder));
 
       const querySnapshot = await getDocs(q);
@@ -258,4 +257,4 @@ const AuthProvider = ({ children }: GlobalProviderProps) => {
   );
 };
 
-export default AuthProvider;
+export default GlobalProvider;
