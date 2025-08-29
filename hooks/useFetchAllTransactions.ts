@@ -1,20 +1,25 @@
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "./useGlobal";
+import { transactionSchema } from "@/constants/Transactions";
+
 
 export const useFetchAllTransactions = () => {
-  const { userData, getAllDocuments } = useGlobal() as GlobalContextProps;
+  const { userData, getAllDocuments, setTransactions } = useGlobal() as GlobalContextProps;
 
   const fetchAllTransactions = async () => {
     try {
       if (!userData) {
-        console.log("no user data found");
         return;
       }
-      getAllDocuments({
-        collectionName: `users/${userData?.uid}/transactions`,
-        sortBy: "date",
-        sortOrder: "desc",
-      });
+
+      const allTransactions = await
+        getAllDocuments({
+          collectionName: `users/${userData?.uid}/transactions`,
+          sortBy: "date",
+          sortOrder: "desc"
+        }, transactionSchema)
+
+      setTransactions(allTransactions)
     } catch (e) {
       console.log("TransactionList: ", e);
     }
