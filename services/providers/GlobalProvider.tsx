@@ -1,7 +1,6 @@
 import GlobalContext from "@/contexts/GlobalContext";
 import { TSignupSchema, TUserData } from "utils/types";
 import {
-  Timestamp,
   collection,
   deleteDoc,
   doc,
@@ -25,6 +24,7 @@ import { useToast } from "hooks/useToast";
 import { i18n } from "../i18n/i18n";
 import { TAppSettingsSchema } from "@/constants/Settings";
 import { FIREBASE_DB } from "firebaseConfig";
+import z, { ZodObject } from "zod";
 
 interface GlobalProviderProps {
   children: ReactNode;
@@ -38,7 +38,10 @@ export type GlobalContextProps = {
   setTransactions: React.Dispatch<React.SetStateAction<TTransaction[]>>;
   addUserDocument: (props: TAddUserDocument) => void;
   getDocument: <T>(props: TGetDocument) => Promise<T | null>;
-  getAllDocuments: (props: TGetAllDocument) => void;
+  getAllDocuments: <T extends z.ZodRawShape>(
+    props: TGetAllDocument,
+    schema: ZodObject<T>
+  ) => Promise<z.infer<typeof schema>[]>;
   addTransactionDoc: (props: TAddTransactionDoc) => void;
   updateFieldInDoc: (props: TUpdateFieldInDoc) => void;
   removeDocument: (props: TRemoveDocument) => void;
@@ -61,6 +64,7 @@ type TGetAllDocument = {
   collectionName: string;
   sortBy: string;
   sortOrder: "asc" | "desc";
+  docLimit?: number | null;
 };
 
 type TAddTransactionDoc = {
@@ -122,40 +126,39 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     }
   };
 
-  const getAllDocuments = async (props: TGetAllDocument) => {
+  const getAllDocuments = async <T extends z.ZodRawShape>(
+    props: TGetAllDocument,
+    schema: ZodObject<T>
+  ): Promise<z.infer<typeof schema>[]> => {
     setLoading(true);
-    const { collectionName, sortBy, sortOrder } = props;
+    const { collectionName, sortBy, sortOrder, docLimit } = props;
 
     try {
       const docRef = collection(FIREBASE_DB, collectionName);
-      const q = query(docRef, orderBy(sortBy, sortOrder));
+      const q = docLimit
+        ? query(docRef, orderBy(sortBy, sortOrder), limit(docLimit))
+        : query(docRef, orderBy(sortBy, sortOrder));
 
       const querySnapshot = await getDocs(q);
 
+      // Map the raw Firestore data
       const queryData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
       }));
 
-      const newTransactions: TTransaction[] = queryData.map((data) => ({
-        id: data.id as string,
-        date: (data.date as Timestamp) || null,
-        amount: data.amount as number,
-        type: data.type as TTransactionType,
-        category: data.category as TCategoryLabel,
-        note: data.note as string,
-      }));
-
-      const result = transactionsSchema.safeParse(newTransactions);
+      // Perform validation using the provided schema
+      const result = z.array(schema).safeParse(queryData);
 
       if (!result.success) {
         console.error(result.error.format());
+        return []; // Return an empty array on validation failure
       } else {
-        setTransactions(() => {
-          return [...(newTransactions.length ? newTransactions : [])];
-        });
+        // The `result.data` is already correctly typed and validated
+        return result.data;
       }
     } catch (e) {
       console.log("Failed to retrieve all documents", e);
+      return []; // Ensure an array is always returned on error
     } finally {
       setLoading(false);
     }

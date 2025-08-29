@@ -32,18 +32,11 @@ export const formatDate = (
   const yesterday = moment().subtract(1, "days").startOf("day");
   const inputDate = moment(date);
 
-  /* if (inputDate.isSame(today, "day")) { */
-  /*   return "Today"; */
-  /* } else if (inputDate.isSame(yesterday, "day")) { */
-  /*   return "Yesterday"; */
-  /* } else { */
-  /*   return inputDate.format("YYYY-MM-DD"); */
-  /* } */
   if (mode === "date") {
     return inputDate.format("YYYY-MM-DD");
   } else if (mode === "time") {
-    return inputDate.format("hh:mm A");
+    return inputDate.format("A hh:mm");
   }
 
-  return inputDate.format("YYYY-MM-DD · hh:mm A");
+  return inputDate.format("YYYY-MM-DD · A hh:mm");
 };
