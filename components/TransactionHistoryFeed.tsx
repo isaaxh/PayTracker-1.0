@@ -7,7 +7,7 @@ const TransactionHistoryFeed = () => {
   return (
     <View>
       <TransactionHeader />
-      <TransactionList />
+      <TransactionList docLimit={5} />
     </View>
   );
 };
