@@ -1,14 +1,15 @@
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
+import { GlobalContextProps, TFilterQuery } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "./useGlobal";
-import { transactionSchema, TTransaction } from "@/constants/Transactions";
+import { transactionSchema, TTransaction } from "@/constants/TransactionsTypes";
 import { useState } from "react";
 
 export type FetchFilteredTransactionsProps = {
-    sortOrder?: 'asc' | 'desc',
-    docLimit?: number | null
+    dateOrder?: 'asc' | 'desc',
+    docLimit?: number,
+    filterQuery?: TFilterQuery
 }
 
-export const useFetchFilteredTransactions = ({ sortOrder = 'desc', docLimit }: FetchFilteredTransactionsProps) => {
+export const useFetchFilteredTransactions = ({ dateOrder = 'desc', docLimit, filterQuery }: FetchFilteredTransactionsProps) => {
     const [filteredTransactions, setFilteredTransactions] = useState<
         TTransaction[] | []
     >([]);
@@ -22,17 +23,18 @@ export const useFetchFilteredTransactions = ({ sortOrder = 'desc', docLimit }: F
                 return;
             }
 
-            const filteredData = await
-                getAllDocuments({
-                    collectionName: `users/${userData?.uid}/transactions`,
-                    sortBy: "date",
-                    sortOrder: sortOrder,
-                    docLimit
-                }, transactionSchema)
+            const params = {
+                collectionName: `users/${userData?.uid}/transactions`,
+                dateOrder: dateOrder,
+                docLimit,
+                ...(filterQuery && { filterQuery })
+            };
+
+            const filteredData = await getAllDocuments(params, transactionSchema);
 
             setFilteredTransactions(filteredData)
         } catch (e) {
-            console.log("TransactionList: ", e);
+            console.log("FilteredTransactionList: ", e);
         } finally {
             setLoading(false)
         }

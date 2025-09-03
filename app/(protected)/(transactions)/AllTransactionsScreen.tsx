@@ -1,5 +1,5 @@
-import { View } from "react-native";
 import React from "react";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomHeader from "@/components/CustomHeader";
 import TransactionList from "@/components/TransactionList";
@@ -10,7 +10,13 @@ const AllTransactionsScreen = () => {
       <View className='w-full h-full'>
         <CustomHeader title='allTransactions' />
         <View className='px-6'>
-          <TransactionList />
+          <TransactionList
+            filterQuery={{
+              field: "category",
+              value: "entertainment",
+              dateOrder: "desc",
+            }}
+          />
         </View>
       </View>
     </SafeAreaView>

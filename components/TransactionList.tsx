@@ -1,8 +1,8 @@
 import { RefreshControl, SectionList, View } from "react-native";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import TransactionCard from "./TransactionCard";
-import { TTransaction, TTransactionType } from "@/constants/Transactions";
-import { TCategoryLabel } from "@/constants/Categories";
+import { TTransaction, TTransactionType } from "@/constants/TransactionsTypes";
+import { TCategoryLabel } from "@/constants/CategoriesTypes";
 import { i18n } from "@/services/i18n/i18n";
 import UIText from "./ui/UIText";
 import { formatDate } from "@/utils/dateHelperFn";
@@ -10,6 +10,7 @@ import {
   FetchFilteredTransactionsProps,
   useFetchFilteredTransactions,
 } from "hooks/useFetchFilteredTransactions";
+import { useFocusEffect } from "expo-router";
 
 type TransactionListProps = {
   showSections?: boolean;
@@ -17,11 +18,16 @@ type TransactionListProps = {
 
 const TransactionList = ({
   showSections = true,
-  sortOrder = "desc",
+  dateOrder = "desc",
   docLimit,
+  filterQuery,
 }: TransactionListProps) => {
   const { fetchFilteredTransactions, filteredTransactions, loading } =
-    useFetchFilteredTransactions({ sortOrder: sortOrder, docLimit: docLimit });
+    useFetchFilteredTransactions({
+      dateOrder: dateOrder,
+      docLimit: docLimit,
+      filterQuery,
+    });
 
   const groupTransactionsByDate = (filteredTransactions: TTransaction[]) => {
     const grouped = filteredTransactions.reduce((acc, filteredTransaction) => {
@@ -40,6 +46,17 @@ const TransactionList = ({
   };
 
   const sectionsData = groupTransactionsByDate(filteredTransactions);
+
+  useEffect(() => {
+    fetchFilteredTransactions();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchFilteredTransactions();
+      return () => {};
+    }, [])
+  );
 
   return (
     <View className='w-full h-full'>

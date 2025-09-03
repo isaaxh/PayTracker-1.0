@@ -11,6 +11,7 @@ import {
   query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { ReactNode, useState } from "react";
 import { getFormattedDate } from "utils/dateHelperFn";
@@ -18,8 +19,8 @@ import {
   TTransaction,
   TTransactionType,
   transactionsSchema,
-} from "@/constants/Transactions";
-import { TCategoryLabel } from "@/constants/Categories";
+} from "@/constants/TransactionsTypes";
+import { TCategoryLabel } from "@/constants/CategoriesTypes";
 import { useToast } from "hooks/useToast";
 import { i18n } from "../i18n/i18n";
 import { TAppSettingsSchema } from "@/constants/Settings";
@@ -62,10 +63,22 @@ type TGetDocument = {
 
 type TGetAllDocument = {
   collectionName: string;
-  sortBy: string;
-  sortOrder: "asc" | "desc";
+  dateOrder: "asc" | "desc";
+  filterQuery?: TFilterQuery;
   docLimit?: number | null;
 };
+
+export type TFilterQuery =
+  | {
+      field: "category";
+      value: TCategoryLabel;
+      dateOrder: "desc" | "asc";
+    }
+  | {
+      field: "type";
+      value: TTransactionType;
+      dateOrder: "desc" | "asc";
+    };
 
 type TAddTransactionDoc = {
   transactionData: TTransaction;
@@ -131,15 +144,32 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     schema: ZodObject<T>
   ): Promise<z.infer<typeof schema>[]> => {
     setLoading(true);
-    const { collectionName, sortBy, sortOrder, docLimit } = props;
+    const { collectionName, dateOrder, filterQuery, docLimit } = props;
 
     try {
       const docRef = collection(FIREBASE_DB, collectionName);
-      const q = docLimit
-        ? query(docRef, orderBy(sortBy, sortOrder), limit(docLimit))
-        : query(docRef, orderBy(sortBy, sortOrder));
 
-      const querySnapshot = await getDocs(q);
+      let customQueryParam = query(
+        docRef,
+        ...(filterQuery
+          ? [where(filterQuery.field, "==", filterQuery.value)]
+          : []),
+        orderBy("date", filterQuery?.dateOrder || dateOrder),
+        ...(docLimit ? [limit(docLimit)] : [])
+      );
+
+      const startDate = new Date("2025-08-28T00:00:00Z");
+      const endDate = new Date("2025-09-10T23:59:59Z");
+
+      // const cQuery = query(
+      //   docRef,
+      //   // where("", "==", ""),
+      //   where("date", ">", startDate),
+      //   where("date", "<", endDate),
+      //   orderBy("date", "asc")
+      // );
+
+      const querySnapshot = await getDocs(customQueryParam);
 
       // Map the raw Firestore data
       const queryData = querySnapshot.docs.map((doc) => ({
