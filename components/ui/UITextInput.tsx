@@ -6,7 +6,7 @@ import Colors from "@/constants/Colors";
 import { cn } from "utils/cn";
 import UIText from "./UIText";
 import { Control, Controller } from "react-hook-form";
-import { TTransaction } from "@/constants/Transactions";
+import { TTransaction } from "@/constants/TransactionsTypes";
 import RenderIcon from "../RenderIcon";
 
 type UITextInputProps = {

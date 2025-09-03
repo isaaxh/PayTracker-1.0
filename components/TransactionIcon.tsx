@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import React from "react";
-import { TCategory } from "@/constants/Categories";
+import { TCategory } from "@/constants/CategoriesTypes";
 import RenderIcon from "./RenderIcon";
 
 type TransactionIconProps = {

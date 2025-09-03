@@ -8,7 +8,7 @@ import UIText from "./ui/UIText";
 import { useColorScheme } from "nativewind";
 import Colors from "@/constants/Colors";
 import { Control, Controller } from "react-hook-form";
-import { TTransaction } from "@/constants/Transactions";
+import { TTransaction } from "@/constants/TransactionsTypes";
 import { cn } from "utils/cn";
 import { Timestamp } from "firebase/firestore";
 import RenderIcon from "./RenderIcon";

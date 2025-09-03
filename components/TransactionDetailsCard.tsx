@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import React from "react";
-import { TTransaction } from "@/constants/Transactions";
+import { TTransaction } from "@/constants/TransactionsTypes";
 import { formatDate } from "utils/dateHelperFn";
 import TransactionDetailsCardItem from "./TransactionDetailsCardItem";
 import UIText from "./ui/UIText";

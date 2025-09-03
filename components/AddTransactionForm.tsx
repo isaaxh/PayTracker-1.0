@@ -4,12 +4,12 @@ import UIText from "./ui/UIText";
 import UIDropDown from "./ui/UIDropDown";
 import CustomDateTimePicker from "./CustomDateTimePicker";
 import UIButton from "./ui/UIButton";
-import { categoryLabelsArray } from "@/constants/Categories";
+import { categoryLabelsArray } from "@/constants/CategoriesTypes";
 import {
   TTransaction,
   transactionSchema,
   transactionTypeList,
-} from "@/constants/Transactions";
+} from "@/constants/TransactionsTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import UIInput from "./ui/UIInput";

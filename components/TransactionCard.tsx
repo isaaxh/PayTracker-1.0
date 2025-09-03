@@ -2,9 +2,13 @@ import { View, TouchableOpacity } from "react-native";
 import React from "react";
 import UIText from "./ui/UIText";
 import TransactionIcon from "./TransactionIcon";
-import { TCategory, TCategoryLabel, categories } from "@/constants/Categories";
+import {
+  TCategory,
+  TCategoryLabel,
+  categories,
+} from "@/constants/CategoriesTypes";
 import { Link } from "expo-router";
-import { TTransaction } from "@/constants/Transactions";
+import { TTransaction } from "@/constants/TransactionsTypes";
 import { formatDate } from "utils/dateHelperFn";
 import { i18n } from "@/services/i18n/i18n";
 import { useGlobal } from "hooks/useGlobal";

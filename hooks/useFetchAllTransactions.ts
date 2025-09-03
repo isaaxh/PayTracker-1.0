@@ -1,6 +1,6 @@
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "./useGlobal";
-import { transactionSchema } from "@/constants/Transactions";
+import { transactionSchema } from "@/constants/TransactionsTypes";
 
 
 export const useFetchAllTransactions = () => {
@@ -15,8 +15,7 @@ export const useFetchAllTransactions = () => {
       const allTransactions = await
         getAllDocuments({
           collectionName: `users/${userData?.uid}/transactions`,
-          sortBy: "date",
-          sortOrder: "desc"
+          dateOrder: "desc"
         }, transactionSchema)
 
       setTransactions(allTransactions)
