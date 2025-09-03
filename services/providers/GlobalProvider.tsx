@@ -65,6 +65,7 @@ type TGetAllDocument = {
   collectionName: string;
   dateOrder: "asc" | "desc";
   filterQuery?: TFilterQuery;
+  rangeFilterQuery?: TRangeFilterQuery;
   docLimit?: number | null;
 };
 
@@ -78,6 +79,20 @@ export type TFilterQuery =
       field: "type";
       value: TTransactionType;
       dateOrder: "desc" | "asc";
+    };
+
+export type TRangeFilterQuery =
+  | {
+      field: "date";
+      start: Date;
+      end: Date;
+      order: "asc" | "desc";
+    }
+  | {
+      field: "amount";
+      start: number;
+      end: number;
+      order: "asc" | "desc";
     };
 
 type TAddTransactionDoc = {
@@ -144,32 +159,39 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
     schema: ZodObject<T>
   ): Promise<z.infer<typeof schema>[]> => {
     setLoading(true);
-    const { collectionName, dateOrder, filterQuery, docLimit } = props;
+    const {
+      collectionName,
+      dateOrder,
+      filterQuery,
+      rangeFilterQuery,
+      docLimit,
+    } = props;
 
     try {
       const docRef = collection(FIREBASE_DB, collectionName);
 
-      let customQueryParam = query(
+      let customQueryParams = query(
         docRef,
         ...(filterQuery
           ? [where(filterQuery.field, "==", filterQuery.value)]
           : []),
-        orderBy("date", filterQuery?.dateOrder || dateOrder),
+        ...(rangeFilterQuery
+          ? [
+              where(rangeFilterQuery.field, ">=", rangeFilterQuery.start),
+              where(rangeFilterQuery.field, "<=", rangeFilterQuery.end),
+              orderBy(
+                rangeFilterQuery.field,
+                rangeFilterQuery?.order || "desc"
+              ),
+            ]
+          : []),
+        ...(!rangeFilterQuery
+          ? [orderBy("date", filterQuery?.dateOrder || dateOrder)]
+          : []),
         ...(docLimit ? [limit(docLimit)] : [])
       );
 
-      const startDate = new Date("2025-08-28T00:00:00Z");
-      const endDate = new Date("2025-09-10T23:59:59Z");
-
-      // const cQuery = query(
-      //   docRef,
-      //   // where("", "==", ""),
-      //   where("date", ">", startDate),
-      //   where("date", "<", endDate),
-      //   orderBy("date", "asc")
-      // );
-
-      const querySnapshot = await getDocs(customQueryParam);
+      const querySnapshot = await getDocs(customQueryParams);
 
       // Map the raw Firestore data
       const queryData = querySnapshot.docs.map((doc) => ({
@@ -187,7 +209,7 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
         return result.data;
       }
     } catch (e) {
-      console.log("Failed to retrieve all documents", e);
+      console.log("Failed to retrieve all documents: ", e);
       return []; // Ensure an array is always returned on error
     } finally {
       setLoading(false);

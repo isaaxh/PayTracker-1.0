@@ -21,12 +21,14 @@ const TransactionList = ({
   dateOrder = "desc",
   docLimit,
   filterQuery,
+  rangeFilterQuery,
 }: TransactionListProps) => {
   const { fetchFilteredTransactions, filteredTransactions, loading } =
     useFetchFilteredTransactions({
       dateOrder: dateOrder,
       docLimit: docLimit,
       filterQuery,
+      rangeFilterQuery,
     });
 
   const groupTransactionsByDate = (filteredTransactions: TTransaction[]) => {

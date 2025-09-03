@@ -1,4 +1,4 @@
-import { GlobalContextProps, TFilterQuery } from "@/services/providers/GlobalProvider";
+import { GlobalContextProps, TFilterQuery, TRangeFilterQuery } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "./useGlobal";
 import { transactionSchema, TTransaction } from "@/constants/TransactionsTypes";
 import { useState } from "react";
@@ -6,10 +6,11 @@ import { useState } from "react";
 export type FetchFilteredTransactionsProps = {
     dateOrder?: 'asc' | 'desc',
     docLimit?: number,
-    filterQuery?: TFilterQuery
+    filterQuery?: TFilterQuery,
+    rangeFilterQuery?: TRangeFilterQuery
 }
 
-export const useFetchFilteredTransactions = ({ dateOrder = 'desc', docLimit, filterQuery }: FetchFilteredTransactionsProps) => {
+export const useFetchFilteredTransactions = ({ dateOrder = 'desc', docLimit, filterQuery, rangeFilterQuery }: FetchFilteredTransactionsProps) => {
     const [filteredTransactions, setFilteredTransactions] = useState<
         TTransaction[] | []
     >([]);
@@ -27,7 +28,8 @@ export const useFetchFilteredTransactions = ({ dateOrder = 'desc', docLimit, fil
                 collectionName: `users/${userData?.uid}/transactions`,
                 dateOrder: dateOrder,
                 docLimit,
-                ...(filterQuery && { filterQuery })
+                ...(filterQuery && { filterQuery }),
+                ...(rangeFilterQuery && { rangeFilterQuery })
             };
 
             const filteredData = await getAllDocuments(params, transactionSchema);
