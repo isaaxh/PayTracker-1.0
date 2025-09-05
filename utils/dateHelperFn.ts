@@ -25,18 +25,52 @@ export function convertToTimezone(date: Date, offsetInHours: number) {
 
 export const formatDate = (
   timestamp: Timestamp | Date,
-  mode?: TMode,
+  mode?: TMode | 'day',
 ): string => {
   const date = timestamp instanceof Timestamp ? timestamp.toDate() : timestamp;
-  const today = moment();
-  const yesterday = moment().subtract(1, "days").startOf("day");
   const inputDate = moment(date);
 
   if (mode === "date") {
     return inputDate.format("YYYY-MM-DD");
   } else if (mode === "time") {
     return inputDate.format("A hh:mm");
+  } else if (mode === "day") {
+    return inputDate.format('d')
   }
 
+
   return inputDate.format("YYYY-MM-DD · A hh:mm");
+};
+
+export const getWeekRange = (date: Date) => {
+  const startOfWeek = new Date(date.setDate(date.getDate() - date.getDay()));
+  const endOfWeek = new Date(date.setDate(startOfWeek.getDate() + 6));
+
+  return {
+    startDate: startOfWeek.setHours(0, 0, 0, 0),
+    endDate: endOfWeek.setHours(23, 59, 59, 59),
+  };
+};
+
+export const getDayName = (day: number) => {
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return days[day];
+};
+
+export const getMonthName = (month: number) => {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  return months[month];
 };
