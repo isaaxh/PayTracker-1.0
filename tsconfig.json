@@ -10,6 +10,7 @@
       "@/ui/*": ["./components/ui/*"],
       "@/utils/*": ["./utils/*"],
       "@/constants/*": ["./constants/*"],
+      "@/hooks/*": ["./hooks/*"],
       "@/services/*": ["./services/*"],
       "@/contexts/*": ["./services/contexts/*"],
       "@/assets/*": ["./assets/*"]
