@@ -47,7 +47,7 @@ const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
         fieldState: { error },
       }) => (
         <>
-          <View className='bg-bgSecondaryColor dark:bg-darkBgSecondaryColor flex-row items-center rounded-md  px-5 py-3 mb-3 space-x-6'>
+          <View className='flex-row items-center px-5 py-3 mb-3 space-x-6 rounded-md bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
             <RenderIcon
               iconLibrary='iconsax'
               iconProps={{
@@ -59,7 +59,7 @@ const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
             {Platform.OS !== "ios" && (
               <Pressable
                 onPress={showOverlay}
-                className='flex-row w-full items-center'
+                className='flex-row items-center w-full'
               >
                 {dateString ? (
                   <UIText>{dateString}</UIText>
