@@ -15,6 +15,7 @@ import { useGlobal } from "hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { USDRate } from "@/constants/Settings";
 import { convertCurrency } from "utils/currencyHelperFn";
+import { cn } from "@/utils/cn";
 
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
@@ -55,7 +56,10 @@ const TransactionCard = ({
           {note !== "" ? <UIText variant='bodySm'>{note}</UIText> : null}
         </View>
         <View className='items-end'>
-          <UIText variant='labelSm'>
+          <UIText
+            variant='labelSm'
+            textStyles={cn(type === "income" ? "text-success" : "text-danger")}
+          >
             {type === "income" ? "+" : "-"} {appSettings.currency.value}{" "}
             {convertCurrency({
               currency: appSettings.currency.value,
