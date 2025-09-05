@@ -2,7 +2,7 @@ const accentColor = "#29874c";
 const tintColorLight = "#a0b3c8";
 const tintInActiveColorLight = "#e2e8f0";
 const tintColorDark = "#d4d4d4";
-const tintInactiveColorDark = "#71717a";
+const tintInActiveColorDark = "#71717a";
 
 export default {
   light: {
@@ -10,6 +10,7 @@ export default {
     background: "#f2f5f6",
     backgroundSecondary: "#fffefe",
     tint: tintColorLight,
+    tintInActive: tintInActiveColorLight,
     tabIconDefault: tintInActiveColorLight,
     tabIconSelected: tintColorLight,
   },
@@ -18,7 +19,8 @@ export default {
     background: "#18181b",
     backgroundSecondary: "#27272a",
     tint: tintColorDark,
-    tabIconDefault: tintInactiveColorDark,
+    tintInActive: tintInActiveColorDark,
+    tabIconDefault: tintInActiveColorDark,
     tabIconSelected: tintColorDark,
   },
   error: "#dc2626",
