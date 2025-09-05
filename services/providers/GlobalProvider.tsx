@@ -61,7 +61,7 @@ type TGetDocument = {
   id: string;
 };
 
-type TGetAllDocument = {
+export type TGetAllDocument = {
   collectionName: string;
   dateOrder: "asc" | "desc";
   filterQuery?: TFilterQuery;
