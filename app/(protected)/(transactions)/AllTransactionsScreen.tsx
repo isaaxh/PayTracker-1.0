@@ -20,12 +20,12 @@ const AllTransactionsScreen = () => {
           <TransactionList
             dateOrder='desc'
             // filterQuery={{ field: "category", value: "food", dateOrder: "asc" }}
-            rangeFilterQuery={{
-              field: "date",
-              start: startDate,
-              end: endDate,
-              order: "desc",
-            }}
+            // rangeFilterQuery={{
+            //   field: "date",
+            //   start: startDate,
+            //   end: endDate,
+            //   order: "desc",
+            // }}
           />
         </View>
       </View>
