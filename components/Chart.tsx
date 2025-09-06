@@ -2,7 +2,13 @@ import Colors from "@/constants/Colors";
 import { generateMonthlyData } from "@/constants/DummyData";
 import { useColorScheme } from "nativewind";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import RenderIcon from "./RenderIcon";
 import UIText from "./ui/UIText";
@@ -16,15 +22,9 @@ import {
 import { transactionSchema } from "@/constants/TransactionsTypes";
 import { getMonthName, getWeekRange } from "@/utils/dateHelperFn";
 import { calculateDailyTotals } from "@/utils/currencyHelperFn";
-import { formatToBarData } from "@/utils/dataProcessHelpers";
+import { BarData, processWeeklyData } from "@/utils/dataProcessHelpers";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
-
-export type BarData = {
-  value: number;
-  label?: string;
-  frontColor?: string;
-  [key: string]: any;
-};
+import { SymbolView } from "expo-symbols";
 
 enum Period {
   week = "week",
@@ -40,7 +40,7 @@ const Chart = () => {
   const [chartData, setChartData] = useState<BarData[]>([{ value: 0 }]);
   const [chartPeriod, setChartPeriod] = useState<Period>(Period.week);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [currentEndDate, setCurrentEndDate] = useState<Date>(new Date());
+  const [currentEndDate, setCurrentEndDate] = useState<Date>(currentDate);
   const [chartKey, setChartKey] = useState(0);
   const [transactionType, setTransactionType] = useState<"income" | "expense">(
     "expense"
@@ -51,8 +51,8 @@ const Chart = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (chartPeriod === Period.week) {
-        const { startDate, endDate } = getWeekRange(new Date());
-
+        const { startDate, endDate } = getWeekRange(currentDate);
+        setCurrentEndDate(new Date(startDate));
         const data = await fetchWeeklyData(
           new Date(startDate),
           new Date(endDate),
@@ -101,10 +101,21 @@ const Chart = () => {
 
       const weeklyData = await getAllDocuments(params, transactionSchema);
 
-      return formatToBarData(calculateDailyTotals(weeklyData));
+      return processWeeklyData({
+        data: calculateDailyTotals(weeklyData),
+        transactionType,
+      });
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const handlePreviousWeek = () => {
+    setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() - 7)));
+  };
+
+  const handleNextWeek = () => {
+    setCurrentDate(new Date(currentDate.setDate(currentDate.getDate() + 7)));
   };
 
   // not my code
@@ -155,33 +166,24 @@ const Chart = () => {
       contentInsetAdjustmentBehavior='automatic'
       showsVerticalScrollIndicator={false}
     >
-      <View
+      {/* <View
         className='flex-row gap-12 px-12 py-6'
-        // style={{
-        //   flexDirection: "row",
-        //   justifyContent: "space-between",
-        //   gap: 12,
-        //   marginVertical: 32,
-        //   paddingHorizontal: 16,
-        // }}
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          gap: 12,
+          marginVertical: 32,
+          paddingHorizontal: 16,
+        }}
       >
-        <View className='items-center flex-1 px-2 py-2 rounded-lg bg-bgSecondaryColor'>
+        <View className='items-center flex-1 px-2 py-2 rounded-lg bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
           <UIText
             variant={"labelLg"}
-            textStyles='text-tintInactiveLight dark:text-tintInactiveDark'
+            textStyles='text-tintLight dark:text-tintDark'
           >
             Average
           </UIText>
-          <UIText
-            variant={"headingMd"}
-            textStyles='mt-1'
-            // style={{
-            //   fontSize: 24,
-            //   fontWeight: "700",
-            //   color: "gray",
-            //   marginTop: 4,
-            // }}
-          >
+          <UIText variant={"headingMd"} textStyles='mt-1'>
             {Math.round(
               monthlyData.reduce((sum, item) => sum + item.value, 0) /
                 monthlyData.length
@@ -189,10 +191,10 @@ const Chart = () => {
           </UIText>
         </View>
 
-        <View className='items-center flex-1 px-2 py-2 rounded-lg bg-bgSecondaryColor'>
+        <View className='items-center flex-1 px-2 py-2 rounded-lg bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
           <UIText
             variant={"labelLg"}
-            textStyles='text-tintInactiveLight dark:text-tintInactiveDark'
+            textStyles='text-tintLight dark:text-tintInactiveDark'
           >
             Total
           </UIText>
@@ -201,10 +203,10 @@ const Chart = () => {
           </UIText>
         </View>
 
-        <View className='items-center flex-1 px-2 py-2 rounded-lg bg-bgSecondaryColor'>
+        <View className='items-center flex-1 px-2 py-2 rounded-lg bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
           <UIText
             variant={"labelLg"}
-            textStyles='text-tintInactiveLight dark:text-tintInactiveDark'
+            textStyles='text-tintLight dark:text-tintInactiveDark'
           >
             Peak
           </UIText>
@@ -212,11 +214,11 @@ const Chart = () => {
             {Math.max(...monthlyData.map((item) => item.value))}
           </UIText>
         </View>
-      </View>
+      </View> */}
 
       {/* Month Navigation */}
-      <View className='px-2 py-3 mx-5 bg-bgSecondaryColor dark:bg-darkBgSecondaryColor rounded-xl'>
-        <View className='flex-row items-center justify-between px-1 mt-1 mb-4'>
+      <View className='px-2 py-4 mx-5 mt-6 bg-bgSecondaryColor dark:bg-darkBgSecondaryColor rounded-xl'>
+        {/* <View className='flex-row items-center justify-between px-1 mt-1 mb-4'>
           <Pressable
             onPress={() => navigateMonth(-1)}
             style={{
@@ -261,8 +263,27 @@ const Chart = () => {
               }}
             />
           </Pressable>
+        </View> */}
+        <View className='mb-4 ml-4'>
+          <UIText variant={"bodyMd"} textStyles='font-bold'>
+            {currentEndDate.toLocaleDateString("en-US", { month: "short" })}{" "}
+            {currentEndDate.getDate()} -{" "}
+            {currentDate.toLocaleDateString("en-US", { month: "short" })}{" "}
+            {currentDate.getDate()}
+          </UIText>
+          <UIText
+            variant={"labelLg"}
+            textStyles='text-tintLight dark:text-tintInactiveDark'
+          >
+            Total {transactionType === "expense" ? "Expense" : "Income"}
+          </UIText>
+          <UIText variant={"headingXL"}>
+            SAR{" "}
+            {chartData
+              .reduce((total, item) => total + item.value, 0)
+              .toFixed(2)}
+          </UIText>
         </View>
-
         {/* Chart Container */}
         <View className='justify-between px-3 pb-3'>
           <BarChart
@@ -273,8 +294,6 @@ const Chart = () => {
             minHeight={3}
             barBorderRadius={4}
             showGradient
-            gradientColor={"red"}
-            frontColor={"white"}
             dashGap={10}
             noOfSections={3}
             showXAxisIndices={false}
@@ -283,7 +302,7 @@ const Chart = () => {
               color:
                 colorScheme === "dark"
                   ? Colors.dark.tintInActive
-                  : Colors.light.tintInActive,
+                  : Colors.light.tint,
               fontSize: 12,
               fontWeight: "500",
             }}
@@ -292,7 +311,7 @@ const Chart = () => {
               color:
                 colorScheme === "dark"
                   ? Colors.dark.tintInActive
-                  : Colors.light.tintInActive,
+                  : Colors.light.tint,
               fontSize: 12,
               fontWeight: "500",
             }}
@@ -307,7 +326,28 @@ const Chart = () => {
               setSelectedBarIndex(selectedBarIndex === index ? null : index);
             }}
           />
-          <View className='pt-6'>
+          <View className='flex-row items-center justify-between pt-6'>
+            <TouchableOpacity
+              onPress={handlePreviousWeek}
+              className='items-center'
+            >
+              <SymbolView
+                name='chevron.left.circle.fill'
+                size={40}
+                type='hierarchical'
+                tintColor={
+                  colorScheme === "dark"
+                    ? Colors.dark.tintInActive
+                    : Colors.light.tint
+                }
+              />
+              {/* <UIText
+                variant={"caption"}
+                textStyles='mt-1 text-tintLight dark:tintInactiveDark'
+              >
+                Prev week
+              </UIText> */}
+            </TouchableOpacity>
             <SegmentedControl
               values={["Income", "Expense"]}
               selectedIndex={transactionType === "income" ? 0 : 1}
@@ -315,16 +355,6 @@ const Chart = () => {
                 const index = event.nativeEvent.selectedSegmentIndex;
                 setTransactionType(index === 0 ? "income" : "expense");
               }}
-              // tintColor={
-              //   colorScheme === "dark"
-              //     ? Colors.dark.tintInActive
-              //     : Colors.light.tintInActive
-              // }
-              // backgroundColor={
-              //   colorScheme === "dark"
-              //     ? Colors.dark.background
-              //     : Colors.light.background
-              // }
               appearance={colorScheme}
               fontStyle={{
                 color:
@@ -334,20 +364,29 @@ const Chart = () => {
                 fontWeight: "400",
                 fontSize: 14,
               }}
-              // tabStyle={{
-              //   borderColor: "blue",
-              //   borderWidth: 10,
-              //   // backgroundColor: "green",
-              // }}
-              // sliderStyle={{
-              //   borderColor: "green",
-              //   borderWidth: 10,
-              //   // backgroundColor: "green",
-              // }}
               style={{
-                height: 40,
+                height: 36,
+                width: 180,
               }}
             />
+            <TouchableOpacity onPress={handleNextWeek} className='items-center'>
+              <SymbolView
+                name='chevron.right.circle.fill'
+                size={40}
+                type='hierarchical'
+                tintColor={
+                  colorScheme === "dark"
+                    ? Colors.dark.tintInActive
+                    : Colors.light.tint
+                }
+              />
+              {/* <UIText
+                variant={"caption"}
+                textStyles='mt-1 text-tintLight dark:tintInactiveDark'
+              >
+                Next week
+              </UIText> */}
+            </TouchableOpacity>
           </View>
         </View>
       </View>
