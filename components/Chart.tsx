@@ -287,14 +287,16 @@ const Chart = () => {
         {/* Chart Container */}
         <View className='justify-between px-3 pb-3'>
           <BarChart
-            // data={getChartData()}
+            key={chartKey}
             data={chartData}
             height={200}
             width={300}
             minHeight={3}
-            barBorderRadius={4}
+            barBorderRadius={8}
+            barWidth={22}
             showGradient
             dashGap={10}
+            rulesColor={"gray"}
             noOfSections={3}
             showXAxisIndices={false}
             xAxisThickness={0}
@@ -315,15 +317,29 @@ const Chart = () => {
               fontSize: 12,
               fontWeight: "500",
             }}
-            // renderTooltip={() => (
-            //   <View style={{ backgroundColor: "white" }}>
-            //     <Text>Tooltip</Text>
-            //   </View>
-            // )}
             isAnimated
             animationDuration={300}
             onPress={(_item: BarData, index: number) => {
               setSelectedBarIndex(selectedBarIndex === index ? null : index);
+            }}
+            autoCenterTooltip
+            renderTooltip={(item: BarData, index: number) => {
+              return (
+                <View
+                  key={index}
+                  className='items-center px-1 py-1 mb-1 rounded-md dark:bg-tintInactiveDark'
+                  // style={{
+                  //   marginBottom: 20,
+                  //   marginLeft: -6,
+                  //   backgroundColor: "#ffcefe",
+                  //   paddingHorizontal: 6,
+                  //   paddingVertical: 4,
+                  //   borderRadius: 4,
+                  // }}
+                >
+                  <UIText variant={"caption"}>{item.value}</UIText>
+                </View>
+              );
             }}
           />
           <View className='flex-row items-center justify-between pt-6'>
