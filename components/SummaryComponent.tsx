@@ -7,6 +7,7 @@ import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { USDRate } from "@/constants/Settings";
 import { convertCurrency } from "utils/currencyHelperFn";
 import RenderIcon from "./RenderIcon";
+import Colors from "@/constants/Colors";
 
 type SummaryComponentProps = {
   label: "income" | "expense";
@@ -17,13 +18,19 @@ const SummaryComponent = ({ label, amount }: SummaryComponentProps) => {
   const { appSettings } = useGlobal() as GlobalContextProps;
   return (
     <View className='flex-row items-center gap-x-3'>
-      <View className='p-1 bg-white rounded-full bg-bgTransparent'>
+      <View
+        className='p-1 rounded-full'
+        style={{
+          backgroundColor:
+            label === "income" ? Colors.global.success : Colors.global.error,
+        }}
+      >
         <RenderIcon
           iconLibrary='iconsax'
           iconProps={{
             name: label === "income" ? "arrow up" : "arrow down",
             variant: "Linear",
-            color: label === "income" ? "#a3e635" : "#ef4444",
+            color: "white",
             size: 20,
           }}
         />

@@ -14,6 +14,7 @@ interface UITextProps extends TextProps, VariantProps<typeof txtStyles> {
   children: ReactNode;
   textStyles?: string;
   alwaysDarkText?: boolean;
+  alwaysLightText?: boolean;
 }
 
 export const textVariants = {
@@ -50,14 +51,22 @@ const txtStyles = cva(textVariants.variant.base, {
 });
 
 const UIText = forwardRef<Text, UITextProps>((Props: UITextProps, ref) => {
-  const { children, variant, textStyles, alwaysDarkText, ...props } = Props;
+  const {
+    children,
+    variant,
+    textStyles,
+    alwaysDarkText,
+    alwaysLightText,
+    ...props
+  } = Props;
   return (
     <Text
       ref={ref}
       className={cn(
         txtStyles({ variant }),
         textStyles,
-        alwaysDarkText && "text-textDark"
+        alwaysDarkText && "text-black",
+        alwaysLightText && "text-textDark"
       )}
       {...props}
     >

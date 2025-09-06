@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
@@ -77,18 +77,19 @@ export default function TabLayout() {
         options={{
           title: "Add Transaction",
           tabBarIcon: () => (
-            <LinearGradView
-              containerStyles={
-                "rounded-full w-16 h-16 absolute -bottom-6 items-center justify-center"
+            <View
+              className={
+                "rounded-full w-16 h-16 mb-8 absolute items-center justify-center"
               }
+              style={{ backgroundColor: Colors.global.accent }}
             >
               <TabBarIcon
                 name='add'
-                color={Colors.dark.text}
+                color={Colors.global.black}
                 size={38}
                 variant='Linear'
               />
-            </LinearGradView>
+            </View>
           ),
         }}
         listeners={({ navigation }) => ({

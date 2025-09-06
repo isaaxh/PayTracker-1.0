@@ -3,8 +3,19 @@ const tintColorLight = "#a0b3c8";
 const tintInActiveColorLight = "#e2e8f0";
 const tintColorDark = "#d4d4d4";
 const tintInActiveColorDark = "#71717a";
+const accent = "#febc05"
+const error = "#dc2626"
+const success = "#16a34a"
 
 export default {
+  global: {
+    accent,
+    accentColor,
+    error,
+    success,
+    black: '#000000',
+    white: '#ffffff'
+  },
   light: {
     text: "#31445e",
     background: "#f2f5f6",
@@ -23,6 +34,4 @@ export default {
     tabIconDefault: tintInActiveColorDark,
     tabIconSelected: tintColorDark,
   },
-  error: "#dc2626",
-  success: "#16a34a",
 };
