@@ -13,6 +13,7 @@ export const globalTranslations = {
       category: "Category",
       note: "Note",
       date: "Date",
+      entity: "Entity",
       categories: {
         gas: "gas",
         food: "food",
@@ -55,6 +56,7 @@ export const globalTranslations = {
       category: "فئة",
       note: "ملاحظة",
       date: "تاريخ",
+      entity: "جهة",
       categories: {
         gas: "بنزين",
         food: "أكل",

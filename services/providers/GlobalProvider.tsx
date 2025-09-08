@@ -248,6 +248,7 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
           amount: transactionData.amount,
           type: transactionData.type,
           category: transactionData.category,
+          entity: transactionData.entity,
           note: transactionData.note,
         }
       );

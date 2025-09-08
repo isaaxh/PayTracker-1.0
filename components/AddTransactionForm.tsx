@@ -41,6 +41,7 @@ const AddTransactionForm = () => {
       date: Timestamp.fromDate(date),
       note: "",
       amount: 0,
+      entity: "",
     },
   });
 
@@ -79,12 +80,21 @@ const AddTransactionForm = () => {
             variant='fullyRounded'
             size='default'
             isAmountInput
-            placeholder='0.00'
+            placeholder='00.00'
           />
         </View>
       </View>
       <View className='flex-1 w-full px-8 mt-12'>
         <View className='flex-1'>
+          <UIInput
+            name='entity'
+            control={control}
+            variant='rectangular'
+            size='large'
+            placeholder={i18n.t("entity")}
+            showIcon={true}
+            iconProps={{ name: "profile" }}
+          />
           <UIDropDown
             data={transactionTypeList}
             name='type'
@@ -106,7 +116,7 @@ const AddTransactionForm = () => {
             size='large'
             placeholder={i18n.t("note")}
             showIcon={true}
-            iconName='document text'
+            iconProps={{ name: "documentText" }}
           />
           {Platform.OS === "ios" ? (
             <>
@@ -137,7 +147,7 @@ const AddTransactionForm = () => {
             </>
           )}
         </View>
-        <View className='w-full py-7 items-center'>
+        <View className='items-center w-full py-7'>
           <UIButton
             variant='fill'
             size='large'

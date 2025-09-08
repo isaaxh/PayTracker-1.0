@@ -17,13 +17,19 @@ export const TimestampType = z.custom<Timestamp>(
 export const transactionSchema = z.object({
   /* id: z.union([z.string(), z.array(z.number())]), */
   id: z.string(),
+  date: TimestampType,
   type: transactionTypeEnum,
   category: categoryLabelEnum,
+  entity: z
+    .string({
+      required_error: "Entity is required.",
+    })
+    .min(1, { message: "Entity cannot be empty." }),
   amount: z
     .number({ message: "Please enter an amount" })
+    .min(1, { message: "Amount must be at least 1" })
     .max(500, { message: "Amount must not exceed 500" }),
   note: z.string().optional(),
-  date: TimestampType,
 });
 
 export type TTransaction = z.infer<typeof transactionSchema>;
