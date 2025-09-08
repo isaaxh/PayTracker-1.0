@@ -19,15 +19,19 @@ type UIInputProps<T extends FieldValues> = {
   buttonStyles?: string;
   textStyles?: string;
   isAmountInput?: boolean;
-  iconProps?: TIconsaxIconProps;
 } & VariantProps<typeof inputStyles> &
   (UIInputPropsWithIcon | UIInputPropsWithoutIcon) &
   TextInputProps;
 
-type UIInputPropsWithIcon = {
-  showIcon: true;
-  iconName: string;
-};
+type UIInputPropsWithIcon =
+  | {
+      showIcon: true;
+      iconProps: TIconsaxIconProps;
+    }
+  | {
+      showIcon?: false;
+      iconProps?: never;
+    };
 type UIInputPropsWithoutIcon = {
   showIcon?: false;
 };
@@ -91,7 +95,7 @@ const UIInputInner = <T extends FieldValues>(
               containerStyles,
               showIcon && "space-x-6",
               error
-                ? "border-red-400 bg-red-100 dark:bg-red-900 dark:border-red-700"
+                ? "border-danger bg-red-100 dark:bg-red-900 dark:border-red-700"
                 : "border-gray-200 dark:border-zinc-700 dark:bg-darkBgSecondaryColor"
             )}
           >
@@ -108,7 +112,9 @@ const UIInputInner = <T extends FieldValues>(
               />
             ) : null}
             {isAmountInput && (
-              <UIText variant='bodyMd'>{appSettings.currency.value}</UIText>
+              <UIText variant='bodyMd' textStyles={error && "text-danger"}>
+                {appSettings.currency.value}
+              </UIText>
             )}
             <TextInput
               ref={ref}
@@ -133,13 +139,12 @@ const UIInputInner = <T extends FieldValues>(
               onBlur={onBlur}
               placeholderTextColor={
                 error
-                  ? Colors.error
+                  ? Colors.global.error
                   : colorScheme === "dark"
                   ? Colors.dark.tint
                   : Colors.light.tint
               }
               keyboardType={isAmountInput ? "numeric" : "default"}
-              returnKeyLabel='done'
               {...rest}
             />
           </View>
@@ -147,7 +152,7 @@ const UIInputInner = <T extends FieldValues>(
             <UIText
               variant='caption'
               textStyles={cn(
-                "text-left ml-2 mt-2 self-stretch text-red-400",
+                "text-left ml-2 mt-2 self-stretch text-danger",
                 isAmountInput && "text-center ml-0"
               )}
             >

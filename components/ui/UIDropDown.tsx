@@ -41,8 +41,11 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
             style={[
               styles.dropdown,
               isFocus && {
-                borderColor:
-                  colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
+                borderColor: error
+                  ? Colors.global.error
+                  : colorScheme === "dark"
+                  ? Colors.dark.tint
+                  : Colors.light.tint,
               },
               {
                 backgroundColor:
@@ -67,8 +70,11 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
             }}
             placeholderStyle={{
               ...styles.placeholderStyle,
-              color:
-                colorScheme === "dark" ? Colors.dark.tint : Colors.light.tint,
+              color: error
+                ? Colors.global.error
+                : colorScheme === "dark"
+                ? Colors.dark.tint
+                : Colors.light.tint,
             }}
             selectedTextStyle={{
               ...styles.selectedTextStyle,
@@ -135,7 +141,7 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
           {error && (
             <UIText
               variant='caption'
-              textStyles={"text-left ml-2 self-stretch text-red-400"}
+              textStyles={"text-left ml-2 mt-2 self-stretch text-danger"}
             >
               {error.message}
             </UIText>
