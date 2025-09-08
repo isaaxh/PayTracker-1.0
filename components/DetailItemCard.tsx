@@ -3,30 +3,32 @@ import React from "react";
 import UIText from "./ui/UIText";
 import { capitalizeText } from "utils/helperFns";
 
-type TransactionDetailsCardItemProps<T extends React.ReactNode> = {
+type DetailItemCardProps<T extends React.ReactNode> = {
   label: string;
   content: T;
   type?: string;
 };
 
-function TransactionDetailsCardItem<T extends React.ReactNode>(
-  props: TransactionDetailsCardItemProps<T>
+function DetailItemCard<T extends React.ReactNode>(
+  props: DetailItemCardProps<T>
 ) {
   const { label, content, type } = props;
 
-  const expenseStyles = "text-red-600";
-  const incomeStyles = "text-green-600";
-
   return (
-    <View className='flex-row justify-between'>
-      <UIText variant={"caption"}>{label}</UIText>
+    <View className='px-4 py-2 mb-4 rounded-lg bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
       <UIText
-        variant={"labelSm"}
+        variant={"caption"}
+        textStyles='text-tintLight dark:text-tintInactiveDark'
+      >
+        {label}
+      </UIText>
+      <UIText
+        variant={"bodyLg"}
         textStyles={
           type === "expense"
-            ? expenseStyles
+            ? "text-danger"
             : type === "income"
-            ? incomeStyles
+            ? "text-success"
             : ""
         }
       >
@@ -40,4 +42,4 @@ function TransactionDetailsCardItem<T extends React.ReactNode>(
   );
 }
 
-export default TransactionDetailsCardItem;
+export default DetailItemCard;
