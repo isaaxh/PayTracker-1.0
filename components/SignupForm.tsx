@@ -11,6 +11,7 @@ import { Link } from "expo-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { i18n } from "@/services/i18n/i18n";
 import SocialAuthBtns from "./SocialAuthBtns";
+import { Timestamp } from "firebase/firestore";
 
 const SignupForm = () => {
   const { control, handleSubmit } = useForm<TSignupSchema>({

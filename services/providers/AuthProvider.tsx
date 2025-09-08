@@ -73,7 +73,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       addUserDocument({
         data,
         uid: response.user.uid,
-        createdAt: getFormattedDate().toString(),
       });
     } catch (e: any) {
       console.log(e);

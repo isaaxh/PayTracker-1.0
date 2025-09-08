@@ -10,16 +10,13 @@ import {
   orderBy,
   query,
   setDoc,
+  Timestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { ReactNode, useState } from "react";
 import { getFormattedDate } from "utils/dateHelperFn";
-import {
-  TTransaction,
-  TTransactionType,
-  transactionsSchema,
-} from "@/constants/TransactionsTypes";
+import { TTransaction, TTransactionType } from "@/constants/TransactionsTypes";
 import { TCategoryLabel } from "@/constants/CategoriesTypes";
 import { useToast } from "hooks/useToast";
 import { i18n } from "../i18n/i18n";
@@ -53,7 +50,6 @@ export type GlobalContextProps = {
 type TAddUserDocument = {
   data: TSignupSchema;
   uid: string;
-  createdAt: string;
 };
 
 type TGetDocument = {
@@ -132,13 +128,13 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
 
   const addUserDocument = async (props: TAddUserDocument) => {
     setLoading(true);
-    const { uid, data, createdAt } = props;
+    const { uid, data } = props;
     try {
       await setDoc(doc(FIREBASE_DB, "users", uid), {
         uid: uid,
         displayName: data.name,
         email: data.email,
-        createdAt: createdAt,
+        createdAt: Timestamp.fromDate(new Date()),
         grandTotal: 0,
         monthlyTotal: {
           month: getFormattedDate(),
