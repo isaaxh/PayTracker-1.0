@@ -1,4 +1,11 @@
+import { Timestamp } from "firebase/firestore";
 import { z } from "zod";
+
+
+
+export const TimestampType = z.custom<Timestamp>(
+  (value) => value instanceof Timestamp,
+);
 
 /* auth data types*/
 
@@ -32,7 +39,7 @@ export const userDataSchema = z.object({
   displayName: z.string(),
   imgUri: z.string().optional(),
   email: z.string(),
-  createdAt: z.string(),
+  createdAt: TimestampType,
   grandTotal: z.number(),
   monthlyTotal: z.object({
     month: z.string(),
