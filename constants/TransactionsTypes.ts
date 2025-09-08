@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { categoryLabelEnum } from "./CategoriesTypes";
 import { i18n } from "@/services/i18n/i18n";
-import { Timestamp } from "firebase/firestore";
+import { TimestampType } from "@/utils/types";
+
 
 export const transactionTypeEnum = z.enum(["income", "expense"]);
 
@@ -9,10 +10,6 @@ export const transactionTypeList = [
   { label: i18n.t("income"), value: "income" },
   { label: i18n.t("expense"), value: "expense" },
 ];
-
-export const TimestampType = z.custom<Timestamp>(
-  (value) => value instanceof Timestamp,
-);
 
 export const transactionSchema = z.object({
   /* id: z.union([z.string(), z.array(z.number())]), */
