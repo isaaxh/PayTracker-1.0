@@ -15,7 +15,7 @@ function DetailItemCard<T extends React.ReactNode>(
   const { label, content, type } = props;
 
   return (
-    <View className='px-4 py-2 mb-4 rounded-lg bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
+    <View className='px-5 py-3 mb-4 rounded-lg bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
       <UIText
         variant={"caption"}
         textStyles='text-tintLight dark:text-tintInactiveDark'
