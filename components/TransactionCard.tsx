@@ -68,7 +68,7 @@ const TransactionCard = ({
             })}
           </UIText>
           {showDate ? (
-            <UIText variant='caption'>{formatDate(date).split(" ")[0]}</UIText>
+            <UIText variant='caption'>{formatDate(date, "date")}</UIText>
           ) : (
             <UIText variant='caption'>{formatDate(date, "time")}</UIText>
           )}
