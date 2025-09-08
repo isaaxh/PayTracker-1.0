@@ -27,7 +27,8 @@ import {
     Lock1,
     Notification,
     ArrowRight2,
-    ArrowLeft2
+    ArrowLeft2,
+    Card
 } from "iconsax-react-native";
 
 export const iconRegistry = {
@@ -58,7 +59,8 @@ export const iconRegistry = {
     lock: Lock1,
     notification: Notification,
     chevronRight: ArrowRight2,
-    chevronLeft: ArrowLeft2
+    chevronLeft: ArrowLeft2,
+    card: Card
 } as const;
 
 export type TIconsaxName = keyof typeof iconRegistry;
