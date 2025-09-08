@@ -48,7 +48,7 @@ export const iconRegistry = {
     mobile: Mobile,
     task: TaskSquare,
     category: Category2,
-    "document text": DocumentText,
+    "documentText": DocumentText,
     calender: Calendar2,
     global: Global,
     dollar: DollarSquare,
