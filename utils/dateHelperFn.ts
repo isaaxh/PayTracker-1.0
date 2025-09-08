@@ -31,7 +31,9 @@ export const formatDate = (
   const inputDate = moment(date);
 
   if (mode === "date") {
-    return inputDate.format("YYYY-MM-DD");
+    return inputDate.format("DD-MM-YYYY");
+  } else if (mode === "datetime") {
+    return inputDate.format("DD-MM-YYYY hh:mm A");
   } else if (mode === "time") {
     return inputDate.format("A hh:mm");
   } else if (mode === "day") {
@@ -39,7 +41,7 @@ export const formatDate = (
   }
 
 
-  return inputDate.format("YYYY-MM-DD · A hh:mm");
+  return inputDate.format("YYYY-MM-DD · hh:mm A");
 };
 
 export const getWeekRange = (date: Date) => {
