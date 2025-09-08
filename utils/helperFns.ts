@@ -1,7 +1,7 @@
 import { TVariantProps } from "@/components/ui/UIButton";
 
 export const capitalizeText = (text: string) => {
-  return text.at(0)?.toUpperCase() + text.slice(1);
+  return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
 // helper functions for UIButton
