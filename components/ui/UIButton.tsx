@@ -1,5 +1,11 @@
-import { Pressable, PressableProps, Text, View } from "react-native";
-import React, { ReactNode, forwardRef, useState } from "react";
+import {
+  ActivityIndicator,
+  Pressable,
+  PressableProps,
+  Text,
+  View,
+} from "react-native";
+import React, { ReactNode, forwardRef, use, useState } from "react";
 import { VariantProps, cva } from "class-variance-authority";
 import { cn } from "utils/cn";
 import { textVariants } from "./UIText";
@@ -8,6 +14,7 @@ import { TFontAwesomeIconProps } from "../FontAwesomeIcon";
 import { TIconsaxIconProps } from "../IconsaxIcon";
 import Colors from "@/constants/Colors";
 import { getTextColorKey } from "@/utils/helperFns";
+import { useColorScheme } from "nativewind";
 
 type UIButtonProps = {
   children?: ReactNode;
@@ -17,6 +24,7 @@ type UIButtonProps = {
   primary?: boolean;
   danger?: boolean;
   success?: boolean;
+  loading?: boolean;
 } & PressableProps &
   OptionalButtonProps &
   ConditionalIconProps &
@@ -117,6 +125,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
       buttonStyles,
       textStyles,
       disabled,
+      loading,
       ...props
     } = Props;
 
@@ -127,6 +136,8 @@ const UIButton = forwardRef<View, UIButtonProps>(
     }
 
     const [isPressed, setPressed] = useState(false);
+
+    const { colorScheme } = useColorScheme();
 
     const textInnerStyle = [
       buttonVariants.textSize[textSize || "default"],
@@ -182,6 +193,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
       >
         <Pressable
           ref={forwardedRef}
+          disabled={disabled}
           onPressIn={() => setPressed(true)}
           onPressOut={() => setPressed(false)}
           className={cn(
@@ -234,7 +246,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
                 {text2}
               </Text>
             </>
-          ) : (
+          ) : !loading ? (
             <Text
               className={cn(
                 textInnerStyle,
@@ -245,6 +257,19 @@ const UIButton = forwardRef<View, UIButtonProps>(
             >
               {children}
             </Text>
+          ) : (
+            <View className='h-6'>
+              <ActivityIndicator
+                size={"small"}
+                color={
+                  primary
+                    ? Colors.light.text
+                    : colorScheme === "dark"
+                    ? Colors.dark.text
+                    : Colors.light.text
+                }
+              />
+            </View>
           )}
         </Pressable>
       </View>

@@ -19,6 +19,7 @@ type UIInputProps<T extends FieldValues> = {
   buttonStyles?: string;
   textStyles?: string;
   isAmountInput?: boolean;
+  formError?: string;
 } & VariantProps<typeof inputStyles> &
   (UIInputPropsWithIcon | UIInputPropsWithoutIcon) &
   TextInputProps;
@@ -41,7 +42,7 @@ const inputVariants = {
     bare: [""],
     rounded: ["border rounded-xl"],
     fullyRounded: ["items-end space-x-2 rounded-full py-3 px-12"],
-    rectangular: ["rounded-md"],
+    rectangular: ["border rounded-md"],
   },
   size: {
     small: [""],
@@ -75,6 +76,7 @@ const UIInputInner = <T extends FieldValues>(
     containerStyles,
     showIcon,
     isAmountInput,
+    formError,
     ...rest
   } = props;
   const { colorScheme } = useColorScheme();
@@ -94,7 +96,7 @@ const UIInputInner = <T extends FieldValues>(
               inputStyles({ variant: variant, size: size }),
               containerStyles,
               showIcon && "space-x-6",
-              error
+              error || formError
                 ? "border-danger bg-red-100 dark:bg-red-900 dark:border-red-700"
                 : "border-gray-200 dark:border-zinc-700 dark:bg-darkBgSecondaryColor"
             )}
@@ -112,7 +114,10 @@ const UIInputInner = <T extends FieldValues>(
               />
             ) : null}
             {isAmountInput && (
-              <UIText variant='bodyMd' textStyles={error && "text-danger"}>
+              <UIText
+                variant='bodyMd'
+                textStyles={error || formError ? "text-danger" : ""}
+              >
                 {appSettings.currency.value}
               </UIText>
             )}
@@ -138,7 +143,7 @@ const UIInputInner = <T extends FieldValues>(
               }}
               onBlur={onBlur}
               placeholderTextColor={
-                error
+                error || formError
                   ? Colors.global.error
                   : colorScheme === "dark"
                   ? Colors.dark.tint
@@ -148,7 +153,7 @@ const UIInputInner = <T extends FieldValues>(
               {...rest}
             />
           </View>
-          {error && (
+          {error || formError ? (
             <UIText
               variant='caption'
               textStyles={cn(
@@ -156,9 +161,9 @@ const UIInputInner = <T extends FieldValues>(
                 isAmountInput && "text-center ml-0"
               )}
             >
-              {error.message}
+              {error ? error.message : formError}
             </UIText>
-          )}
+          ) : null}
         </View>
       )}
     />

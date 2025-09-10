@@ -9,15 +9,19 @@ export const TimestampType = z.custom<Timestamp>(
 
 /* auth data types*/
 
+const passwordSchema = z.object({
+  password: z.string().min(8, 'Password must be of minimum of 8 characters')
+});
+
 export const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(8, "Password must be of minimum of 8 characters"),
+  password: passwordSchema.shape.password,
 });
 
 export const signupSchema = loginSchema
   .extend({
     name: z.string().min(1, { message: "Name is required" }),
-    confirmPassword: z.string(),
+    confirmPassword: passwordSchema.shape.password,
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
@@ -31,6 +35,22 @@ export const signupSchema = loginSchema
 
 export type TLoginSchema = z.infer<typeof loginSchema>;
 export type TSignupSchema = z.infer<typeof signupSchema>;
+
+// change password data type
+
+export const changePasswordSchema = z.object({
+  oldPassword: passwordSchema.shape.password,
+  newPassword: passwordSchema.shape.password,
+  confirmNewPassword: passwordSchema.shape.password
+}).refine((data) => data.newPassword === data.confirmNewPassword, {
+  message: 'New passwords must match.',
+  path: ['confirmNewPassword'],
+}).refine((data) => data.oldPassword !== data.newPassword, {
+  message: 'New password must be different from old password.',
+  path: ['newPassword']
+});
+
+export type TChangePassword = z.infer<typeof changePasswordSchema>
 
 /* userData type */
 
@@ -50,3 +70,4 @@ export const userDataSchema = z.object({
 });
 
 export type TUserData = z.infer<typeof userDataSchema>;
+
