@@ -1,4 +1,4 @@
-import { View, I18nManager, Image, TouchableOpacity } from "react-native";
+import { View, I18nManager } from "react-native";
 import React from "react";
 import UIDropDown from "./ui/UIDropDown";
 import {
@@ -90,12 +90,21 @@ const ProfileSettingsForm = () => {
       try {
         I18nManager.forceRTL(shouldForceRTL);
         await Updates.reloadAsync();
+        return;
       } catch (error) {
         console.error("Failed to reload the app", error);
       }
     }
 
     router.back();
+  };
+
+  const onPressLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.log("Logout error:", error);
+    }
   };
 
   return (
@@ -162,7 +171,7 @@ const ProfileSettingsForm = () => {
           iconLibrary='iconsax'
           iconProps={{ name: "logout" }}
           size={"large"}
-          onPress={logout}
+          onPress={onPressLogout}
           textColor={"danger"}
         >
           {i18n.t("logout")}
