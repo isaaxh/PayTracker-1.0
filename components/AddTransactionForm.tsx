@@ -100,6 +100,7 @@ const AddTransactionForm = () => {
             control={control}
             placeholder={i18n.t("type")}
             iconName='task'
+            highlightBorder
           />
           <UIDropDown
             data={categoryLabelsArray}
@@ -107,6 +108,7 @@ const AddTransactionForm = () => {
             control={control}
             placeholder={i18n.t("category")}
             iconName='category'
+            highlightBorder
           />
           <UIInput
             name='note'

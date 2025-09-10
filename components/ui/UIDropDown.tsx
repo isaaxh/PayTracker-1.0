@@ -14,6 +14,7 @@ type UIDropDownProps<T extends FieldValues, U extends dataItemType> = {
   control: Control<T>;
   iconName?: TIconsaxName;
   placeholder?: string;
+  highlightBorder?: boolean;
 };
 
 type dataItemType = {
@@ -24,7 +25,7 @@ type dataItemType = {
 const UIDropDown = <T extends FieldValues, U extends dataItemType>(
   props: UIDropDownProps<T, U>
 ) => {
-  const { data, name, control, iconName, placeholder } = props;
+  const { data, name, control, iconName, placeholder, highlightBorder } = props;
   const [isFocus, setIsFocus] = useState(false);
   const { colorScheme } = useColorScheme();
 
@@ -40,14 +41,15 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
           <Dropdown
             style={[
               styles.dropdown,
-              isFocus && {
+              // isFocus && { },
+              {
                 borderColor: error
                   ? Colors.global.error
-                  : colorScheme === "dark"
-                  ? Colors.dark.tint
-                  : Colors.light.tint,
-              },
-              {
+                  : highlightBorder
+                  ? colorScheme === "dark"
+                    ? Colors.dark.borderColor
+                    : Colors.light.borderColor
+                  : "",
                 backgroundColor:
                   colorScheme === "dark"
                     ? Colors.dark.backgroundSecondary
@@ -60,6 +62,11 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
                 colorScheme === "dark"
                   ? Colors.dark.backgroundSecondary
                   : Colors.light.backgroundSecondary,
+              borderColor: error
+                ? Colors.global.error
+                : colorScheme === "dark"
+                ? Colors.dark.borderColor
+                : Colors.light.borderColor,
             }}
             itemContainerStyle={{
               ...styles.itemContainerStyle,
@@ -159,14 +166,12 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   containerStyle: {
-    borderColor: "transparent",
-    backgroundColor: "#000000",
+    borderWidth: 1,
     borderRadius: 8,
   },
   dropdown: {
-    height: 50,
-    borderColor: "transparent",
-    borderWidth: 0.5,
+    height: 52,
+    borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 20,
   },
