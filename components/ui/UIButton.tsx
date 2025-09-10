@@ -199,7 +199,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
           className={cn(
             btnStyles({ variant: variant, size: size, type: type }),
             buttonStyles,
-            primary && "bg-bgColor",
+            primary && "bg-bgSecondaryColor",
             isPressed && "opacity-60",
             disabled && "opacity-40"
           )}
