@@ -11,7 +11,6 @@ import { GlobalContextProps } from "./GlobalProvider";
 import { useGlobal } from "hooks/useGlobal";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
 import AuthContext from "../contexts/AuthContext";
-import { getFormattedDate } from "utils/dateHelperFn";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -82,11 +81,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await FIREBASE_AUTH.signOut();
     setAuthState({ isAuthenticated: null, user: null });
     setUserData(null);
     setTransactions([]);
-    FIREBASE_AUTH.signOut();
   };
 
   const value: AuthContextProps = {
