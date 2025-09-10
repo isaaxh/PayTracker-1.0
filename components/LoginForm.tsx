@@ -13,7 +13,11 @@ import { i18n } from "@/services/i18n/i18n";
 import SocialAuthBtns from "./SocialAuthBtns";
 
 const LoginForm = () => {
-  const { control, handleSubmit } = useForm<TLoginSchema>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isDirty },
+  } = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -74,7 +78,8 @@ const LoginForm = () => {
           onPress={handleSubmit(onSubmit)}
           size='large'
           buttonStyles='mx-0 mb-3'
-          disabled={loading}
+          disabled={!isDirty || loading}
+          loading={loading}
           primary
         >
           {i18n.t("login")}

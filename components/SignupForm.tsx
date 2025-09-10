@@ -14,7 +14,11 @@ import SocialAuthBtns from "./SocialAuthBtns";
 import { Timestamp } from "firebase/firestore";
 
 const SignupForm = () => {
-  const { control, handleSubmit } = useForm<TSignupSchema>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isDirty },
+  } = useForm<TSignupSchema>({
     resolver: zodResolver(signupSchema),
   });
 
@@ -71,7 +75,8 @@ const SignupForm = () => {
           onPress={handleSubmit(onSubmit)}
           size='large'
           buttonStyles='mx-0 mb-3'
-          disabled={loading}
+          disabled={!isDirty || loading}
+          loading={loading}
           primary
         >
           {i18n.t("createAccount")}
