@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { ReactNode, forwardRef, use, useState } from "react";
+import React, { ReactNode, forwardRef, useState } from "react";
 import { VariantProps, cva } from "class-variance-authority";
 import { cn } from "utils/cn";
 import { textVariants } from "./UIText";
