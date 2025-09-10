@@ -41,7 +41,7 @@ const inputVariants = {
   variant: {
     bare: [""],
     rounded: ["border rounded-xl"],
-    fullyRounded: ["items-end space-x-2 rounded-full py-3 px-12"],
+    fullyRounded: ["border items-end space-x-2 rounded-full py-3 px-12"],
     rectangular: ["border rounded-md"],
   },
   size: {
@@ -98,7 +98,7 @@ const UIInputInner = <T extends FieldValues>(
               showIcon && "space-x-6",
               error || formError
                 ? "border-danger bg-red-100 dark:bg-red-900 dark:border-red-700"
-                : "border-gray-200 dark:border-zinc-700 dark:bg-darkBgSecondaryColor"
+                : "border-gray-200 dark:border-zinc-700 bg-bgSecondaryColor dark:bg-darkBgSecondaryColor"
             )}
           >
             {showIcon ? (
