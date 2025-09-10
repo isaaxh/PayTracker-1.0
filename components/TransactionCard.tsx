@@ -47,7 +47,7 @@ const TransactionCard = ({
       }}
       asChild
     >
-      <TouchableOpacity className='flex-row items-center px-6 py-6 mb-3 bg-bgSecondaryColor dark:bg-darkBgSecondaryColor rounded-3xl'>
+      <TouchableOpacity className='flex-row items-center px-6 py-6 mb-3 rounded-xl bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
         <TransactionIcon category={category} />
         <View className='flex-1'>
           <UIText textStyles='font-bold'>

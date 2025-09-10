@@ -41,7 +41,6 @@ const AddTransactionForm = () => {
       date: Timestamp.fromDate(date),
       note: "",
       amount: 0,
-      entity: "",
     },
   });
 
@@ -80,7 +79,7 @@ const AddTransactionForm = () => {
             variant='fullyRounded'
             size='default'
             isAmountInput
-            placeholder='00.00'
+            placeholder='0.00'
           />
         </View>
       </View>
@@ -152,7 +151,7 @@ const AddTransactionForm = () => {
             variant='fill'
             size='large'
             onPress={handleSubmit(onSubmit)}
-            disabled={!isDirty || isSubmitting || loading}
+            disabled={!isDirty || loading || isSubmitting}
             primary
           >
             {i18n.t("save")}

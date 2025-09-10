@@ -34,7 +34,9 @@ function DetailItemCard<T extends React.ReactNode>(
       >
         {!content
           ? "-"
-          : typeof content === "string" && label !== "Transaction ID"
+          : typeof content === "string" &&
+            label !== "Transaction ID" &&
+            label !== "Email"
           ? capitalizeText(content)
           : content}
       </UIText>
