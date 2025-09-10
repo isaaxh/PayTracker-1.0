@@ -24,6 +24,7 @@ export default {
     tintInActive: tintInActiveColorLight,
     tabIconDefault: tintInActiveColorLight,
     tabIconSelected: tintColorLight,
+    borderColor: '#e5e7eb',
   },
   dark: {
     text: "#f5f5f5",
@@ -33,5 +34,6 @@ export default {
     tintInActive: tintInActiveColorDark,
     tabIconDefault: tintInActiveColorDark,
     tabIconSelected: tintColorDark,
+    borderColor: '#3f3f46'
   },
 };
