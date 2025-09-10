@@ -77,6 +77,7 @@ const TransactionList = ({
             category={item.category}
             note={item.note}
             showDate={!showSections}
+            entity={item.entity}
           />
         )}
         renderSectionHeader={({ section: { title } }) =>
