@@ -49,7 +49,7 @@ const UIDropDown = <T extends FieldValues, U extends dataItemType>(
                   ? colorScheme === "dark"
                     ? Colors.dark.borderColor
                     : Colors.light.borderColor
-                  : "",
+                  : "transparent",
                 backgroundColor:
                   colorScheme === "dark"
                     ? Colors.dark.backgroundSecondary
