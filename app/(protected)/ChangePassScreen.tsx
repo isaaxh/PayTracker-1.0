@@ -14,7 +14,7 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
-} from "@firebase/auth";
+} from "firebase/auth";
 
 const ChangePassScreen = () => {
   const { userData } = useGlobal() as GlobalContextProps;
