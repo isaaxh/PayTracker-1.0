@@ -85,7 +85,7 @@ const StackLayout = () => {
     const loadAppSettings = async () => {
       const savedAppSettings = await loadSettings();
       if (savedAppSettings) {
-        setAppSettings(savedAppSettings);
+        setAppSettings({ ...savedAppSettings });
       }
     };
 
