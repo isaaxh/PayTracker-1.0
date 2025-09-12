@@ -109,8 +109,8 @@ const ProfileSettingsForm = () => {
   };
 
   return (
-    <View className='justify-between flex-1'>
-      <View className='items-center -mb-12'>
+    <View className='flex-1'>
+      <View className='items-center p-0 mb-8'>
         <View className='items-center justify-center inline-block p-2 mb-3 bg-orange-300 rounded-full'>
           <RenderIcon
             iconLibrary='iconsax'
@@ -123,7 +123,7 @@ const ProfileSettingsForm = () => {
         </View>
         <UIText variant={"headingLg"}>{userData?.displayName}</UIText>
       </View>
-      <View className=''>
+      <View className='mb-auto'>
         <Link href='/(protected)/PersonalInfoScreen' asChild>
           <UIButton
             variant={"iconText"}
@@ -178,7 +178,7 @@ const ProfileSettingsForm = () => {
           {i18n.t("logout")}
         </UIButton>
       </View>
-      <View className='w-full pb-7'>
+      <View className='w-full pb-4'>
         <UIButton
           variant='fill'
           size='large'
