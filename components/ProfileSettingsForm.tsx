@@ -102,6 +102,7 @@ const ProfileSettingsForm = () => {
   const onPressLogout = async () => {
     try {
       await logout();
+      router.replace("/");
     } catch (error) {
       console.log("Logout error:", error);
     }
