@@ -5,7 +5,7 @@ import RenderIcon from "./RenderIcon";
 const ProfileButton = () => {
   return (
     <Link href='/(protected)/ProfileScreen' asChild>
-      <TouchableOpacity className='bg-orange-300 p-2 rounded-full inline-block justify-center items-center'>
+      <TouchableOpacity className='items-center justify-center inline-block p-2 bg-orange-400 rounded-full'>
         <RenderIcon
           iconLibrary='iconsax'
           iconProps={{

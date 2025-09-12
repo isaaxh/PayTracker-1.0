@@ -18,25 +18,25 @@ export const categories = [
   {
     id: "2",
     label: "food",
-    color: "#11c5a8",
+    color: "#16a34a",
     iconName: "heart",
   },
   {
     id: "3",
     label: "recharge",
-    color: "#febd33",
+    color: "#febd00",
     iconName: "mobile",
   },
   {
     id: "4",
     label: "entertainment",
-    color: "#e84040",
+    color: "#e80040",
     iconName: "ticket",
   },
   {
     id: "5",
     label: "miscellaneous",
-    color: "#ff8a65",
+    color: "#F54927",
     iconName: "element3",
   },
 ];

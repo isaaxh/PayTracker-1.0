@@ -1,3 +1,5 @@
+import { categories, TCategories, TCategory, TCategoryLabel } from "./CategoriesTypes";
+
 const accentColor = "#29874c";
 const tintColorLight = "#a0b3c8";
 const tintInActiveColorLight = "#e2e8f0";
@@ -6,6 +8,12 @@ const tintInActiveColorDark = "#71717a";
 const accent = "#febc05"
 const error = "#dc2626"
 const success = "#16a34a"
+
+type TCategoryColors = Record<TCategoryLabel, string>;
+
+const categoriesColors = categories.reduce((acc: TCategoryColors, category: TCategory) => {
+  return { ...acc, [category.label]: category.color };
+}, {} as TCategoryColors);
 
 export default {
   global: {
@@ -16,6 +24,7 @@ export default {
     black: '#000000',
     white: '#ffffff'
   },
+  categories: categoriesColors,
   light: {
     text: "#31445e",
     background: "#f2f5f6",
