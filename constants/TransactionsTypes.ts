@@ -12,7 +12,6 @@ export const transactionTypeList = [
 ];
 
 export const transactionSchema = z.object({
-  /* id: z.union([z.string(), z.array(z.number())]), */
   id: z.string(),
   date: TimestampType,
   type: transactionTypeEnum,
@@ -25,7 +24,7 @@ export const transactionSchema = z.object({
   amount: z
     .number({ message: "Please enter an amount" })
     .min(1, { message: "Amount must be at least 1" })
-    .max(500, { message: "Amount must not exceed 500" }),
+    .max(10000, { message: "Amount must not exceed 500" }),
   note: z.string().optional(),
 });
 
