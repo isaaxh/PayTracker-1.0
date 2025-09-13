@@ -54,6 +54,13 @@ export type TChangePassword = z.infer<typeof changePasswordSchema>
 
 /* userData type */
 
+export const monthlySummarySchema = z.object({
+  month: z.string(),
+  income: z.number(),
+  expenses: z.number(),
+  total: z.number(),
+})
+
 export const userDataSchema = z.object({
   uid: z.string(),
   displayName: z.string(),
@@ -61,13 +68,9 @@ export const userDataSchema = z.object({
   email: z.string(),
   createdAt: z.string(),
   grandTotal: z.number(),
-  monthlyTotal: z.object({
-    month: z.string(),
-    income: z.number(),
-    expenses: z.number(),
-    total: z.number(),
-  }),
+  monthlyTotal: monthlySummarySchema,
 });
+
 
 export const firestoreUserDataSchema = userDataSchema
   .omit({ createdAt: true })
