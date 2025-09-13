@@ -59,7 +59,7 @@ export const userDataSchema = z.object({
   displayName: z.string(),
   imgUri: z.string().optional(),
   email: z.string(),
-  createdAt: TimestampType,
+  createdAt: z.string(),
   grandTotal: z.number(),
   monthlyTotal: z.object({
     month: z.string(),
@@ -69,5 +69,10 @@ export const userDataSchema = z.object({
   }),
 });
 
+export const firestoreUserDataSchema = userDataSchema
+  .omit({ createdAt: true })
+  .extend({ createdAt: TimestampType })
+
+export type TFirestoreUserData = z.infer<typeof firestoreUserDataSchema>;
 export type TUserData = z.infer<typeof userDataSchema>;
 
