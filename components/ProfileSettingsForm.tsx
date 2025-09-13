@@ -151,7 +151,7 @@ const ProfileSettingsForm = () => {
           name='theme'
           control={control}
           placeholder={i18n.t("selectTheme")}
-          iconName={colorScheme === "dark" ? "sun" : "moon"}
+          iconName={colorScheme === "dark" ? "moon" : "sun"}
         />
         <UIDropDown
           data={languageList}
