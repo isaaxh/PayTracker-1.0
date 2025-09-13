@@ -24,11 +24,24 @@ export function convertToTimezone(date: Date, offsetInHours: number) {
 }
 
 export const formatDate = (
-  timestamp: Timestamp | Date,
+  date: Timestamp | Date | string,
   mode?: TMode | 'day',
 ): string => {
-  const date = timestamp instanceof Timestamp ? timestamp.toDate() : timestamp;
-  const inputDate = moment(date);
+
+  let inputDate;
+
+  if (date instanceof Timestamp) {
+    inputDate = moment(date.toDate());
+  } else if (date instanceof Date) {
+    inputDate = moment(date);
+  } else {
+    inputDate = moment(date);
+  }
+
+  if (!inputDate.isValid()) {
+    return 'Invalid Date';
+  }
+
 
   if (mode === "date") {
     return inputDate.format("DD-MM-YYYY");
