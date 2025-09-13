@@ -3,12 +3,19 @@ import React from "react";
 import ProfileButton from "./ProfileButton";
 import NotificationButton from "./NotificationButton";
 import UIText from "./ui/UIText";
+import { AuthContextProps } from "@/services/providers/AuthProvider";
+import { useAuth } from "hooks/useAuth";
 import { i18n } from "@/services/i18n/i18n";
 import { useSelector } from "react-redux";
 import { RootState } from "@/services/state/store";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
 
 const HomeHeader = () => {
-  const { user } = useSelector((state: RootState) => state.authState);
+  // const {
+  //   authState: { user },
+  // } = useAuth() as AuthContextProps;
+
+  const { userData } = useFetchUserData();
 
   return (
     <View className='flex-row items-center justify-between w-full px-6 py-4'>
@@ -21,7 +28,7 @@ const HomeHeader = () => {
           variant='headingSm'
           textStyles={I18nManager.isRTL ? "text-left" : ""}
         >
-          {user?.displayName?.toString().split(" ")[0]}
+          {userData?.displayName?.toString().split(" ")[0]}
         </UIText>
       </View>
       <NotificationButton />

@@ -13,7 +13,7 @@ export const useCalculate = () => {
   const [monthlyTotal, setMonthlyTotal] = useState(0);
   const { transactions } = useGlobal() as GlobalContextProps;
 
-  const { userData } = useFetchUserData();
+  const { userData, error, status } = useFetchUserData();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -25,11 +25,11 @@ export const useCalculate = () => {
   }, [income, expense]);
 
   const calculateMonthlyPayout = () => {
-    if (!userData.data) return;
+    if (!userData) return;
 
     let totalSum = income - expense;
     updateFieldInDoc({
-      id: userData.data.uid,
+      id: userData.uid,
       collectionName: "users",
       fieldName: 'monthlyTotal.total',
       updateValue: totalSum,
@@ -39,7 +39,7 @@ export const useCalculate = () => {
   };
 
   const calculateIncomeAndExpense = () => {
-    if (!userData.data || !transactions) return;
+    if (!userData || !transactions) return;
 
     let totalIncome = 0;
     let totalExpense = 0;
@@ -54,10 +54,10 @@ export const useCalculate = () => {
     setExpense(totalExpense);
 
 
-    if (userData.data) {
+    if (userData) {
       dispatch(updateUserData(
         {
-          id: userData.data.uid,
+          id: userData.uid,
           collectionName: "users",
           fieldName: "grandTotal",
           updateValue: totalIncome,
@@ -66,7 +66,7 @@ export const useCalculate = () => {
       ));
       dispatch(updateUserData(
         {
-          id: userData.data.uid,
+          id: userData.uid,
           collectionName: "users",
           fieldName: "monthlyTotal.income",
           updateValue: totalIncome,
@@ -75,7 +75,7 @@ export const useCalculate = () => {
       ));
       dispatch(updateUserData(
         {
-          id: userData.data.uid,
+          id: userData.uid,
           collectionName: "users",
           fieldName: "monthlyTotal.expenses",
           updateValue: totalExpense,
@@ -87,5 +87,5 @@ export const useCalculate = () => {
     }
   };
 
-  return { monthlyTotal, income, expense };
+  return { monthlyTotal, income, expense, status, error };
 };

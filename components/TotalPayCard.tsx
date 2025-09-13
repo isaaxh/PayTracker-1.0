@@ -15,7 +15,7 @@ import Colors from "@/constants/Colors";
 const TotalPayCard = () => {
   const { appSettings } = useGlobal() as GlobalContextProps;
 
-  const { monthlyTotal, income, expense } = useCalculate();
+  const { monthlyTotal, income, expense, status, error } = useCalculate();
 
   return (
     <View
@@ -30,14 +30,24 @@ const TotalPayCard = () => {
             </UIText>
           </View>
           <View className='flex-row items-center mb-4'>
-            <UIText variant='headingXL' alwaysDarkText={true}>
-              {appSettings.currency.value}{" "}
-              {convertCurrency({
-                currency: appSettings.currency.value,
-                rate: USDRate,
-                amount: monthlyTotal,
-              })}
-            </UIText>
+            {status === "pending" ? (
+              <UIText
+                variant='bodySm'
+                textStyles='font-medium mr-2'
+                alwaysDarkText={true}
+              >
+                loading...
+              </UIText>
+            ) : (
+              <UIText variant='headingXL' alwaysDarkText={true}>
+                {appSettings.currency.value}{" "}
+                {convertCurrency({
+                  currency: appSettings.currency.value,
+                  rate: USDRate,
+                  amount: monthlyTotal,
+                })}
+              </UIText>
+            )}
           </View>
           <View className='flex-row justify-between w-full px-4'>
             <SummaryComponent label='income' amount={income ?? 0} />

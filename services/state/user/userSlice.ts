@@ -59,17 +59,27 @@ const userSlice = createSlice({
 
 export const fetchUserData = createAsyncThunk<TUserData | null, TGetDocument>(
     'user/fetchUserData',
-    async ({ collectionName, id }: TGetDocument) => {
-        const firestoreUserData = await getDocument<TFirestoreUserData>({ collectionName, id });
+    async ({ collectionName, id }: TGetDocument, { rejectWithValue }) => {
 
-        if (firestoreUserData) {
-            const userData: TUserData = {
-                ...firestoreUserData,
-                createdAt: firestoreUserData.createdAt.toDate().toISOString(),
+        try {
+
+            const firestoreUserData = await getDocument<TFirestoreUserData>({ collectionName, id });
+
+            if (firestoreUserData) {
+                const userData: TUserData = {
+                    ...firestoreUserData,
+                    createdAt: firestoreUserData.createdAt.toDate().toISOString(),
+                }
+
+                return userData;
             }
-
-            return userData;
+        } catch (error: any) {
+            if (error.message === 'AbortError') {
+                return rejectWithValue('Request was aborted');
+            }
+            return rejectWithValue(error.message || 'Failed to fetch user data');
         }
+
         return null;
     }
 )
@@ -78,25 +88,32 @@ export const fetchUserData = createAsyncThunk<TUserData | null, TGetDocument>(
 export const updateUserData = createAsyncThunk<TUserData, TUpdateFieldInDoc>(
     'user/updateUserData',
     async (props, { getState, rejectWithValue }) => {
-        const { fieldName, updateValue } = props
 
-        const state = await getState() as RootState;
-        const currentData = state.userData.data;
+        try {
 
-        if (!currentData) {
-            console.log(state);
+            const { fieldName, updateValue } = props
 
-            return rejectWithValue('User data is not available.');
+            const state = await getState() as RootState;
+            const currentData = state.userData.data;
+
+            if (!currentData) {
+                return rejectWithValue('User data is not available.');
+            }
+
+            await updateFieldInDoc(props);
+
+            const updatedUserData = {
+                ...currentData,
+                [fieldName]: updateValue,
+            } as TUserData
+
+            return updatedUserData;
+        } catch (error: any) {
+            if (error.message === 'AbortError') {
+                return rejectWithValue('Request was aborted');
+            }
         }
-
-        await updateFieldInDoc(props);
-
-        const updatedUserData = {
-            ...currentData,
-            [fieldName]: updateValue,
-        } as TUserData
-
-        return updatedUserData;
+        return rejectWithValue('Failed to update user data');
     }
 )
 

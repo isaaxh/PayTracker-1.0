@@ -18,24 +18,21 @@ import { useForm } from "react-hook-form";
 import * as Updates from "expo-updates";
 import { Link, router } from "expo-router";
 import { useAsync } from "hooks/useAsync";
-import { useAuth } from "hooks/useAuth";
-import { AuthContextProps } from "@/services/providers/AuthProvider";
 import RenderIcon from "./RenderIcon";
 import UIText from "./ui/UIText";
 import { useFetchUserData } from "@/hooks/useFetchUserData";
-import { useSelector } from "react-redux";
-import { RootState } from "@/services/state/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/services/state/store";
+import { logout } from "@/services/api/firebaseAuthApi";
+import { clearAuthUser } from "@/services/state/auth/authSlice";
+import { clearUserData } from "@/services/state/user/userSlice";
 
 const ProfileSettingsForm = () => {
   const { appSettings, setAppSettings } = useGlobal() as GlobalContextProps;
-  const { logout } = useAuth() as AuthContextProps;
   const { colorScheme, setColorScheme } = useColorScheme();
   const { updateSettings, saveSettings } = useAsync();
-  // const { userData } = useGlobal() as GlobalContextProps;
-
-  // const { userData } = useFetchUserData();
-
-  const userData = useSelector((state: RootState) => state.userData);
+  const { userData } = useFetchUserData();
+  const dispatch = useDispatch<AppDispatch>();
 
   const {
     control,
@@ -109,6 +106,8 @@ const ProfileSettingsForm = () => {
   const onPressLogout = async () => {
     try {
       await logout();
+      dispatch(clearAuthUser());
+      dispatch(clearUserData());
       router.replace("/");
     } catch (error) {
       console.log("Logout error:", error);
@@ -128,7 +127,7 @@ const ProfileSettingsForm = () => {
             }}
           />
         </View>
-        <UIText variant={"headingLg"}>{userData.data?.displayName}</UIText>
+        <UIText variant={"headingLg"}>{userData?.displayName}</UIText>
       </View>
       <View className='mb-auto'>
         <Link href='/(protected)/PersonalInfoScreen' asChild>

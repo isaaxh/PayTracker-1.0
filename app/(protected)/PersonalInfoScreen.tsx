@@ -1,16 +1,14 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomHeader from "@/components/CustomHeader";
-import UIText from "@/components/ui/UIText";
 import { View } from "react-native";
-import { useGlobal } from "hooks/useGlobal";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import DetailItemCard from "@/components/DetailItemCard";
 import { formatDate } from "@/utils/dateHelperFn";
 import UIButton from "@/components/ui/UIButton";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
 
 const ProfileScreen = () => {
-  const { userData } = useGlobal() as GlobalContextProps;
+  const { userData } = useFetchUserData();
   return (
     <SafeAreaView className='flex-1 bg-bgColor dark:bg-darkBgColor'>
       <CustomHeader title='personalInfo' />
