@@ -2,7 +2,7 @@ import { AppDispatch } from './../services/state/store';
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/services/state/store";
-import userSlice, { clearUserData, fetchUserData } from '@/services/state/user/userSlice';
+import { clearUserData, fetchUserData } from '@/services/state/user/userSlice';
 
 export const useFetchUserData = () => {
 
