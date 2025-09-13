@@ -1,27 +1,40 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { FIREBASE_AUTH } from "firebaseConfig";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "firebase/auth";
 
 type AuthState = {
-    isAuthenticated: boolean;
-    user: User | null
+    user: TUser | null
 }
 
+export type TUser = ReturnType<typeof createSerializableUser>;
+
+export const createSerializableUser = (user: User) => {
+    if (!user) return null;
+
+    return {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        emailVerified: user.emailVerified,
+    };
+};
+
 const initialState: AuthState = {
-    isAuthenticated: false,
-    user: null
+    user: null,
 }
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setUser: (state, action) => {
+        setAuthUser: (state: AuthState, action: PayloadAction<TUser>) => {
             state.user = action.payload;
-            state.isAuthenticated = !!action.payload;
         },
+        clearAuthUser: (state: AuthState) => {
+            state.user = null;
+        }
     },
 })
 
-export const { setUser } = authSlice.actions
+export const { setAuthUser, clearAuthUser } = authSlice.actions
 export default authSlice.reducer;
