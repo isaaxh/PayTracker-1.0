@@ -21,7 +21,9 @@ import AuthProvider, {
 import { i18n } from "@/services/i18n/i18n";
 import { useGlobal } from "hooks/useGlobal";
 import { useAsync } from "hooks/useAsync";
+import { Provider } from "react-redux";
 import "./globals.css";
+import { store } from "@/services/state/store";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -114,14 +116,16 @@ function RootLayoutNav() {
   const { colorScheme } = useColorScheme();
 
   return (
-    <GlobalProvider>
-      <AuthProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <StackLayout />
-        </ThemeProvider>
-      </AuthProvider>
-    </GlobalProvider>
+    <Provider store={store}>
+      <GlobalProvider>
+        <AuthProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <StackLayout />
+          </ThemeProvider>
+        </AuthProvider>
+      </GlobalProvider>
+    </Provider>
   );
 }
