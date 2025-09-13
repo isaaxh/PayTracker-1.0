@@ -22,13 +22,20 @@ import { useAuth } from "hooks/useAuth";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
 import RenderIcon from "./RenderIcon";
 import UIText from "./ui/UIText";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { useSelector } from "react-redux";
+import { RootState } from "@/services/state/store";
 
 const ProfileSettingsForm = () => {
   const { appSettings, setAppSettings } = useGlobal() as GlobalContextProps;
   const { logout } = useAuth() as AuthContextProps;
   const { colorScheme, setColorScheme } = useColorScheme();
   const { updateSettings, saveSettings } = useAsync();
-  const { userData } = useGlobal() as GlobalContextProps;
+  // const { userData } = useGlobal() as GlobalContextProps;
+
+  // const { userData } = useFetchUserData();
+
+  const userData = useSelector((state: RootState) => state.userData);
 
   const {
     control,
@@ -121,7 +128,7 @@ const ProfileSettingsForm = () => {
             }}
           />
         </View>
-        <UIText variant={"headingLg"}>{userData?.displayName}</UIText>
+        <UIText variant={"headingLg"}>{userData.data?.displayName}</UIText>
       </View>
       <View className='mb-auto'>
         <Link href='/(protected)/PersonalInfoScreen' asChild>

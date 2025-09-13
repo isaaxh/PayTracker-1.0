@@ -21,9 +21,9 @@ import AuthProvider, {
 import { i18n } from "@/services/i18n/i18n";
 import { useGlobal } from "hooks/useGlobal";
 import { useAsync } from "hooks/useAsync";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import "./globals.css";
-import { store } from "@/services/state/store";
+import { RootState, store } from "@/services/state/store";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -68,8 +68,10 @@ export default function RootLayout() {
 
 const StackLayout = () => {
   const {
-    authState: { user },
+    // authState: { user },
   } = useAuth() as AuthContextProps;
+
+  const { user } = useSelector((state: RootState) => state.authState);
   const segments = useSegments();
   const router = useRouter();
   const { appSettings, setAppSettings } = useGlobal() as GlobalContextProps;

@@ -269,11 +269,6 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
       });
     } catch (e) {
       console.log("updateFieldInDoc: Error updating", e);
-      showToast({
-        type: "error",
-        text1: i18n.t("oops"),
-        text2: i18n.t("updateFailed"),
-      });
     }
   };
 

@@ -2,49 +2,44 @@ import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "./useGlobal";
 import { useEffect, useState } from "react";
 import { useFetchUserData } from "./useFetchUserData";
+import { updateFieldInDoc } from "@/services/api/firestoreApi";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/services/state/store";
+import { updateUserData } from "@/services/state/user/userSlice";
 
 export const useCalculate = () => {
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
-  const { userData, transactions, updateFieldInDoc } =
-    useGlobal() as GlobalContextProps;
+  const { transactions } = useGlobal() as GlobalContextProps;
 
-  const { fetchUserData } = useFetchUserData();
+  const { userData } = useFetchUserData();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    /* if (transactions.length) { */
-    /*   calculateIncomeAndExpense(); */
-    /* } */
     calculateIncomeAndExpense();
   }, [transactions]);
 
   useEffect(() => {
-    /* if (income || expense) { */
-    /*   calculateMonthlyPayout(); */
-    /* } */
     calculateMonthlyPayout();
   }, [income, expense]);
 
   const calculateMonthlyPayout = () => {
-    if (!userData) return;
+    if (!userData.data) return;
 
     let totalSum = income - expense;
-
     updateFieldInDoc({
-      id: userData.uid,
+      id: userData.data.uid,
       collectionName: "users",
-      fieldName: "monthlyTotal.total",
+      fieldName: 'monthlyTotal.total',
       updateValue: totalSum,
     });
 
     setMonthlyTotal(totalSum);
-
-    fetchUserData();
   };
 
   const calculateIncomeAndExpense = () => {
-    if (!userData || !transactions) return;
+    if (!userData.data || !transactions) return;
 
     let totalIncome = 0;
     let totalExpense = 0;
@@ -58,26 +53,38 @@ export const useCalculate = () => {
     setIncome(totalIncome);
     setExpense(totalExpense);
 
-    updateFieldInDoc({
-      id: userData.uid,
-      collectionName: "users",
-      fieldName: "grandTotal",
-      updateValue: totalIncome,
-    });
 
-    updateFieldInDoc({
-      id: userData.uid,
-      collectionName: "users",
-      fieldName: "monthlyTotal.income",
-      updateValue: totalIncome,
-    });
+    if (userData.data) {
+      dispatch(updateUserData(
+        {
+          id: userData.data.uid,
+          collectionName: "users",
+          fieldName: "grandTotal",
+          updateValue: totalIncome,
+        }
 
-    updateFieldInDoc({
-      id: userData.uid,
-      collectionName: "users",
-      fieldName: "monthlyTotal.expenses",
-      updateValue: totalExpense,
-    });
+      ));
+      dispatch(updateUserData(
+        {
+          id: userData.data.uid,
+          collectionName: "users",
+          fieldName: "monthlyTotal.income",
+          updateValue: totalIncome,
+        }
+
+      ));
+      dispatch(updateUserData(
+        {
+          id: userData.data.uid,
+          collectionName: "users",
+          fieldName: "monthlyTotal.expenses",
+          updateValue: totalExpense,
+        }
+
+      ));
+    } else {
+      console.log("Cannot update useCalculate: user data is not ready.");
+    }
   };
 
   return { monthlyTotal, income, expense };

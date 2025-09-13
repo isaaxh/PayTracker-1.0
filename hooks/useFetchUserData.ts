@@ -1,37 +1,26 @@
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
-import { useGlobal } from "./useGlobal";
+import { AppDispatch } from './../services/state/store';
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
 import { useAuth } from "./useAuth";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
-import { FIREBASE_DB } from "firebaseConfig";
-import { TUserData } from "utils/types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/services/state/store";
+import { fetchUserData } from '@/services/state/user/userSlice';
 
 export const useFetchUserData = () => {
-  const [loading, setLoading] = useState(false);
-  const { userData, setUserData } = useGlobal() as GlobalContextProps;
   const {
     authState: { user },
   } = useAuth() as AuthContextProps;
 
-  const fetchUserData = async () => {
-    if (!user?.uid) return;
-    try {
-      const docRef = doc(FIREBASE_DB, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserData(docSnap.data() as TUserData);
-      } else {
-        console.log("User data does not exist");
-      }
-    } catch (e) {
-      console.log("User data fetch failed: ", e);
-    }
-  };
+  const userData = useSelector((state: RootState) => state.userData)
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    fetchUserData();
-  }, [user]);
+    if (user?.uid && userData.status === 'idle') {
+      dispatch(fetchUserData({ collectionName: 'users', id: user.uid }))
+      // console.log('Fetching user data for uid:');
 
-  return { userData, fetchUserData, loading };
+    }
+  }, [user, userData.status, dispatch]);
+
+  return { userData };
 };
