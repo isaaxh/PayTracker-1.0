@@ -11,6 +11,7 @@ import {
   useFetchFilteredTransactions,
 } from "hooks/useFetchFilteredTransactions";
 import { useFocusEffect } from "expo-router";
+import { useFetchAllTransactions } from "@/hooks/useFetchAllTransactions";
 
 type TransactionListProps = {
   showSections?: boolean;
@@ -31,6 +32,13 @@ const TransactionList = ({
       rangeFilterQuery,
     });
 
+  const {
+    transactions,
+    error,
+    transactionStatus,
+    refetch: refetchTransactions,
+  } = useFetchAllTransactions();
+
   const groupTransactionsByDate = (filteredTransactions: TTransaction[]) => {
     const grouped = filteredTransactions.reduce((acc, filteredTransaction) => {
       const date = formatDate(filteredTransaction.date, "date");
@@ -47,15 +55,13 @@ const TransactionList = ({
     }));
   };
 
-  const sectionsData = groupTransactionsByDate(filteredTransactions);
-
-  useEffect(() => {
-    fetchFilteredTransactions();
-  }, []);
+  const sectionsData = transactions
+    ? groupTransactionsByDate(transactions)
+    : [];
 
   useFocusEffect(
     useCallback(() => {
-      fetchFilteredTransactions();
+      refetchTransactions();
       return () => {};
     }, [])
   );
@@ -94,8 +100,8 @@ const TransactionList = ({
         }
         refreshControl={
           <RefreshControl
-            refreshing={loading}
-            onRefresh={fetchFilteredTransactions}
+            refreshing={transactionStatus === "pending"}
+            onRefresh={refetchTransactions}
           />
         }
         ListEmptyComponent={() => (

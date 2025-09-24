@@ -13,7 +13,7 @@ export const transactionTypeList = [
 
 export const transactionSchema = z.object({
   id: z.string(),
-  date: TimestampType,
+  date: z.string(),
   type: transactionTypeEnum,
   category: categoryLabelEnum,
   entity: z
@@ -27,6 +27,12 @@ export const transactionSchema = z.object({
     .max(10000, { message: "Amount must not exceed 500" }),
   note: z.string().optional(),
 });
+
+export const firestoreTransactionSchema = transactionSchema
+  .omit({ date: true })
+  .extend({ date: TimestampType })
+
+export type TFirestoreTransaction = z.infer<typeof firestoreTransactionSchema>
 
 export type TTransaction = z.infer<typeof transactionSchema>;
 

@@ -1,17 +1,16 @@
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
-import { useGlobal } from "./useGlobal";
 import { useEffect, useState } from "react";
 import { useFetchUserData } from "./useFetchUserData";
 import { updateFieldInDoc } from "@/services/api/firestoreApi";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/services/state/store";
 import { updateUserData } from "@/services/state/user/userSlice";
+import { useFetchAllTransactions } from "./useFetchAllTransactions";
 
 export const useCalculate = () => {
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
-  const { transactions } = useGlobal() as GlobalContextProps;
+  const { transactions } = useFetchAllTransactions()
 
   const { userData, error, status } = useFetchUserData();
   const dispatch = useDispatch<AppDispatch>();
