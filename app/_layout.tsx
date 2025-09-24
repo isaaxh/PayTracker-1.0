@@ -11,19 +11,22 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import React from "react";
 import { useColorScheme } from "nativewind";
-import { useAuth } from "hooks/useAuth";
 import GlobalProvider, {
   GlobalContextProps,
 } from "@/services/providers/GlobalProvider";
-import AuthProvider, {
-  AuthContextProps,
-} from "@/services/providers/AuthProvider";
+import AuthProvider from "@/services/providers/AuthProvider";
 import { i18n } from "@/services/i18n/i18n";
 import { useGlobal } from "hooks/useGlobal";
 import { useAsync } from "hooks/useAsync";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import "./globals.css";
-import { RootState, store } from "@/services/state/store";
+import { AppDispatch, RootState, store } from "@/services/state/store";
+import { onAuthStateChanged } from "firebase/auth";
+import { FIREBASE_AUTH } from "firebaseConfig";
+import {
+  createSerializableUser,
+  setAuthUser,
+} from "@/services/state/auth/authSlice";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -67,11 +70,15 @@ export default function RootLayout() {
 }
 
 const StackLayout = () => {
-  const {
-    // authState: { user },
-  } = useAuth() as AuthContextProps;
+  // const {
+  //   authState: { user },
+  // } = useAuth() as AuthContextProps;
 
+  // const { fetchAllTransactions } = useFetchAllTransactions();
   const { user } = useSelector((state: RootState) => state.authState);
+  const userData = useSelector((state: RootState) => state.userData);
+  const dispatch = useDispatch<AppDispatch>();
+
   const segments = useSegments();
   const router = useRouter();
   const { appSettings, setAppSettings } = useGlobal() as GlobalContextProps;
@@ -80,6 +87,24 @@ const StackLayout = () => {
 
   i18n.enableFallback = true;
 
+  // authentication
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      if (user) {
+        dispatch(setAuthUser(createSerializableUser(user)));
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  //fetch all transactions
+  // useEffect(() => {
+  //   if (userData.data) {
+  //     fetchAllTransactions();
+  //   }
+  // }, [userData.data]);
+
+  // app settings
   useEffect(() => {
     i18n.locale = appSettings.language.value;
     setColorScheme(appSettings.theme.value);
@@ -96,6 +121,7 @@ const StackLayout = () => {
     loadAppSettings();
   }, []);
 
+  // handle navigation changes based on auth state
   useEffect(() => {
     const inAuthGroup = segments[0] === "(protected)";
 

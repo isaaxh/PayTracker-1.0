@@ -1,32 +1,41 @@
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { useGlobal } from "./useGlobal";
 import { transactionSchema } from "@/constants/TransactionsTypes";
-import { useSelector } from "react-redux";
-import { RootState } from "@/services/state/store";
+import { useEffect } from "react";
+import { useFetchUserData } from "./useFetchUserData";
 
 
 export const useFetchAllTransactions = () => {
-  const { getAllDocuments, setTransactions } = useGlobal() as GlobalContextProps;
-  const userData = useSelector((state: RootState) => state.userData)
+  const { getAllDocuments, transactions, setTransactions } = useGlobal() as GlobalContextProps;
 
-  const fetchAllTransactions = async () => {
-    try {
-      if (!userData) {
-        console.log('No user data available in useFetchAllTransactions');
+  const { userData, error, status: userStatus } = useFetchUserData();
 
-        return;
-      }
+  useEffect(() => {
+    if (userData && userStatus === 'idle') {
 
-      // const allTransactions = await
-      //   getAllDocuments({
-      //     collectionName: `users/${userData.data?.uid}/transactions`,
-      //     dateOrder: "desc"
-      //   }, transactionSchema)
+      const fetchAllTransactions = async () => {
+        try {
+          if (!userData) {
+            return;
+          }
 
-      // setTransactions(allTransactions)
-    } catch (e) {
-      console.log("TransactionList: ", e);
+          const allTransactions = await
+            getAllDocuments({
+              collectionName: `users/${userData.uid}/transactions`,
+              dateOrder: "desc"
+            }, transactionSchema)
+
+          console.log('userData:', userData);
+
+          setTransactions(allTransactions)
+        } catch (e) {
+          console.log("TransactionList: ", e);
+        }
+      };
+
+      fetchAllTransactions();
     }
-  };
-  return { fetchAllTransactions };
+  }, [userData, userStatus])
+
+  return { transactions };
 };

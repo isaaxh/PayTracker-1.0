@@ -12,9 +12,16 @@ import { useAuth } from "@/hooks/useAuth";
 import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { formatDate } from "@/utils/dateHelperFn";
 import { View } from "react-native";
+import {
+  createSerializableUser,
+  setAuthUser,
+} from "@/services/state/auth/authSlice";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
 
 const NotificationBody = () => {
-  const userData = useSelector((state: RootState) => state.userData);
+  // const userData = useSelector((state: RootState) => state.userData);
+  const { userData, error, status } = useFetchUserData();
+  const authState = useSelector((state: RootState) => state.authState);
   const dispatch = useDispatch<AppDispatch>();
 
   const {
@@ -22,7 +29,10 @@ const NotificationBody = () => {
   } = useAuth() as AuthContextProps;
 
   const handlePressFetch = () => {
-    dispatch(clearUserData());
+    if (!authState.user?.uid) return;
+    dispatch(
+      fetchUserData({ collectionName: "users", id: authState.user.uid })
+    );
   };
 
   const handlePressUpdate = () => {
@@ -38,12 +48,12 @@ const NotificationBody = () => {
   };
   const handleUpdateDisplayName = () => {
     // Only allow the update if data is loaded successfully
-    if (userData.data) {
+    if (userData) {
       const props = {
-        id: userData.data?.uid,
+        id: userData?.uid,
         collectionName: "users",
         fieldName: "displayName",
-        updateValue: "Ishaq Hussain",
+        updateValue: "Mohammad Hussain",
       };
       dispatch(updateUserData(props));
     } else {
@@ -54,38 +64,36 @@ const NotificationBody = () => {
 
   const handlePressClear = () => {
     if (!user?.uid) return;
-    dispatch(clearUserData());
+    dispatch(setAuthUser(createSerializableUser(user)));
   };
 
   return (
     <View className='flex-1 w-full px-6 py-4 space-y-4'>
-      {userData.status === "pending" && <UIText>Loading...</UIText>}
-      {userData.status === "failed" && (
-        <UIText>Failed to fetch userData</UIText>
-      )}
-      {userData.status === "success" ? (
+      {status === "pending" && <UIText>Loading...</UIText>}
+      {status === "failed" && <UIText>Failed to fetch userData</UIText>}
+      {status === "success" ? (
         <>
-          <UIText variant={"headingMd"}>{userData.data?.displayName}</UIText>
-          <UIText variant={"headingMd"}>{userData.data?.email}</UIText>
+          <UIText variant={"headingMd"}>{authState.user?.displayName}</UIText>
+          <UIText variant={"headingMd"}>{userData?.displayName}</UIText>
           <UIText variant={"headingMd"}>
-            {userData.data && formatDate(userData.data?.createdAt)}
+            {userData && formatDate(userData?.createdAt)}
           </UIText>
 
           <UIText variant={"headingMd"}>
-            Monthly Payout: {userData.data?.monthlyTotal.total}
+            Monthly Payout: {userData?.monthlyTotal.total}
           </UIText>
           <UIText variant={"headingMd"}>
-            income: {userData.data?.monthlyTotal.income}
+            income: {userData?.monthlyTotal.income}
           </UIText>
           <UIText variant={"headingMd"}>
-            expense: {userData.data?.monthlyTotal.expenses}
+            expense: {userData?.monthlyTotal.expenses}
           </UIText>
         </>
       ) : (
         <UIText variant={"headingMd"}>no user data</UIText>
       )}
 
-      {userData.status === "failed" && <UIText>{userData.error}</UIText>}
+      {status === "failed" && <UIText>{error}</UIText>}
       <UIButton variant={"fill"} primary onPress={handlePressFetch}>
         Fetch user data
       </UIButton>
@@ -93,7 +101,7 @@ const NotificationBody = () => {
         update user name
       </UIButton>
       <UIButton variant={"fill"} primary onPress={handlePressClear}>
-        clear user data
+        fetch authstate
       </UIButton>
     </View>
   );
