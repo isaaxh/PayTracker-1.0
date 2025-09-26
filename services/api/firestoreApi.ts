@@ -1,6 +1,6 @@
 import { TCategoryLabel } from "@/constants/CategoriesTypes";
-import { TTransactionType } from "@/constants/TransactionsTypes";
-import { collection, doc, getDoc, getDocs, limit, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { TFirestoreTransaction, TTransaction, TTransactionType } from "@/constants/TransactionsTypes";
+import { collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { FIREBASE_DB } from "firebaseConfig";
 import z, { ZodObject } from "zod";
 
@@ -158,5 +158,36 @@ export const getAllDocuments = async <T extends z.ZodRawShape>(
     } catch (e) {
         console.log("Failed to retrieve all documents: ", e);
         return []; // Ensure an array is always returned on error
+    }
+};
+
+
+export type TAddTransactionDocument = {
+    transactionData: TFirestoreTransaction;
+    uid: string;
+};
+
+
+export const addTransactionDocument = async (props: TAddTransactionDocument) => {
+    const { uid, transactionData } = props;
+    try {
+        await setDoc(
+            doc(
+                FIREBASE_DB,
+                `users/${uid}/transactions`,
+                transactionData.id.toString()
+            ),
+            {
+                id: transactionData.id,
+                date: transactionData.date,
+                amount: transactionData.amount,
+                type: transactionData.type,
+                category: transactionData.category,
+                entity: transactionData.entity,
+                note: transactionData.note,
+            }
+        );
+    } catch (e) {
+        console.log("Error adding transaction", e);
     }
 };

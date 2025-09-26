@@ -1,6 +1,6 @@
 import { firestoreTransactionSchema, TFirestoreTransaction, transactionSchema, TTransaction } from "@/constants/TransactionsTypes"
-import { getAllDocuments, TGetAllDocument } from "@/services/api/firestoreApi"
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { addTransactionDocument, getAllDocuments, TAddTransactionDocument, TGetAllDocument } from "@/services/api/firestoreApi"
+import { AsyncThunkConfig, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 type TransactionState = {
     data: TTransaction[] | null
@@ -38,7 +38,20 @@ const transactionSlice = createSlice({
             .addCase(fetchAllTransactionData.rejected, (state, action) => {
                 state.status = 'failed',
                     state.error = action.error.message || 'Failed to fetch transactions'
+            })
+            .addCase(addTransaction.pending, (state) => {
+                state.status = 'pending',
+                    state.error = null
+            })
+            .addCase(addTransaction.fulfilled, (state) => {
+                state.status = 'success',
+                    state.error = null
+            })
+            .addCase(addTransaction.rejected, (state, action) => {
+                state.status = 'failed',
+                    state.error = action.error.message || 'Failed to fetch transactions'
             });
+
     }
 })
 
@@ -59,6 +72,22 @@ export const fetchAllTransactionData = createAsyncThunk<
             return transactions
         } catch (error) {
             return rejectWithValue('Failed to fetch all transactions');
+        }
+    }
+)
+
+export const addTransaction = createAsyncThunk<
+    void,
+    TAddTransactionDocument,
+    AsyncThunkConfig
+>(
+    'transactions/addTransaction',
+    async (props: TAddTransactionDocument, { rejectWithValue }) => {
+        try {
+            await addTransactionDocument(props)
+        } catch (error) {
+            console.log('Adding transaction document failed: ', error);
+            return rejectWithValue('Adding transaction document failed.')
         }
     }
 )

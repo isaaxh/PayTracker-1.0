@@ -13,7 +13,7 @@ export const transactionTypeList = [
 
 export const transactionSchema = z.object({
   id: z.string(),
-  date: z.string(),
+  date: z.string().datetime(),
   type: transactionTypeEnum,
   category: categoryLabelEnum,
   entity: z

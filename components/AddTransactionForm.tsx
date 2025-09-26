@@ -1,33 +1,41 @@
 import { Platform, View } from "react-native";
 import React, { useEffect, useState } from "react";
+import { router } from "expo-router";
+import uuid from "react-native-uuid";
+import { ZodError } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Timestamp } from "firebase/firestore";
+import { useDispatch } from "react-redux";
+import { i18n } from "@/services/i18n/i18n";
+
 import UIText from "./ui/UIText";
 import UIDropDown from "./ui/UIDropDown";
 import CustomDateTimePicker from "./CustomDateTimePicker";
 import UIButton from "./ui/UIButton";
+import UIInput from "./ui/UIInput";
+
 import { categoryLabelsArray } from "@/constants/CategoriesTypes";
 import {
   TTransaction,
+  firestoreTransactionSchema,
   transactionSchema,
   transactionTypeList,
 } from "@/constants/TransactionsTypes";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import UIInput from "./ui/UIInput";
-import uuid from "react-native-uuid";
-import { useGlobal } from "hooks/useGlobal";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
-import { router } from "expo-router";
-import { i18n } from "@/services/i18n/i18n";
-import { Timestamp } from "firebase/firestore";
+
+import { addTransaction } from "@/services/state/transactions/transactionSlice";
+import { AppDispatch } from "@/services/state/store";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
 import { useFetchAllTransactions } from "hooks/useFetchAllTransactions";
 
 const AddTransactionForm = () => {
   const [date, setDate] = useState(new Date());
 
-  const { userData, addTransactionDoc, loading } =
-    useGlobal() as GlobalContextProps;
+  const { userData } = useFetchUserData();
+  const { transactionStatus } = useFetchAllTransactions();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const { fetchAllTransactions } = useFetchAllTransactions();
+  const { refetch } = useFetchAllTransactions();
 
   const {
     control,
@@ -38,7 +46,7 @@ const AddTransactionForm = () => {
     resolver: zodResolver(transactionSchema),
     defaultValues: {
       id: uuid.v4().toString(),
-      date: Timestamp.fromDate(date),
+      date: new Date().toISOString(),
       note: "",
       amount: 0,
     },
@@ -50,20 +58,37 @@ const AddTransactionForm = () => {
     }
   }, [reset]);
 
-  const onSubmit = (data: TTransaction) => {
-    if (!userData) {
+  const onSubmit = async (data: TTransaction) => {
+    if (!userData?.uid) {
       console.log("Cannot add transaction: user id not found!");
       return;
     }
 
-    const parsedTransaction = transactionSchema.parse(data);
+    try {
+      const firestoreReady = {
+        ...data,
+        date: Timestamp.fromDate(new Date(data.date)),
+      };
+      const parsedTransaction =
+        firestoreTransactionSchema.parse(firestoreReady);
 
-    addTransactionDoc({
-      uid: userData?.uid,
-      transactionData: parsedTransaction,
-    });
+      const uid = userData.uid;
 
-    fetchAllTransactions();
+      dispatch(
+        addTransaction({
+          uid,
+          transactionData: parsedTransaction,
+        })
+      );
+
+      refetch();
+    } catch (error) {
+      if (error instanceof ZodError) {
+        console.error("Validation error:", error.errors);
+      } else {
+        console.error("Error adding transaction:", error);
+      }
+    }
 
     router.back();
   };
@@ -153,7 +178,9 @@ const AddTransactionForm = () => {
             variant='fill'
             size='large'
             onPress={handleSubmit(onSubmit)}
-            disabled={!isDirty || loading || isSubmitting}
+            disabled={
+              !isDirty || transactionStatus === "pending" || isSubmitting
+            }
             primary
           >
             {i18n.t("save")}
