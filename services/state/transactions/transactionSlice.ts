@@ -1,5 +1,5 @@
-import { firestoreTransactionSchema, TFirestoreTransaction, transactionSchema, TTransaction } from "@/constants/TransactionsTypes"
-import { addTransactionDocument, getAllDocuments, TAddTransactionDocument, TGetAllDocument } from "@/services/api/firestoreApi"
+import { firestoreTransactionSchema, TTransaction } from "@/constants/TransactionsTypes"
+import { addTransactionDocument, getAllDocuments, removeDocument, TAddTransactionDocument, TGetAllDocument, TRemoveDocument } from "@/services/api/firestoreApi"
 import { AsyncThunkConfig, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 type TransactionState = {
@@ -26,6 +26,7 @@ const transactionSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // fetching all transactions
             .addCase(fetchAllTransactionData.pending, (state) => {
                 state.status = 'pending',
                     state.error = null
@@ -39,6 +40,8 @@ const transactionSlice = createSlice({
                 state.status = 'failed',
                     state.error = action.error.message || 'Failed to fetch transactions'
             })
+
+            // adding transaction 
             .addCase(addTransaction.pending, (state) => {
                 state.status = 'pending',
                     state.error = null
@@ -49,8 +52,37 @@ const transactionSlice = createSlice({
             })
             .addCase(addTransaction.rejected, (state, action) => {
                 state.status = 'failed',
-                    state.error = action.error.message || 'Failed to fetch transactions'
+                    state.error = action.error.message || 'Failed to add transaction'
+            })
+
+            // removing transaction 
+            .addCase(removeTransaction.pending, (state, action) => {
+                state.status = 'pending'
+                state.error = null
+                const id = action.meta.arg.transaction.id
+                if (state.data)
+                    state.data = state.data.filter(t => t.id !== id)
+                console.log('pending: transaction removed.');
+
+            })
+            .addCase(removeTransaction.fulfilled, (state) => {
+                state.status = 'success',
+                    state.error = null
+
+                console.log('success: no changes.');
+            })
+            .addCase(removeTransaction.rejected, (state, action) => {
+                state.status = 'failed';
+
+                if (action.payload) {
+                    state.data?.push(action.payload.transaction);
+                    state.error = action.payload.error;
+                    console.log('failed: transaction added back.');
+                } else {
+                    state.error = action.error.message || 'Failed to remove transaction';
+                }
             });
+        ;
 
     }
 })
@@ -91,6 +123,27 @@ export const addTransaction = createAsyncThunk<
         }
     }
 )
+
+export const removeTransaction = createAsyncThunk<
+    void,
+    { transaction: TTransaction; props: TRemoveDocument },
+    { rejectValue: { error: string; transaction: TTransaction } }
+>(
+    'transactions/removeTransaction',
+    async ({ props, transaction }, { rejectWithValue }) => {
+        try {
+            console.log('removeTransaction: ', props);
+
+            await removeDocument(props);
+        } catch (error) {
+            console.error('Removing transaction failed:', error);
+            return rejectWithValue({
+                error: 'Failed to remove transaction.',
+                transaction,
+            });
+        }
+    }
+);
 
 export const { clearTransactions } = transactionSlice.actions
 export default transactionSlice.reducer

@@ -5,30 +5,31 @@ import { useGlobal } from "hooks/useGlobal";
 import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { router, useLocalSearchParams } from "expo-router";
 import UIButton from "./ui/UIButton";
-import { useFetchFilteredTransactions } from "hooks/useFetchFilteredTransactions";
 import RenderIcon from "./RenderIcon";
 import UIText from "./ui/UIText";
 import { formatDate } from "@/utils/dateHelperFn";
 import Colors from "@/constants/Colors";
 import DetailItemCard from "./DetailItemCard";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { useFetchAllTransactions } from "@/hooks/useFetchAllTransactions";
+import { getDocument } from "@/services/api/firestoreApi";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/services/state/store";
+import { removeTransaction } from "@/services/state/transactions/transactionSlice";
 
 const TransactionDetailsBody = () => {
   const { id } = useLocalSearchParams();
   const [transaction, setTransaction] = useState<TTransaction | null>(null);
-  const {
-    userData,
-    getDocument,
-    removeDocument,
-    transactions,
-    setTransactions,
-  } = useGlobal() as GlobalContextProps;
-  const { fetchFilteredTransactions, loading } = useFetchFilteredTransactions({
-    dateOrder: "desc",
-  });
+
+  const { userData } = useFetchUserData();
+  const { transactionStatus } = useFetchAllTransactions();
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const { appSettings } = useGlobal() as GlobalContextProps;
 
   useEffect(() => {
+    // fetching the transaction document on screen load
     const getTransactionDoc = async () => {
       try {
         const transaction = await getDocument<TTransaction>({
@@ -47,20 +48,18 @@ const TransactionDetailsBody = () => {
   }, []);
 
   const onPressDelete = () => {
-    if (transaction) {
-      const filteredTransactions = transactions.filter(
-        (trans) => transaction?.id !== trans.id
+    if (userData && transaction) {
+      dispatch(
+        removeTransaction({
+          transaction,
+          props: {
+            id: transaction.id,
+            collectionName: `users/${userData.uid}/transactions`,
+          },
+        })
       );
-
-      removeDocument({
-        id: transaction?.id,
-        collectionName: `users/${userData?.uid}/transactions`,
-      });
-
-      setTransactions(filteredTransactions);
-      fetchFilteredTransactions();
     } else {
-      console.log("no transaction found");
+      console.log("No userData or transaction found.");
     }
 
     router.back();
@@ -135,7 +134,11 @@ const TransactionDetailsBody = () => {
       </View>
 
       <View className='mt-auto space-y-3'>
-        <UIButton variant={"fill"} size={"large"} disabled={loading}>
+        <UIButton
+          variant={"fill"}
+          size={"large"}
+          disabled={transactionStatus === "pending"}
+        >
           Edit
         </UIButton>
         <UIButton
@@ -145,7 +148,7 @@ const TransactionDetailsBody = () => {
           variant={"fill"}
           size={"large"}
           type={"danger"}
-          disabled={loading}
+          disabled={transactionStatus === "pending"}
         >
           Delete
         </UIButton>

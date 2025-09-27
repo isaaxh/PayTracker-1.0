@@ -1,6 +1,6 @@
 import { TCategoryLabel } from "@/constants/CategoriesTypes";
-import { TFirestoreTransaction, TTransaction, TTransactionType } from "@/constants/TransactionsTypes";
-import { collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { TFirestoreTransaction, TTransactionType } from "@/constants/TransactionsTypes";
+import { collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { FIREBASE_DB } from "firebaseConfig";
 import z, { ZodObject } from "zod";
 
@@ -189,5 +189,21 @@ export const addTransactionDocument = async (props: TAddTransactionDocument) => 
         );
     } catch (e) {
         console.log("Error adding transaction", e);
+    }
+};
+
+export type TRemoveDocument = {
+    id: string;
+    collectionName: string;
+};
+
+export const removeDocument = async (props: TRemoveDocument) => {
+    const { id, collectionName } = props;
+
+    try {
+        const docRef = doc(FIREBASE_DB, collectionName, id);
+        await deleteDoc(docRef);
+    } catch (e) {
+        console.log("Error deleting document", e);
     }
 };

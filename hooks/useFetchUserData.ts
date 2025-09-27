@@ -23,6 +23,7 @@ export const useFetchUserData = () => {
       if (userChanged) {
         // Optionally reset the state if the user changes
         dispatch(clearUserData());
+
       }
       dispatch(fetchUserData({ collectionName: 'users', id: user.uid }))
     }
