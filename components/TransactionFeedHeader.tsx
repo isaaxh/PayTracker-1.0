@@ -6,7 +6,7 @@ import { i18n } from "@/services/i18n/i18n";
 
 const TransactionFeedHeader = () => {
   return (
-    <View className='flex-row items-center justify-between mb-3'>
+    <View className='flex-row items-center justify-between mt-2 mb-2'>
       <UIText variant='base'>{i18n.t("transactions")}</UIText>
       <Link href='/(transactions)/AllTransactionsScreen' asChild>
         <TouchableOpacity>
