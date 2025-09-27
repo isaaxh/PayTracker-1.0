@@ -1,5 +1,5 @@
 import GlobalContext from "@/contexts/GlobalContext";
-import { TSignupSchema, TUserData } from "utils/types";
+import { TSignupSchema } from "utils/types";
 import {
   collection,
   deleteDoc,
@@ -20,7 +20,6 @@ import { TTransaction, TTransactionType } from "@/constants/TransactionsTypes";
 import { TCategoryLabel } from "@/constants/CategoriesTypes";
 import { useToast } from "hooks/useToast";
 import { i18n } from "../i18n/i18n";
-import { TAppSettingsSchema } from "@/constants/Settings";
 import { FIREBASE_DB } from "firebaseConfig";
 import z, { ZodObject } from "zod";
 
@@ -30,21 +29,6 @@ interface GlobalProviderProps {
 
 export type GlobalContextProps = {
   loading: boolean;
-  userData: TUserData | null;
-  setUserData: React.Dispatch<React.SetStateAction<TUserData | null>>;
-  transactions: TTransaction[];
-  setTransactions: React.Dispatch<React.SetStateAction<TTransaction[]>>;
-  addUserDocument: (props: TAddUserDocument) => void;
-  getDocument: <T>(props: TGetDocument) => Promise<T | null>;
-  getAllDocuments: <T extends z.ZodRawShape>(
-    props: TGetAllDocument,
-    schema: ZodObject<T>
-  ) => Promise<z.infer<typeof schema>[]>;
-  addTransactionDoc: (props: TAddTransactionDoc) => void;
-  updateFieldInDoc: (props: TUpdateFieldInDoc) => void;
-  removeDocument: (props: TRemoveDocument) => void;
-  appSettings: TAppSettingsSchema;
-  setAppSettings: React.Dispatch<React.SetStateAction<TAppSettingsSchema>>;
 };
 
 type TAddUserDocument = {
@@ -110,19 +94,7 @@ type TRemoveDocument = {
 
 const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState<TUserData | null>(null);
   const [transactions, setTransactions] = useState<TTransaction[] | []>([]);
-  const [appSettings, setAppSettings] = useState<TAppSettingsSchema>({
-    theme: { label: "Dark", value: "dark" },
-    language: {
-      label: "English",
-      value: "en",
-    },
-    currency: {
-      label: "Saudi Riyal",
-      value: "SAR",
-    },
-  });
 
   const { showToast } = useToast();
 
@@ -285,18 +257,6 @@ const GlobalProvider = ({ children }: GlobalProviderProps) => {
 
   const value: GlobalContextProps = {
     loading,
-    userData,
-    setUserData,
-    transactions,
-    setTransactions,
-    appSettings,
-    setAppSettings,
-    addUserDocument,
-    getAllDocuments,
-    getDocument,
-    addTransactionDoc,
-    updateFieldInDoc,
-    removeDocument,
   };
 
   return (
