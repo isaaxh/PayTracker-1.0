@@ -4,8 +4,7 @@ import RenderIcon from "./RenderIcon";
 import { TTransaction } from "@/constants/TransactionsTypes";
 import Colors from "@/constants/Colors";
 import UIText from "./ui/UIText";
-import { useGlobal } from "@/hooks/useGlobal";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
+import { useAppSettings } from "@/hooks/useAppSettings";
 
 type TransactionDetailsSummaryCardProps = {
   transaction: TTransaction | null;
@@ -14,7 +13,7 @@ type TransactionDetailsSummaryCardProps = {
 const TransactionDetailsSummaryCard = ({
   transaction,
 }: TransactionDetailsSummaryCardProps) => {
-  const { appSettings } = useGlobal() as GlobalContextProps;
+  const { appSettings } = useAppSettings();
 
   return (
     <View className='relative items-center px-6 pt-10 pb-8 mb-4 rounded-lg bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>

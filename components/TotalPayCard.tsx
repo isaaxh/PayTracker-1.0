@@ -11,9 +11,10 @@ import { i18n } from "@/services/i18n/i18n";
 import { convertCurrency } from "utils/currencyHelperFn";
 import { USDRate } from "@/constants/Settings";
 import Colors from "@/constants/Colors";
+import { useAppSettings } from "@/hooks/useAppSettings";
 
 const TotalPayCard = () => {
-  const { appSettings } = useGlobal() as GlobalContextProps;
+  const { appSettings } = useAppSettings();
 
   const { monthlyTotal, income, expense, status, error } = useCalculate();
 

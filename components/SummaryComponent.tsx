@@ -2,12 +2,11 @@ import { View } from "react-native";
 import React from "react";
 import UIText from "./ui/UIText";
 import { i18n } from "@/services/i18n/i18n";
-import { useGlobal } from "hooks/useGlobal";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { USDRate } from "@/constants/Settings";
 import { convertCurrency } from "utils/currencyHelperFn";
 import RenderIcon from "./RenderIcon";
 import Colors from "@/constants/Colors";
+import { useAppSettings } from "@/hooks/useAppSettings";
 
 type SummaryComponentProps = {
   label: "income" | "expense";
@@ -15,7 +14,7 @@ type SummaryComponentProps = {
 };
 
 const SummaryComponent = ({ label, amount }: SummaryComponentProps) => {
-  const { appSettings } = useGlobal() as GlobalContextProps;
+  const { appSettings } = useAppSettings();
   return (
     <View className='flex-row items-center gap-x-3'>
       <View

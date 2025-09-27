@@ -11,11 +11,10 @@ import { Link } from "expo-router";
 import { TTransaction } from "@/constants/TransactionsTypes";
 import { formatDate } from "utils/dateHelperFn";
 import { i18n } from "@/services/i18n/i18n";
-import { useGlobal } from "hooks/useGlobal";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
 import { USDRate } from "@/constants/Settings";
 import { convertCurrency } from "utils/currencyHelperFn";
 import { cn } from "@/utils/cn";
+import { useAppSettings } from "@/hooks/useAppSettings";
 
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
@@ -31,7 +30,7 @@ const TransactionCard = ({
   note,
   showDate,
 }: TransactionIconProps) => {
-  const { appSettings } = useGlobal() as GlobalContextProps;
+  const { appSettings } = useAppSettings();
   const category: TCategory | undefined = categories.find(
     (cat) => categoryLabel === cat.label
   );
