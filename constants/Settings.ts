@@ -75,4 +75,4 @@ export type TLanguageSchema = z.infer<typeof languageSchema>;
 export type TCurrencySchema = z.infer<typeof currencySchema>;
 export type TThemeSchema = z.infer<typeof themeSchema>;
 export type TSettingsSchema = z.infer<typeof settingsSchema>;
-export type TAppSettingsSchema = z.infer<typeof appSettingsSchema>;
+export type TAppSettings = z.infer<typeof appSettingsSchema>;
