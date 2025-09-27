@@ -145,5 +145,7 @@ export const removeTransaction = createAsyncThunk<
     }
 );
 
+export const updateTransaction = () => { }
+
 export const { clearTransactions } = transactionSlice.actions
 export default transactionSlice.reducer
