@@ -1,8 +1,8 @@
-import { TAppSettingsSchema } from "@/constants/Settings";
+import { TAppSettings } from "@/constants/Settings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const useAsync = () => {
-  const saveSettings = async (appSettings: TAppSettingsSchema) => {
+  const saveSettings = async (appSettings: TAppSettings) => {
     try {
       await AsyncStorage.setItem("appSettings", JSON.stringify(appSettings));
     } catch (e) {
@@ -19,11 +19,11 @@ export const useAsync = () => {
         return null;
       }
     } catch (e) {
-      console.log("Error loading settings: ", e);
+      console.log("Error loading settings from async storage: ", e);
     }
   };
 
-  const updateSettings = async (key: string, value: any) => {
+  const updateSettings = async <K extends keyof TAppSettings>(key: K, value: TAppSettings[K]) => {
     try {
       const currentSettings = await loadSettings();
 
