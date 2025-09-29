@@ -1,16 +1,23 @@
-import { View } from "react-native";
 import React from "react";
+import { Link } from "expo-router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { i18n } from "@/services/i18n/i18n";
+import { useDispatch } from "react-redux";
+
+import { login } from "@/services/state/auth/authSlice";
+import { AppDispatch } from "@/services/state/store";
+
+import { TLoginSchema, loginSchema } from "utils/types";
+
+import { useAuth } from "hooks/useAuth";
+
+import { View } from "react-native";
 import UIText from "./ui/UIText";
 import UIInput from "./ui/UIInput";
 import UIButton from "./ui/UIButton";
-import { useForm } from "react-hook-form";
-import { TLoginSchema, loginSchema } from "utils/types";
-import { useAuth } from "hooks/useAuth";
-import { AuthContextProps } from "@/services/providers/AuthProvider";
-import { Link } from "expo-router";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { i18n } from "@/services/i18n/i18n";
 import SocialAuthBtns from "./SocialAuthBtns";
+import LoadingComponent from "./LoadingComponent";
 
 const LoginForm = () => {
   const {
@@ -21,10 +28,11 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const { login, loading } = useAuth() as AuthContextProps;
+  const { status: authLoading, error } = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = (data: TLoginSchema) => {
-    login({ email: data.email.trim(), password: data.password });
+    dispatch(login({ email: data.email.trim(), password: data.password }));
   };
 
   return (
@@ -68,18 +76,17 @@ const LoginForm = () => {
         </View>
       </View>
 
-      {/* <View className="items-center justify-center w-full"> */}
-      {/*   {loading && <LoadingComponent />} */}
-      {/*   <LoadingComponent /> */}
-      {/* </View> */}
+      {/* <View className='items-center justify-center w-full'>
+        {authLoading === "pending" && <LoadingComponent />}
+      </View> */}
 
       <View className='items-center justify-end mx-4 mt-auto mb-6'>
         <UIButton
           onPress={handleSubmit(onSubmit)}
           size='large'
           buttonStyles='mx-0 mb-3'
-          disabled={!isDirty || loading}
-          loading={loading}
+          disabled={!isDirty}
+          loading={authLoading === "pending"}
           primary
         >
           {i18n.t("login")}
