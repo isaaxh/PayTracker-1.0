@@ -2,15 +2,8 @@ import Colors from "@/constants/Colors";
 import { generateMonthlyData } from "@/constants/DummyData";
 import { useColorScheme } from "nativewind";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
-import RenderIcon from "./RenderIcon";
 import UIText from "./ui/UIText";
 import { useGlobal } from "@/hooks/useGlobal";
 import {
@@ -20,11 +13,13 @@ import {
   TRangeFilterQuery,
 } from "@/services/providers/GlobalProvider";
 import { transactionSchema } from "@/constants/TransactionsTypes";
-import { getMonthName, getWeekRange } from "@/utils/dateHelperFn";
+import { getWeekRange } from "@/utils/dateHelperFn";
 import { calculateDailyTotals } from "@/utils/currencyHelperFn";
 import { BarData, processWeeklyData } from "@/utils/dataProcessHelpers";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import { SymbolView } from "expo-symbols";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { getAllDocuments } from "@/services/api/firestoreApi";
 
 enum Period {
   week = "week",
@@ -46,7 +41,8 @@ const Chart = () => {
     "expense"
   );
 
-  const { userData, getAllDocuments } = useGlobal() as GlobalContextProps;
+  // const { userData, getAllDocuments } = useGlobal() as GlobalContextProps;
+  const { userData } = useFetchUserData();
 
   useEffect(() => {
     const fetchData = async () => {

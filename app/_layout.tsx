@@ -11,22 +11,19 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import React from "react";
 import { useColorScheme } from "nativewind";
-import GlobalProvider, {
-  GlobalContextProps,
-} from "@/services/providers/GlobalProvider";
-import AuthProvider from "@/services/providers/AuthProvider";
 import { i18n } from "@/services/i18n/i18n";
-import { useGlobal } from "hooks/useGlobal";
-import { useAsync } from "hooks/useAsync";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import "./globals.css";
-import { AppDispatch, RootState, store } from "@/services/state/store";
+import { AppDispatch, persistor, store } from "@/services/state/store";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "firebaseConfig";
 import {
   createSerializableUser,
   setAuthUser,
 } from "@/services/state/auth/authSlice";
+import { PersistGate } from "redux-persist/integration/react";
+import { useAppSettings } from "@/hooks/useAppSettings";
+import { useAuth } from "@/hooks/useAuth";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -70,20 +67,15 @@ export default function RootLayout() {
 }
 
 const StackLayout = () => {
-  // const {
-  //   authState: { user },
-  // } = useAuth() as AuthContextProps;
-
-  // const { fetchAllTransactions } = useFetchAllTransactions();
-  const { user } = useSelector((state: RootState) => state.authState);
-  const userData = useSelector((state: RootState) => state.userData);
+  const { user } = useAuth();
+  const { appSettings } = useAppSettings();
   const dispatch = useDispatch<AppDispatch>();
+  const { setColorScheme } = useColorScheme();
+
+  // useDirection(appSettings.language);
 
   const segments = useSegments();
   const router = useRouter();
-  const { appSettings, setAppSettings } = useGlobal() as GlobalContextProps;
-  const { loadSettings } = useAsync();
-  const { setColorScheme } = useColorScheme();
 
   i18n.enableFallback = true;
 
@@ -97,29 +89,11 @@ const StackLayout = () => {
     return () => unsubscribe();
   }, []);
 
-  //fetch all transactions
-  // useEffect(() => {
-  //   if (userData.data) {
-  //     fetchAllTransactions();
-  //   }
-  // }, [userData.data]);
-
   // app settings
   useEffect(() => {
     i18n.locale = appSettings.language.value;
     setColorScheme(appSettings.theme.value);
   }, [appSettings.language, appSettings.theme]);
-
-  useEffect(() => {
-    const loadAppSettings = async () => {
-      const savedAppSettings = await loadSettings();
-      if (savedAppSettings) {
-        setAppSettings({ ...savedAppSettings });
-      }
-    };
-
-    loadAppSettings();
-  }, []);
 
   // handle navigation changes based on auth state
   useEffect(() => {
@@ -145,15 +119,13 @@ function RootLayoutNav() {
 
   return (
     <Provider store={store}>
-      <GlobalProvider>
-        <AuthProvider>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <StackLayout />
-          </ThemeProvider>
-        </AuthProvider>
-      </GlobalProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <StackLayout />
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 }

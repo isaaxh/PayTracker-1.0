@@ -17,16 +17,19 @@ import {
   setAuthUser,
 } from "@/services/state/auth/authSlice";
 import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { useFetchAllTransactions } from "@/hooks/useFetchAllTransactions";
+import { updateSettings } from "@/services/state/appSettings/appSettingSlice";
 
 const NotificationBody = () => {
-  // const userData = useSelector((state: RootState) => state.userData);
   const { userData, error, status } = useFetchUserData();
   const authState = useSelector((state: RootState) => state.authState);
   const dispatch = useDispatch<AppDispatch>();
 
-  const {
-    authState: { user },
-  } = useAuth() as AuthContextProps;
+  const { transactions } = useFetchAllTransactions();
+
+  console.log(transactions);
+
+  const { user } = useAuth();
 
   const handlePressFetch = () => {
     if (!authState.user?.uid) return;
@@ -58,13 +61,22 @@ const NotificationBody = () => {
       dispatch(updateUserData(props));
     } else {
       // Handle cases where data is not ready (e.g., show a loading state)
-      console.log("Cannot update: user data is not ready.");
+      console.log("Cannot update: user data is not available.");
     }
   };
 
-  const handlePressClear = () => {
-    if (!user?.uid) return;
-    dispatch(setAuthUser(createSerializableUser(user)));
+  // const handlePressClear = () => {
+  //   if (!user?.uid) return;
+  //   dispatch(setAuthUser(createSerializableUser(user)));
+  // };
+
+  const handlePress = () => {
+    dispatch(
+      updateSettings({
+        key: "theme",
+        value: { label: "Light", value: "light" },
+      })
+    );
   };
 
   return (
@@ -100,8 +112,8 @@ const NotificationBody = () => {
       <UIButton variant={"fill"} primary onPress={handleUpdateDisplayName}>
         update user name
       </UIButton>
-      <UIButton variant={"fill"} primary onPress={handlePressClear}>
-        fetch authstate
+      <UIButton variant={"fill"} primary onPress={handlePress}>
+        Press
       </UIButton>
     </View>
   );

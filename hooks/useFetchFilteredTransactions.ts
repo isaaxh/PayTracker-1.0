@@ -1,7 +1,7 @@
-import { GlobalContextProps, TFilterQuery, TRangeFilterQuery } from "@/services/providers/GlobalProvider";
-import { useGlobal } from "./useGlobal";
 import { transactionSchema, TTransaction } from "@/constants/TransactionsTypes";
 import { useState } from "react";
+import { useFetchUserData } from "./useFetchUserData";
+import { getAllDocuments, TFilterQuery, TRangeFilterQuery } from "@/services/api/firestoreApi";
 
 export type FetchFilteredTransactionsProps = {
     dateOrder?: 'asc' | 'desc',
@@ -14,7 +14,7 @@ export const useFetchFilteredTransactions = ({ dateOrder = 'desc', docLimit, fil
     const [filteredTransactions, setFilteredTransactions] = useState<
         TTransaction[] | []
     >([]);
-    const { userData, getAllDocuments } = useGlobal() as GlobalContextProps;
+    const { userData } = useFetchUserData()
     const [loading, setLoading] = useState(false)
 
     const fetchFilteredTransactions = async () => {
