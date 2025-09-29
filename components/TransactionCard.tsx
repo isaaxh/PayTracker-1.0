@@ -1,20 +1,24 @@
-import { View, TouchableOpacity } from "react-native";
 import React from "react";
-import UIText from "./ui/UIText";
-import TransactionIcon from "./TransactionIcon";
+import { View, TouchableOpacity } from "react-native";
+import { Link } from "expo-router";
+
 import {
   TCategory,
   TCategoryLabel,
   categories,
 } from "@/constants/CategoriesTypes";
-import { Link } from "expo-router";
 import { TTransaction } from "@/constants/TransactionsTypes";
+
 import { formatDate } from "utils/dateHelperFn";
-import { i18n } from "@/services/i18n/i18n";
 import { USDRate } from "@/constants/Settings";
 import { convertCurrency } from "utils/currencyHelperFn";
 import { cn } from "@/utils/cn";
+import { capitalizeText } from "@/utils/helperFns";
+
 import { useAppSettings } from "@/hooks/useAppSettings";
+
+import UIText from "./ui/UIText";
+import TransactionIcon from "./TransactionIcon";
 
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
@@ -29,6 +33,7 @@ const TransactionCard = ({
   date,
   note,
   showDate,
+  entity,
 }: TransactionIconProps) => {
   const { appSettings } = useAppSettings();
   const category: TCategory | undefined = categories.find(
@@ -49,9 +54,7 @@ const TransactionCard = ({
       <TouchableOpacity className='flex-row items-center px-6 py-6 mb-3 rounded-xl bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
         <TransactionIcon category={category} />
         <View className='flex-1'>
-          <UIText textStyles='font-bold'>
-            {i18n.locale === "en" ? capitalizedLabel : i18n.t(categoryLabel)}
-          </UIText>
+          <UIText textStyles='font-bold'>{capitalizeText(entity)}</UIText>
           {note !== "" ? <UIText variant='bodySm'>{note}</UIText> : null}
         </View>
         <View className='items-end'>

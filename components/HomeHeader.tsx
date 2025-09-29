@@ -1,21 +1,16 @@
-import { I18nManager, View } from "react-native";
 import React from "react";
+import { I18nManager, View } from "react-native";
+
+import { i18n } from "@/services/i18n/i18n";
+
+import { useUserData } from "@/hooks/useUserData";
+
 import ProfileButton from "./ProfileButton";
 import NotificationButton from "./NotificationButton";
 import UIText from "./ui/UIText";
-import { AuthContextProps } from "@/services/providers/AuthProvider";
-import { useAuth } from "hooks/useAuth";
-import { i18n } from "@/services/i18n/i18n";
-import { useSelector } from "react-redux";
-import { RootState } from "@/services/state/store";
-import { useFetchUserData } from "@/hooks/useFetchUserData";
 
 const HomeHeader = () => {
-  // const {
-  //   authState: { user },
-  // } = useAuth() as AuthContextProps;
-
-  const { userData } = useFetchUserData();
+  const { userData } = useUserData();
 
   return (
     <View className='flex-row items-center justify-between w-full px-6 py-4'>

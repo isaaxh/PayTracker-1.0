@@ -1,13 +1,16 @@
-import { clearTransactions, fetchAllTransactionData } from './../services/state/transactions/transactionSlice';
 import { useCallback, useEffect } from "react";
-import { useFetchUserData } from "./useFetchUserData";
-import { AppDispatch, RootState } from '@/services/state/store';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { AppDispatch, RootState } from '@/services/state/store';
+import { clearTransactions, fetchAllTransactionData } from './../services/state/transactions/transactionSlice';
+
+import { useUserData } from "./useUserData";
+
 
 
 export const useFetchAllTransactions = () => {
 
-  const { userData } = useFetchUserData();
+  const { userData } = useUserData();
   const { user } = useSelector((state: RootState) => state.authState);
   const { data: transactions, status: transactionStatus, error } = useSelector((state: RootState) => state.transactionData)
 

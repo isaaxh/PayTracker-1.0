@@ -17,6 +17,7 @@ import UIText from "./ui/UIText";
 import UIInput from "./ui/UIInput";
 import UIButton from "./ui/UIButton";
 import SocialAuthBtns from "./SocialAuthBtns";
+import { useUserData } from "@/hooks/useUserData";
 
 const SignupForm = () => {
   const {
@@ -28,7 +29,8 @@ const SignupForm = () => {
   });
 
   const dispatch = useDispatch<AppDispatch>();
-  const { status: authLoading, error } = useAuth();
+  const { status: authLoading, error: authError } = useAuth();
+  const { status: userLoading, error: userError } = useUserData();
 
   const onSubmit = (data: TSignupSchema) => {
     dispatch(
@@ -83,8 +85,12 @@ const SignupForm = () => {
           onPress={handleSubmit(onSubmit)}
           size='large'
           buttonStyles='mx-0 mb-3'
-          disabled={!isDirty || authLoading === "pending" || isSubmitting}
-          loading={authLoading === "pending"}
+          disabled={!isDirty || isSubmitting}
+          loading={
+            isSubmitting ||
+            userLoading === "pending" ||
+            authLoading === "pending"
+          }
           primary
         >
           {i18n.t("createAccount")}

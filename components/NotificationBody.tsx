@@ -3,25 +3,16 @@ import UIText from "./ui/UIText";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/services/state/store";
 import UIButton from "./ui/UIButton";
-import {
-  clearUserData,
-  fetchUserData,
-  updateUserData,
-} from "@/services/state/user/userSlice";
+import { fetchUserData, updateUserData } from "@/services/state/user/userSlice";
 import { useAuth } from "@/hooks/useAuth";
-import { AuthContextProps } from "@/services/providers/AuthProvider";
 import { formatDate } from "@/utils/dateHelperFn";
 import { View } from "react-native";
-import {
-  createSerializableUser,
-  setAuthUser,
-} from "@/services/state/auth/authSlice";
-import { useFetchUserData } from "@/hooks/useFetchUserData";
 import { useFetchAllTransactions } from "@/hooks/useFetchAllTransactions";
 import { updateSettings } from "@/services/state/appSettings/appSettingSlice";
+import { useUserData } from "@/hooks/useUserData";
 
 const NotificationBody = () => {
-  const { userData, error, status } = useFetchUserData();
+  const { userData, error, status } = useUserData();
   const authState = useSelector((state: RootState) => state.authState);
   const dispatch = useDispatch<AppDispatch>();
 

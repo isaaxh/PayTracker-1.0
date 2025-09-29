@@ -18,7 +18,7 @@ import { calculateDailyTotals } from "@/utils/currencyHelperFn";
 import { BarData, processWeeklyData } from "@/utils/dataProcessHelpers";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import { SymbolView } from "expo-symbols";
-import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { useUserData } from "@/hooks/useUserData";
 import { getAllDocuments } from "@/services/api/firestoreApi";
 
 enum Period {
@@ -42,7 +42,7 @@ const Chart = () => {
   );
 
   // const { userData, getAllDocuments } = useGlobal() as GlobalContextProps;
-  const { userData } = useFetchUserData();
+  const { userData } = useUserData();
 
   useEffect(() => {
     const fetchData = async () => {

@@ -1,14 +1,17 @@
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import CustomHeader from "@/components/CustomHeader";
 import { View } from "react-native";
-import DetailItemCard from "@/components/DetailItemCard";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import { formatDate } from "@/utils/dateHelperFn";
+
+import { useUserData } from "@/hooks/useUserData";
+
+import CustomHeader from "@/components/CustomHeader";
+import DetailItemCard from "@/components/DetailItemCard";
 import UIButton from "@/components/ui/UIButton";
-import { useFetchUserData } from "@/hooks/useFetchUserData";
 
 const ProfileScreen = () => {
-  const { userData } = useFetchUserData();
+  const { userData } = useUserData();
   return (
     <SafeAreaView className='flex-1 bg-bgColor dark:bg-darkBgColor'>
       <CustomHeader title='personalInfo' />

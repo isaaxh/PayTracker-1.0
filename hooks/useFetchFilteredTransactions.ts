@@ -1,7 +1,10 @@
-import { transactionSchema, TTransaction } from "@/constants/TransactionsTypes";
 import { useState } from "react";
-import { useFetchUserData } from "./useFetchUserData";
+
+import { transactionSchema, TTransaction } from "@/constants/TransactionsTypes";
+
 import { getAllDocuments, TFilterQuery, TRangeFilterQuery } from "@/services/api/firestoreApi";
+
+import { useUserData } from "./useUserData";
 
 export type FetchFilteredTransactionsProps = {
     dateOrder?: 'asc' | 'desc',
@@ -14,7 +17,7 @@ export const useFetchFilteredTransactions = ({ dateOrder = 'desc', docLimit, fil
     const [filteredTransactions, setFilteredTransactions] = useState<
         TTransaction[] | []
     >([]);
-    const { userData } = useFetchUserData()
+    const { userData } = useUserData()
     const [loading, setLoading] = useState(false)
 
     const fetchFilteredTransactions = async () => {

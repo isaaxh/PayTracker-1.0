@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "expo-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { i18n } from "@/services/i18n/i18n";
 import { useDispatch } from "react-redux";
+
+import { i18n } from "@/services/i18n/i18n";
 
 import { login } from "@/services/state/auth/authSlice";
 import { AppDispatch } from "@/services/state/store";
@@ -23,7 +24,7 @@ const LoginForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { isDirty },
+    formState: { isDirty, isSubmitting },
   } = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
   });
@@ -85,7 +86,7 @@ const LoginForm = () => {
           onPress={handleSubmit(onSubmit)}
           size='large'
           buttonStyles='mx-0 mb-3'
-          disabled={!isDirty}
+          disabled={!isDirty || isSubmitting}
           loading={authLoading === "pending"}
           primary
         >

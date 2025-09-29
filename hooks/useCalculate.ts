@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useFetchUserData } from "./useFetchUserData";
-import { updateFieldInDoc } from "@/services/api/firestoreApi";
 import { useDispatch } from "react-redux";
+
+import { updateFieldInDoc } from "@/services/api/firestoreApi";
 import { AppDispatch } from "@/services/state/store";
 import { updateUserData } from "@/services/state/user/userSlice";
+
 import { useFetchAllTransactions } from "./useFetchAllTransactions";
+import { useUserData } from "./useUserData";
 
 export const useCalculate = () => {
   const [income, setIncome] = useState(0);
@@ -12,7 +14,7 @@ export const useCalculate = () => {
   const [monthlyTotal, setMonthlyTotal] = useState(0);
   const { transactions } = useFetchAllTransactions()
 
-  const { userData, error, status } = useFetchUserData();
+  const { userData, error, status } = useUserData();
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {

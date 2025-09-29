@@ -3,7 +3,7 @@ import React from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { useDispatch } from "react-redux";
 
-import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { useFetchUserData } from "@/hooks/useUserData";
 import { AppDispatch } from "@/services/state/store";
 import { removeTransaction } from "@/services/state/transactions/transactionSlice";
 import { useTransaction } from "@/hooks/useTransaction";

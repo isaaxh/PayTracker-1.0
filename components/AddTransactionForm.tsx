@@ -25,13 +25,13 @@ import {
 
 import { addTransaction } from "@/services/state/transactions/transactionSlice";
 import { AppDispatch } from "@/services/state/store";
-import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { useUserData } from "@/hooks/useUserData";
 import { useFetchAllTransactions } from "hooks/useFetchAllTransactions";
 
 const AddTransactionForm = () => {
   const [date, setDate] = useState(new Date());
 
-  const { userData } = useFetchUserData();
+  const { userData } = useUserData();
   const { transactionStatus } = useFetchAllTransactions();
   const dispatch = useDispatch<AppDispatch>();
 

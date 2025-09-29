@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 
 import { TSettingsSchema, settingsSchema } from "@/constants/Settings";
 
-import { useFetchUserData } from "@/hooks/useFetchUserData";
 import { useProfileSettingsForm } from "@/hooks/useProfileSettingsForm";
 import { useAppSettings } from "@/hooks/useAppSettings";
+import { useUserData } from "@/hooks/useUserData";
 
 import UIButton from "./ui/UIButton";
 import ProfileSettingsHeader from "./ProfileSettingsHeader";
@@ -18,7 +18,7 @@ import ProfileSettingsFooter from "./ProfileSettingsFooter";
 
 const ProfileSettingsForm = () => {
   const { appSettings } = useAppSettings();
-  const { userData } = useFetchUserData();
+  const { userData } = useUserData();
   const { onPressLogout, handleOnSubmit } = useProfileSettingsForm();
 
   const {

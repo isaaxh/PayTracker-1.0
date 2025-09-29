@@ -1,23 +1,25 @@
-import { View, Alert } from "react-native";
 import React, { useState } from "react";
+import { View, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CustomHeader from "@/components/CustomHeader";
-import { useGlobal } from "hooks/useGlobal";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
-import UIButton from "@/components/ui/UIButton";
-import { changePasswordSchema, TChangePassword } from "@/utils/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import UIInput from "@/components/ui/UIInput";
-import { FIREBASE_AUTH } from "firebaseConfig";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
 } from "firebase/auth";
 
+import { FIREBASE_AUTH } from "firebaseConfig";
+import { changePasswordSchema, TChangePassword } from "@/utils/types";
+
+import { useUserData } from "@/hooks/useUserData";
+
+import UIInput from "@/components/ui/UIInput";
+import CustomHeader from "@/components/CustomHeader";
+import UIButton from "@/components/ui/UIButton";
+
 const ChangePassScreen = () => {
-  const { userData } = useGlobal() as GlobalContextProps;
+  const { userData } = useUserData();
   const [loading, setLoading] = useState(false);
 
   const {
