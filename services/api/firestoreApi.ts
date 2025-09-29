@@ -4,6 +4,13 @@ import { collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, set
 import { FIREBASE_DB } from "firebaseConfig";
 import z, { ZodObject } from "zod";
 
+export type AddDocumentProps<T extends object> = { id: string, collectionName: string, data: T }
+
+export const addDocument = async <T extends object>({ id, collectionName, data }: AddDocumentProps<T>) => {
+    const docRef = doc(FIREBASE_DB, collectionName, id)
+    await setDoc(docRef, data)
+}
+
 export type TGetDocument = {
     collectionName: string;
     id: string;

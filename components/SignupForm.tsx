@@ -1,36 +1,44 @@
-import { View } from "react-native";
 import React from "react";
+import { View } from "react-native";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { i18n } from "@/services/i18n/i18n";
+import { Link } from "expo-router";
+
+import { useAuth } from "hooks/useAuth";
+
+import { signup } from "@/services/state/auth/authSlice";
+import { AppDispatch } from "@/services/state/store";
+
+import { TSignupSchema, signupSchema } from "utils/types";
+
 import UIText from "./ui/UIText";
 import UIInput from "./ui/UIInput";
 import UIButton from "./ui/UIButton";
-import { useForm } from "react-hook-form";
-import { TSignupSchema, signupSchema } from "utils/types";
-import { useAuth } from "hooks/useAuth";
-import { AuthContextProps } from "@/services/providers/AuthProvider";
-import { Link } from "expo-router";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { i18n } from "@/services/i18n/i18n";
 import SocialAuthBtns from "./SocialAuthBtns";
-import { Timestamp } from "firebase/firestore";
 
 const SignupForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { isDirty },
+    formState: { isDirty, isSubmitting },
   } = useForm<TSignupSchema>({
     resolver: zodResolver(signupSchema),
   });
 
-  const { signup, loading } = useAuth() as AuthContextProps;
+  const dispatch = useDispatch<AppDispatch>();
+  const { status: authLoading, error } = useAuth();
 
   const onSubmit = (data: TSignupSchema) => {
-    signup({
-      name: data.name.trim(),
-      email: data.email.trim(),
-      password: data.password,
-      confirmPassword: data.confirmPassword,
-    });
+    dispatch(
+      signup({
+        name: data.name.trim(),
+        email: data.email.trim(),
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      })
+    );
   };
 
   return (
@@ -75,8 +83,8 @@ const SignupForm = () => {
           onPress={handleSubmit(onSubmit)}
           size='large'
           buttonStyles='mx-0 mb-3'
-          disabled={!isDirty || loading}
-          loading={loading}
+          disabled={!isDirty || authLoading === "pending" || isSubmitting}
+          loading={authLoading === "pending"}
           primary
         >
           {i18n.t("createAccount")}

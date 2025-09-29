@@ -1,7 +1,12 @@
-import { loginUser } from "@/services/api/firebaseAuthApi";
-import { TLoginSchema } from "@/utils/types";
+import { loginUser, signupUser } from "@/services/api/firebaseAuthApi";
+import { TFirestoreUserData, TLoginSchema, TSignupSchema, TUserData } from "@/utils/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "firebase/auth";
+import { updateProfile, User } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
+import { addUserDocument } from "../user/userSlice";
+import { Timestamp } from "firebase/firestore";
+import { formatDate, getFormattedDate } from "@/utils/dateHelperFn";
 
 type AuthState = {
     user: TUser | null
@@ -20,8 +25,6 @@ export const createSerializableUser = (user: User) => {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName,
-        photoURL: user.photoURL,
-        emailVerified: user.emailVerified,
     };
 };
 
@@ -75,6 +78,41 @@ export const login = createAsyncThunk<TSerializedUser, TLoginSchema, { rejectVal
             return thunkAPI.rejectWithValue('Failed to login.')
         }
 
+    }
+)
+
+export const signup = createAsyncThunk<TSerializedUser, TSignupSchema, { rejectValue: string }>(
+    'auth/signup',
+    async ({ name, email, password, confirmPassword }, thunkAPI) => {
+
+        try {
+
+            const response = await signupUser({ name, email, password, confirmPassword })
+
+            if (!response.user) {
+                return thunkAPI.rejectWithValue("No user found");
+            }
+
+            await updateProfile(response.user, {
+                displayName: name,
+            });
+
+            const serializedUser: TUser = createSerializableUser(response.user)
+            thunkAPI.dispatch(addUserDocument({
+                id: response.user.uid, collectionName: `users`,
+                data: {
+                    uid: response.user.uid,
+                    email: response.user.email ?? '',
+                    displayName: response.user.displayName ?? ''
+                }
+            }))
+
+            return serializedUser
+        } catch (error) {
+            console.log('Failed to register user: ', error);
+            return thunkAPI.rejectWithValue('Failed to register user.')
+
+        }
     }
 )
 
