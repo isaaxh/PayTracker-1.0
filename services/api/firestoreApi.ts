@@ -4,9 +4,11 @@ import { collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, set
 import { FIREBASE_DB } from "firebaseConfig";
 import z, { ZodObject } from "zod";
 
+// generic api calls
 export type AddDocumentProps<T extends object> = { id: string, collectionName: string, data: T }
 
-export const addDocument = async <T extends object>({ id, collectionName, data }: AddDocumentProps<T>) => {
+export const addDocument = async <T extends object>(props: AddDocumentProps<T>) => {
+    const { id, collectionName, data } = props
     const docRef = doc(FIREBASE_DB, collectionName, id)
     await setDoc(docRef, data)
 }
@@ -16,64 +18,17 @@ export type TGetDocument = {
     id: string;
 };
 
-export const getDocument = async <T,>(props: TGetDocument): Promise<T | null> => {
+export const getDocument = async <T>(props: TGetDocument): Promise<T | null> => {
     const { collectionName, id } = props;
     let data: T | null = null;
-    try {
-        const docRef = doc(FIREBASE_DB, collectionName, id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            data = docSnap.data() as T;
-        }
-    } catch (e) {
-        console.log("Error retrieving document: ", e);
+    const docRef = doc(FIREBASE_DB, collectionName, id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        data = docSnap.data() as T;
     }
 
     return data;
 };
-
-
-// export type TUpdateFieldInDoc<T, K extends keyof T> = {
-//     id: string;
-//     collectionName: string;
-//     fieldName: K;
-//     updateValue: T[K];
-// };
-
-// export const updateFieldInDoc = async <T, K extends keyof T>(
-//     props: TUpdateFieldInDoc<T, K>,
-// ) => {
-//     const { collectionName, id, fieldName, updateValue } = props;
-//     const docRef = doc(FIREBASE_DB, collectionName, id);
-//     try {
-//         await updateDoc(docRef, {
-//             [fieldName]: updateValue,
-//         });
-//     } catch (e) {
-//         console.error('updateFieldInDoc: Error updating document field', e);
-//         throw e;
-//     }
-// };
-
-export type TUpdateFieldInDoc = {
-    id: string;
-    collectionName: string;
-    fieldName: string;
-    updateValue: string | number;
-};
-
-export const updateFieldInDoc = async (props: TUpdateFieldInDoc) => {
-    const { id, collectionName, fieldName, updateValue } = props;
-    const userRef = doc(FIREBASE_DB, collectionName, id);
-    try {
-        await updateDoc(userRef, {
-            [fieldName]: updateValue,
-        });
-    } catch (e) {
-        console.log("updateFieldInDoc: Error updating", e);
-    }
-};
-
 
 export type TGetAllDocument = {
     collectionName: string;
@@ -82,32 +37,6 @@ export type TGetAllDocument = {
     rangeFilterQuery?: TRangeFilterQuery;
     docLimit?: number | null;
 };
-
-export type TFilterQuery =
-    | {
-        field: "category";
-        value: TCategoryLabel;
-        dateOrder: "desc" | "asc";
-    }
-    | {
-        field: "type";
-        value: TTransactionType;
-        dateOrder: "desc" | "asc";
-    };
-
-export type TRangeFilterQuery =
-    | {
-        field: "date";
-        start: Date;
-        end: Date;
-        order: "asc" | "desc";
-    }
-    | {
-        field: "amount";
-        start: number;
-        end: number;
-        order: "asc" | "desc";
-    };
 
 export const getAllDocuments = async <T extends z.ZodRawShape>(
     props: TGetAllDocument,
@@ -167,6 +96,49 @@ export const getAllDocuments = async <T extends z.ZodRawShape>(
         return []; // Ensure an array is always returned on error
     }
 };
+
+export type TUpdateDocFields<T> = {
+    id: string;
+    collectionName: string;
+    updates: Partial<T> | Record<string, unknown>;
+};
+
+export const updateDocFields = async <T extends Record<string, any>>(
+    props: TUpdateDocFields<T>
+) => {
+    const { id, collectionName, updates } = props;
+    const ref = doc(FIREBASE_DB, collectionName, id);
+    await updateDoc(ref, updates as any);
+};
+
+// other api calls 
+
+export type TFilterQuery =
+    | {
+        field: "category";
+        value: TCategoryLabel;
+        dateOrder: "desc" | "asc";
+    }
+    | {
+        field: "type";
+        value: TTransactionType;
+        dateOrder: "desc" | "asc";
+    };
+
+export type TRangeFilterQuery =
+    | {
+        field: "date";
+        start: Date;
+        end: Date;
+        order: "asc" | "desc";
+    }
+    | {
+        field: "amount";
+        start: number;
+        end: number;
+        order: "asc" | "desc";
+    };
+
 
 
 export type TAddTransactionDocument = {
