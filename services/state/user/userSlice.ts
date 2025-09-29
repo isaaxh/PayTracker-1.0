@@ -1,9 +1,19 @@
-import { addDocument, AddDocumentProps, getDocument, TGetDocument, TUpdateFieldInDoc, updateFieldInDoc } from "@/services/api/firestoreApi";
-import { TFirestoreUserData, TUserData } from "@/utils/types";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 import { Timestamp } from "firebase/firestore";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+import {
+    addDocument,
+    AddDocumentProps,
+    getDocument,
+    TGetDocument,
+    TUpdateDocFields,
+    updateDocFields
+} from "@/services/api/firestoreApi";
+
+import { TFirestoreUserData, TUserData } from "@/utils/types";
 import { formatDate } from "@/utils/dateHelperFn";
+
+import { RootState } from "../store";
 
 type UserState = {
     data: TUserData | null
@@ -29,6 +39,7 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // add user document
             .addCase(addUserDocument.pending, (state) => {
                 state.status = 'pending',
                     state.error = null
@@ -42,6 +53,8 @@ const userSlice = createSlice({
                 state.status = 'failed',
                     state.error = action.error.message || 'Failed to add user data'
             })
+
+            // fetch user document
             .addCase(fetchUserData.pending, (state) => {
                 state.status = 'pending',
                     state.error = null
@@ -55,6 +68,8 @@ const userSlice = createSlice({
                 state.status = 'failed',
                     state.error = action.error.message || 'Failed to fetch user data'
             })
+
+            // update user document
             .addCase(updateUserData.pending, (state) => {
                 state.status = 'pending',
                     state.error = null
@@ -105,12 +120,11 @@ export const addUserDocument = createAsyncThunk<TUserData,
         }
     )
 
-export const fetchUserData = createAsyncThunk<TUserData | null, TGetDocument>(
+export const fetchUserData = createAsyncThunk<TUserData | null, TGetDocument, { rejectValue: string }>(
     'user/fetchUserData',
-    async ({ collectionName, id }: TGetDocument, { rejectWithValue }) => {
+    async ({ collectionName, id }: TGetDocument, thunkAPI) => {
 
         try {
-
             const firestoreUserData = await getDocument<TFirestoreUserData>({ collectionName, id });
 
             if (firestoreUserData) {
@@ -123,9 +137,9 @@ export const fetchUserData = createAsyncThunk<TUserData | null, TGetDocument>(
             }
         } catch (error: any) {
             if (error.message === 'AbortError') {
-                return rejectWithValue('Request was aborted');
+                return thunkAPI.rejectWithValue('Request was aborted');
             }
-            return rejectWithValue(error.message || 'Failed to fetch user data');
+            return thunkAPI.rejectWithValue(error.message || 'Failed to fetch user data.');
         }
 
         return null;
@@ -133,35 +147,41 @@ export const fetchUserData = createAsyncThunk<TUserData | null, TGetDocument>(
 )
 
 
-export const updateUserData = createAsyncThunk<TUserData, TUpdateFieldInDoc>(
+export const updateUserData = createAsyncThunk<
+    TUserData,
+    TUpdateDocFields<TUserData>,
+    { rejectValue: string }
+>(
     'user/updateUserData',
-    async (props, { getState, rejectWithValue }) => {
-
+    async (props, thunkAPI) => {
         try {
+            const { id, collectionName, updates } = props
 
-            const { fieldName, updateValue } = props
-
-            const state = await getState() as RootState;
+            const state = thunkAPI.getState() as RootState;
             const currentData = state.userData.data;
 
             if (!currentData) {
-                return rejectWithValue('User data is not available.');
+                return thunkAPI.rejectWithValue('User data is not available.');
             }
 
-            await updateFieldInDoc(props);
+            await updateDocFields<TUserData>({
+                id,
+                collectionName,
+                updates
+            });
 
-            const updatedUserData = {
+            const updatedUserData: TUserData = {
                 ...currentData,
-                [fieldName]: updateValue,
-            } as TUserData
+                ...updates,
+            }
 
             return updatedUserData;
         } catch (error: any) {
             if (error.message === 'AbortError') {
-                return rejectWithValue('Request was aborted');
+                return thunkAPI.rejectWithValue('Request was aborted');
             }
         }
-        return rejectWithValue('Failed to update user data');
+        return thunkAPI.rejectWithValue('Failed to update user data.');
     }
 )
 

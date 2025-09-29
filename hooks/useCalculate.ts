@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { updateFieldInDoc } from "@/services/api/firestoreApi";
 import { AppDispatch } from "@/services/state/store";
 import { updateUserData } from "@/services/state/user/userSlice";
 
@@ -29,11 +28,12 @@ export const useCalculate = () => {
     if (!userData) return;
 
     let totalSum = income - expense;
-    updateFieldInDoc({
+    updateUserData({
       id: userData.uid,
       collectionName: "users",
-      fieldName: 'monthlyTotal.total',
-      updateValue: totalSum,
+      updates: {
+        'monthlyTotal.total': totalSum
+      }
     });
 
     setMonthlyTotal(totalSum);
@@ -60,28 +60,12 @@ export const useCalculate = () => {
         {
           id: userData.uid,
           collectionName: "users",
-          fieldName: "grandTotal",
-          updateValue: totalIncome,
+          updates: {
+            grandTotal: totalIncome,
+            "monthlyTotal.income": totalIncome,
+            "monthlyTotal.expenses": totalExpense
+          },
         }
-
-      ));
-      dispatch(updateUserData(
-        {
-          id: userData.uid,
-          collectionName: "users",
-          fieldName: "monthlyTotal.income",
-          updateValue: totalIncome,
-        }
-
-      ));
-      dispatch(updateUserData(
-        {
-          id: userData.uid,
-          collectionName: "users",
-          fieldName: "monthlyTotal.expenses",
-          updateValue: totalExpense,
-        }
-
       ));
     } else {
       console.log("Cannot update useCalculate: user data is not ready.");
