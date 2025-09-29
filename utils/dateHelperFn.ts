@@ -25,7 +25,7 @@ export function convertToTimezone(date: Date, offsetInHours: number) {
 
 export const formatDate = (
   date: Timestamp | Date | string,
-  mode?: TMode | 'day',
+  mode?: TMode | 'day' | 'month',
 ): string => {
 
   let inputDate;
@@ -49,7 +49,10 @@ export const formatDate = (
     return inputDate.format("DD-MM-YYYY hh:mm A");
   } else if (mode === "time") {
     return inputDate.format("A hh:mm");
-  } else if (mode === "day") {
+  } else if (mode === "month") {
+    return inputDate.format('MM-YYYY')
+  }
+  else if (mode === "day") {
     return inputDate.format('d')
   }
 
