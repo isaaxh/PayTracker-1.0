@@ -1,14 +1,17 @@
-import { TextInput, TextInputProps, View } from "react-native";
 import React, { ForwardedRef, forwardRef } from "react";
-import { cn } from "utils/cn";
+import { TextInput, TextInputProps, View } from "react-native";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
-import UIText from "./UIText";
-import Colors from "@/constants/Colors";
 import { useColorScheme } from "nativewind";
+
+import Colors from "@/constants/Colors";
+import { cn } from "utils/cn";
+
+import { useAppSettings } from "@/hooks/useAppSettings";
+
 import { TIconsaxIconProps } from "../IconsaxIcon";
 import { VariantProps, cva } from "class-variance-authority";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
-import { useGlobal } from "hooks/useGlobal";
+
+import UIText from "./UIText";
 import RenderIcon from "../RenderIcon";
 
 type UIInputProps<T extends FieldValues> = {
@@ -80,7 +83,7 @@ const UIInputInner = <T extends FieldValues>(
     ...rest
   } = props;
   const { colorScheme } = useColorScheme();
-  const { appSettings } = useGlobal() as GlobalContextProps;
+  const { appSettings } = useAppSettings();
 
   return (
     <Controller
