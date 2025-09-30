@@ -2,9 +2,11 @@ import { firestoreTransactionSchema, TTransaction } from "@/constants/Transactio
 import { addTransactionDocument, getAllDocuments, removeDocument, TAddTransactionDocument, TGetAllDocument, TRemoveDocument } from "@/services/api/firestoreApi"
 import { AsyncThunkConfig, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
+export type TStatus = 'idle' | 'pending' | 'success' | 'failed'
+
 type TransactionState = {
     data: TTransaction[] | null
-    status: 'idle' | 'pending' | 'success' | 'failed'
+    status: TStatus
     error: string | null
 }
 
