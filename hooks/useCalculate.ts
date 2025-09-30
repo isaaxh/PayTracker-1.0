@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 
 import { AppDispatch } from "@/services/state/store";
@@ -8,69 +8,60 @@ import { useFetchAllTransactions } from "./useFetchAllTransactions";
 import { useUserData } from "./useUserData";
 
 export const useCalculate = () => {
-  const [income, setIncome] = useState(0);
-  const [expense, setExpense] = useState(0);
-  const [monthlyTotal, setMonthlyTotal] = useState(0);
-  const { transactions } = useFetchAllTransactions()
-
-  const { userData, error, status } = useUserData();
+  const { transactions, transactionStatus, transactionError } = useFetchAllTransactions()
+  const { userData, status: userStatus } = useUserData();
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    calculateIncomeAndExpense();
-  }, [transactions]);
+  const { income, expense, monthlyTotal } = useMemo(() => {
+    if (!transactions) return { income: 0, expense: 0, monthlyTotal: 0 };
 
-  useEffect(() => {
-    calculateMonthlyPayout();
-  }, [income, expense]);
-
-  const calculateMonthlyPayout = () => {
-    if (!userData) return;
-
-    let totalSum = income - expense;
-    updateUserData({
-      id: userData.uid,
-      collectionName: "users",
-      updates: {
-        'monthlyTotal.total': totalSum
-      }
-    });
-
-    setMonthlyTotal(totalSum);
-  };
-
-  const calculateIncomeAndExpense = () => {
-    if (!userData || !transactions) return;
-
-    let totalIncome = 0;
-    let totalExpense = 0;
-
-    transactions.forEach((item) =>
-      item.type === "income"
-        ? (totalIncome += item.amount)
-        : (totalExpense += item.amount),
+    const totals = transactions.reduce(
+      (acc, item) => {
+        if (item.type === "income") acc.income += item.amount;
+        else acc.expense += item.amount;
+        return acc;
+      },
+      { income: 0, expense: 0 }
     );
 
-    setIncome(totalIncome);
-    setExpense(totalExpense);
+    return {
+      ...totals,
+      monthlyTotal: totals.income - totals.expense,
+    };
+  }, [transactions])
 
+  useEffect(() => {
+    if (!userData) return;
 
-    if (userData) {
-      dispatch(updateUserData(
-        {
-          id: userData.uid,
-          collectionName: "users",
-          updates: {
-            grandTotal: totalIncome,
-            "monthlyTotal.income": totalIncome,
-            "monthlyTotal.expenses": totalExpense
-          },
-        }
-      ));
-    } else {
-      console.log("Cannot update useCalculate: user data is not ready.");
+    if (userStatus === "idle") {
+      const newValues = {
+        grandTotal: income,
+        "monthlyTotal.income": income,
+        "monthlyTotal.expenses": expense,
+        "monthlyTotal.total": monthlyTotal,
+      };
+
+      const hasChanged =
+        userData.grandTotal !== income ||
+        userData.monthlyTotal.income !== income ||
+        userData.monthlyTotal.expenses !== expense ||
+        userData.monthlyTotal.total !== monthlyTotal;
+
+      if (hasChanged) {
+        dispatch(
+          updateUserData({
+            id: userData.uid,
+            collectionName: "users",
+            updates: newValues,
+          })
+        );
+      }
+
     }
-  };
+  }, [userData, income, expense, monthlyTotal, dispatch])
 
-  return { monthlyTotal, income, expense, status, error };
+
+
+
+  return { monthlyTotal, income, expense, transactionStatus, transactionError };
 };
