@@ -1,23 +1,24 @@
-import { TouchableOpacity, View } from "react-native";
 import React from "react";
-import UIText from "./ui/UIText";
-import LinearGradView from "./LinearGradView";
-import SummaryComponent from "./SummaryComponent";
+import { TouchableOpacity, View } from "react-native";
 import { Link } from "expo-router";
-import { useGlobal } from "hooks/useGlobal";
-import { GlobalContextProps } from "@/services/providers/GlobalProvider";
-import { useCalculate } from "hooks/useCalculate";
+
 import { i18n } from "@/services/i18n/i18n";
-import { convertCurrency } from "utils/currencyHelperFn";
 import { USDRate } from "@/constants/Settings";
 import Colors from "@/constants/Colors";
+import { convertCurrency } from "utils/currencyHelperFn";
+
 import { useAppSettings } from "@/hooks/useAppSettings";
+import { useCalculate } from "hooks/useCalculate";
+
+import UIText from "./ui/UIText";
+import SummaryComponent from "./SummaryComponent";
+import LoadingComponent from "./LoadingComponent";
 
 const TotalPayCard = () => {
   const { appSettings } = useAppSettings();
 
-  const { monthlyTotal, income, expense, status, error } = useCalculate();
-
+  const { monthlyTotal, income, expense, transactionStatus, transactionError } =
+    useCalculate();
   return (
     <View
       className='mb-4 rounded-2xl'
@@ -31,24 +32,14 @@ const TotalPayCard = () => {
             </UIText>
           </View>
           <View className='flex-row items-center mb-4'>
-            {status === "pending" ? (
-              <UIText
-                variant='bodySm'
-                textStyles='font-medium mr-2'
-                alwaysDarkText={true}
-              >
-                loading...
-              </UIText>
-            ) : (
-              <UIText variant='headingXL' alwaysDarkText={true}>
-                {appSettings.currency.value}{" "}
-                {convertCurrency({
-                  currency: appSettings.currency.value,
-                  rate: USDRate,
-                  amount: monthlyTotal,
-                })}
-              </UIText>
-            )}
+            <UIText variant='headingXL' alwaysDarkText={true}>
+              {appSettings.currency.value}{" "}
+              {convertCurrency({
+                currency: appSettings.currency.value,
+                rate: USDRate,
+                amount: monthlyTotal,
+              })}
+            </UIText>
           </View>
           <View className='flex-row justify-between w-full px-4'>
             <SummaryComponent label='income' amount={income ?? 0} />
