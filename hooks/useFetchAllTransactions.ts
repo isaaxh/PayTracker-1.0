@@ -12,7 +12,8 @@ export const useFetchAllTransactions = () => {
 
   const { userData } = useUserData();
   const { user } = useSelector((state: RootState) => state.authState);
-  const { data: transactions, status: transactionStatus, error } = useSelector((state: RootState) => state.transactionData)
+  const { data: transactions, status: transactionStatus, error: transactionError }
+    = useSelector((state: RootState) => state.transactionData)
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -43,5 +44,5 @@ export const useFetchAllTransactions = () => {
     }
   }, []);
 
-  return { transactions, error, transactionStatus, refetch };
+  return { transactions, transactionError, transactionStatus, refetch };
 };
