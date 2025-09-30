@@ -1,11 +1,24 @@
-import { View, Text } from "react-native";
+import { View, ActivityIndicator, ColorValue } from "react-native";
 import React from "react";
-import UIText from "./ui/UIText";
+import Colors from "@/constants/Colors";
+import { useColorScheme } from "nativewind";
 
-const LoadingComponent = () => {
+type LoadingComponentProps = {
+  size?: number | "large" | "small" | undefined;
+  color?: ColorValue;
+};
+
+const LoadingComponent = ({ size, color }: LoadingComponentProps) => {
+  const { colorScheme } = useColorScheme();
+  const resolvedColor =
+    color ??
+    (colorScheme === "light"
+      ? Colors.dark.background
+      : Colors.light.background);
+
   return (
-    <View>
-      <UIText variant={"headerLg"}>Loading...</UIText>
+    <View className=''>
+      <ActivityIndicator size={size} color={resolvedColor} />
     </View>
   );
 };
