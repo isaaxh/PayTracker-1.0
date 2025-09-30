@@ -1,74 +1,47 @@
+import React, { useCallback, useRef } from "react";
 import { RefreshControl, SectionList, View } from "react-native";
-import React, { useCallback, useEffect } from "react";
-import TransactionCard from "./TransactionCard";
-import { TTransaction, TTransactionType } from "@/constants/TransactionsTypes";
-import { TCategoryLabel } from "@/constants/CategoriesTypes";
-import { i18n } from "@/services/i18n/i18n";
-import UIText from "./ui/UIText";
-import { formatDate } from "@/utils/dateHelperFn";
-import {
-  FetchFilteredTransactionsProps,
-  useFetchFilteredTransactions,
-} from "hooks/useFetchFilteredTransactions";
 import { useFocusEffect } from "expo-router";
+
+import { TCategoryLabel } from "@/constants/CategoriesTypes";
+
 import { useFetchAllTransactions } from "@/hooks/useFetchAllTransactions";
+import { FetchFilteredTransactionsProps } from "hooks/useFetchFilteredTransactions";
+import { useGroupedTransactions } from "@/hooks/useGroupedTransactions";
+
+import TransactionSectionHeader from "./TransactionSectionHeader";
+import TransactionEmptyState from "./TransactionEmptyState";
+import TransactionCard from "./TransactionCard";
 
 type TransactionListProps = {
   showSections?: boolean;
 } & FetchFilteredTransactionsProps;
 
-const TransactionList = ({
-  showSections = true,
-  dateOrder = "desc",
-  docLimit,
-  filterQuery,
-  rangeFilterQuery,
-}: TransactionListProps) => {
-  const { fetchFilteredTransactions, filteredTransactions, loading } =
-    useFetchFilteredTransactions({
-      dateOrder: dateOrder,
-      docLimit: docLimit,
-      filterQuery,
-      rangeFilterQuery,
-    });
+const TransactionList = ({ showSections = true }: TransactionListProps) => {
+  const listRef = useRef<SectionList>(null);
 
   const {
     transactions,
-    error,
     transactionStatus,
     refetch: refetchTransactions,
   } = useFetchAllTransactions();
-
-  const groupTransactionsByDate = (filteredTransactions: TTransaction[]) => {
-    const grouped = filteredTransactions.reduce((acc, filteredTransaction) => {
-      const date = formatDate(filteredTransaction.date, "date");
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(filteredTransaction);
-      return acc;
-    }, {} as Record<string, TTransaction[]>);
-
-    return Object.entries(grouped).map(([date, data]) => ({
-      title: date,
-      data: data,
-    }));
-  };
-
-  const sectionsData = transactions
-    ? groupTransactionsByDate(transactions)
-    : [];
+  const sectionsData = transactions ? useGroupedTransactions(transactions) : [];
 
   useFocusEffect(
     useCallback(() => {
-      refetchTransactions();
-      return () => {};
+      listRef.current?.scrollToLocation({
+        sectionIndex: 0,
+        itemIndex: 0,
+        animated: false,
+        viewOffset: 0,
+        viewPosition: 0,
+      });
     }, [])
   );
 
   return (
     <View className='w-full h-full'>
       <SectionList
+        ref={listRef}
         contentContainerStyle={{ paddingBottom: 370 }}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
@@ -76,27 +49,11 @@ const TransactionList = ({
         renderItem={({ item }) => (
           <TransactionCard
             categoryLabel={item.category as TCategoryLabel}
-            id={item.id}
-            date={item.date}
-            amount={item.amount}
-            type={item.type as TTransactionType}
-            category={item.category}
-            note={item.note}
-            showDate={!showSections}
-            entity={item.entity}
+            transaction={item}
           />
         )}
         renderSectionHeader={({ section: { title } }) =>
-          showSections ? (
-            <View className='fixed inset-0 flex px-4 py-2 bg-bgColor/90 dark:bg-darkBgColor/95 blur-xl'>
-              <UIText
-                variant={"labelLg"}
-                textStyles='text-tintLight dark:text-tintDark'
-              >
-                {title}
-              </UIText>
-            </View>
-          ) : null
+          showSections ? <TransactionSectionHeader title={title} /> : null
         }
         refreshControl={
           <RefreshControl
@@ -104,11 +61,7 @@ const TransactionList = ({
             onRefresh={refetchTransactions}
           />
         }
-        ListEmptyComponent={() => (
-          <View className='items-center justify-center pt-12'>
-            <UIText>{i18n.t("noTransactionHistory")}</UIText>
-          </View>
-        )}
+        ListEmptyComponent={() => <TransactionEmptyState />}
       />
     </View>
   );

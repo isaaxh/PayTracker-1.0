@@ -23,18 +23,15 @@ import TransactionIcon from "./TransactionIcon";
 type TransactionIconProps = {
   categoryLabel: TCategoryLabel;
   showDate?: boolean;
-} & TTransaction;
+  transaction: TTransaction;
+};
 
-const TransactionCard = ({
-  categoryLabel,
-  id,
-  type,
-  amount,
-  date,
-  note,
-  showDate,
-  entity,
-}: TransactionIconProps) => {
+const TransactionCard = (props: TransactionIconProps) => {
+  const {
+    categoryLabel,
+    showDate,
+    transaction: { id, type, amount, date, note, entity },
+  } = props;
   const { appSettings } = useAppSettings();
   const category: TCategory | undefined = categories.find(
     (cat) => categoryLabel === cat.label
