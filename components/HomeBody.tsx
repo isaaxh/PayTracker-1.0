@@ -4,7 +4,7 @@ import TransactionHistoryFeed from "./TransactionHistoryFeed";
 
 const HomeBody = () => {
   return (
-    <View className="w-full flex-1 px-6 py-4">
+    <View className='flex-1 w-full px-6 py-4'>
       <TotalPayCard />
       <TransactionHistoryFeed />
     </View>

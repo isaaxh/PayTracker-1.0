@@ -1,8 +1,8 @@
-import React, { ReactChild, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { useColorScheme } from "nativewind";
 
 type SkeletonElementProps = {
-  children: ReactChild;
+  children: ReactNode;
 };
 
 const SkeletonElement = (props: SkeletonElementProps) => {

@@ -1,12 +1,8 @@
 import { loginUser, signupUser } from "@/services/api/firebaseAuthApi";
-import { TFirestoreUserData, TLoginSchema, TSignupSchema, TUserData } from "@/utils/types";
+import { TLoginSchema, TSignupSchema } from "@/utils/types";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { updateProfile, User } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store";
 import { addUserDocument } from "../user/userSlice";
-import { Timestamp } from "firebase/firestore";
-import { formatDate, getFormattedDate } from "@/utils/dateHelperFn";
 
 type AuthState = {
     user: TUser | null

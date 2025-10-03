@@ -13,10 +13,10 @@ const AmountInput = (props: AmountInputProps) => {
   const { amount, setAmount } = props;
   const { colorScheme } = useColorScheme();
   return (
-    <View className="bg-bgSecondaryColor dark:bg-darkBgSecondaryColor flex-row space-x-2 items-end py-3 px-20 mt-6 rounded-full">
-      <UIText variant="subHeader3">SAR</UIText>
+    <View className='flex-row items-end px-20 py-3 mt-6 space-x-2 rounded-full bg-bgSecondaryColor dark:bg-darkBgSecondaryColor'>
+      {/* <UIText variant='headingXL'>SAR</UIText> */}
       <TextInput
-        keyboardType="numeric"
+        keyboardType='numeric'
         value={amount}
         onChangeText={setAmount}
         style={{
@@ -28,4 +28,4 @@ const AmountInput = (props: AmountInputProps) => {
   );
 };
 
-export default AmountInput;
+// export default AmountInput;

@@ -3,8 +3,8 @@ import { RefreshControl, SectionList, View } from "react-native";
 import { useFocusEffect } from "expo-router";
 
 import { TCategoryLabel } from "@/constants/CategoriesTypes";
+import { TTransaction } from "@/constants/TransactionsTypes";
 
-import { useFetchAllTransactions } from "@/hooks/useFetchAllTransactions";
 import { FetchFilteredTransactionsProps } from "hooks/useFetchFilteredTransactions";
 import { useGroupedTransactions } from "@/hooks/useGroupedTransactions";
 
@@ -14,34 +14,27 @@ import TransactionCard from "./TransactionCard";
 
 type TransactionListProps = {
   showSections?: boolean;
+  transactions: TTransaction[];
+  // transactionStatus: TStatus;
+  transactionStatus: boolean;
+  transactionError: string | null;
+  refetchTransactions: () => void;
+  showDate?: boolean;
 } & FetchFilteredTransactionsProps;
 
-const TransactionList = ({ showSections = true }: TransactionListProps) => {
-  const listRef = useRef<SectionList>(null);
-
-  const {
-    transactions,
-    transactionStatus,
-    refetch: refetchTransactions,
-  } = useFetchAllTransactions();
+const TransactionList = ({
+  showSections = true,
+  transactions,
+  transactionStatus,
+  transactionError,
+  refetchTransactions,
+  showDate = true,
+}: TransactionListProps) => {
   const sectionsData = transactions ? useGroupedTransactions(transactions) : [];
-
-  useFocusEffect(
-    useCallback(() => {
-      listRef.current?.scrollToLocation({
-        sectionIndex: 0,
-        itemIndex: 0,
-        animated: false,
-        viewOffset: 0,
-        viewPosition: 0,
-      });
-    }, [])
-  );
 
   return (
     <View className='w-full h-full'>
       <SectionList
-        ref={listRef}
         contentContainerStyle={{ paddingBottom: 370 }}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
@@ -50,6 +43,7 @@ const TransactionList = ({ showSections = true }: TransactionListProps) => {
           <TransactionCard
             categoryLabel={item.category as TCategoryLabel}
             transaction={item}
+            showDate={showDate}
           />
         )}
         renderSectionHeader={({ section: { title } }) =>
@@ -57,7 +51,7 @@ const TransactionList = ({ showSections = true }: TransactionListProps) => {
         }
         refreshControl={
           <RefreshControl
-            refreshing={transactionStatus === "pending"}
+            refreshing={transactionStatus}
             onRefresh={refetchTransactions}
           />
         }

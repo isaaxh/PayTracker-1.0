@@ -6,16 +6,13 @@ export const logout = async () => {
     await FIREBASE_AUTH.signOut();
 };
 
-
-const auth = FIREBASE_AUTH;
-
 export const loginUser = async ({ email, password }: TLoginSchema) => {
-    return await signInWithEmailAndPassword(auth, email, password);
+    return await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
 }
 
 export const signupUser = async ({ email, password }: TSignupSchema) => {
     return await createUserWithEmailAndPassword(
-        auth,
+        FIREBASE_AUTH,
         email,
         password
     );

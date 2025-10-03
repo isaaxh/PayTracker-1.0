@@ -26,7 +26,6 @@ export const getDocument = async <T>(props: TGetDocument): Promise<T | null> => 
     if (docSnap.exists()) {
         data = docSnap.data() as T;
     }
-
     return data;
 };
 
