@@ -31,15 +31,19 @@ const TotalPayCard = () => {
               {i18n.t("monthlyPayout")}
             </UIText>
           </View>
-          <View className='flex-row items-center mb-4'>
-            <UIText variant='headingXL' alwaysDarkText={true}>
-              {appSettings.currency.value}{" "}
-              {convertCurrency({
-                currency: appSettings.currency.value,
-                rate: USDRate,
-                amount: monthlyTotal,
-              })}
-            </UIText>
+          <View className='flex-row h-[40px] items-center mb-4'>
+            {transactionStatus ? (
+              <LoadingComponent color={Colors.dark.background} />
+            ) : (
+              <UIText variant='headingXL' alwaysDarkText={true}>
+                {appSettings.currency.value}{" "}
+                {convertCurrency({
+                  currency: appSettings.currency.value,
+                  rate: USDRate,
+                  amount: monthlyTotal,
+                })}
+              </UIText>
+            )}
           </View>
           <View className='flex-row justify-between w-full px-4'>
             <SummaryComponent label='income' amount={income ?? 0} />

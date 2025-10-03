@@ -6,16 +6,26 @@ import { updateUserData } from "@/services/state/user/userSlice";
 
 import { useFetchAllTransactions } from "./useFetchAllTransactions";
 import { useUserData } from "./useUserData";
+import { useFetchTransactions } from "./useTransactions";
 
 export const useCalculate = () => {
-  const { transactions, transactionStatus, transactionError } = useFetchAllTransactions()
-  const { userData, status: userStatus } = useUserData();
+
+  const { data: userData, isPending: userStatus } = useUserData();
+  // const {  userData, status: userStatus } = useUserData();
+  const {
+    data: transactions,
+    isPending: transactionStatus,
+    error: transactionError,
+  } = useFetchTransactions({ uid: userData?.uid ?? '' });
+
   const dispatch = useDispatch<AppDispatch>();
 
   const { income, expense, monthlyTotal } = useMemo(() => {
-    if (!transactions) return { income: 0, expense: 0, monthlyTotal: 0 };
-
-    const totals = transactions.reduce(
+    if (!transactions) {
+      console.log('useCalculate: No transactions');
+      return { income: 0, expense: 0, monthlyTotal: 0 }
+    };
+    const totals = transactions?.reduce(
       (acc, item) => {
         if (item.type === "income") acc.income += item.amount;
         else acc.expense += item.amount;
@@ -33,7 +43,7 @@ export const useCalculate = () => {
   useEffect(() => {
     if (!userData) return;
 
-    if (userStatus === "idle") {
+    if (!userStatus) {
       const newValues = {
         grandTotal: income,
         "monthlyTotal.income": income,

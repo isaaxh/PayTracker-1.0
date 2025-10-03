@@ -14,7 +14,7 @@ import { useUserData } from "@/hooks/useUserData";
 
 const TransactionDetailsBody = () => {
   const { id } = useLocalSearchParams();
-  const { userData } = useUserData();
+  const { data: userData } = useUserData();
 
   const { transaction, loading } = useTransaction(userData?.uid, id.toString());
 

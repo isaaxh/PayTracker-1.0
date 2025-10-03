@@ -10,9 +10,11 @@ import { View } from "react-native";
 import { useFetchAllTransactions } from "@/hooks/useFetchAllTransactions";
 import { updateSettings } from "@/services/state/appSettings/appSettingSlice";
 import { useUserData } from "@/hooks/useUserData";
+import { TUserData } from "@/utils/types";
+import { TUpdateDocFields } from "@/services/api/firestoreApi";
 
 const NotificationBody = () => {
-  const { userData, error, status } = useUserData();
+  const { data: userData, error, status } = useUserData();
   const authState = useSelector((state: RootState) => state.authState);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -35,25 +37,23 @@ const NotificationBody = () => {
       updateUserData({
         id: user?.uid,
         collectionName: "users",
-        fieldName: "displayName",
-        updateValue: "Ishaq Hussain",
+        updates: { displayName: "Isaac Hussain" },
       })
     );
   };
   const handleUpdateDisplayName = () => {
     // Only allow the update if data is loaded successfully
-    if (userData) {
-      const props = {
-        id: userData?.uid,
-        collectionName: "users",
-        fieldName: "displayName",
-        updateValue: "Mohammad Hussain",
-      };
-      dispatch(updateUserData(props));
-    } else {
-      // Handle cases where data is not ready (e.g., show a loading state)
+    if (!userData) {
       console.log("Cannot update: user data is not available.");
+      return;
     }
+    const props: TUpdateDocFields<TUserData> = {
+      id: userData.uid,
+      collectionName: "users",
+      updates: { displayName: "Ayyub Hussain" },
+    };
+
+    dispatch(updateUserData(props));
   };
 
   // const handlePressClear = () => {
@@ -73,7 +73,7 @@ const NotificationBody = () => {
   return (
     <View className='flex-1 w-full px-6 py-4 space-y-4'>
       {status === "pending" && <UIText>Loading...</UIText>}
-      {status === "failed" && <UIText>Failed to fetch userData</UIText>}
+      {status === "error" && <UIText>Failed to fetch userData</UIText>}
       {status === "success" ? (
         <>
           <UIText variant={"headingMd"}>{authState.user?.displayName}</UIText>
@@ -96,7 +96,7 @@ const NotificationBody = () => {
         <UIText variant={"headingMd"}>no user data</UIText>
       )}
 
-      {status === "failed" && <UIText>{error}</UIText>}
+      {status === "error" && <UIText>{error.message}</UIText>}
       <UIButton variant={"fill"} primary onPress={handlePressFetch}>
         Fetch user data
       </UIButton>

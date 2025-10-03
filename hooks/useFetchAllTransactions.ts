@@ -7,10 +7,9 @@ import { clearTransactions, fetchAllTransactionData } from './../services/state/
 import { useUserData } from "./useUserData";
 
 
-
 export const useFetchAllTransactions = () => {
 
-  const { userData } = useUserData();
+  const { data: userData } = useUserData();
   const { user } = useSelector((state: RootState) => state.authState);
   const { data: transactions, status: transactionStatus, error: transactionError }
     = useSelector((state: RootState) => state.transactionData)

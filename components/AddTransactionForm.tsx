@@ -31,7 +31,7 @@ import { useFetchAllTransactions } from "hooks/useFetchAllTransactions";
 const AddTransactionForm = () => {
   const [date, setDate] = useState(new Date());
 
-  const { userData } = useUserData();
+  const { data: userData } = useUserData();
   const { transactionStatus } = useFetchAllTransactions();
   const dispatch = useDispatch<AppDispatch>();
 

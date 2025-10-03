@@ -18,7 +18,7 @@ import ProfileSettingsFooter from "./ProfileSettingsFooter";
 
 const ProfileSettingsForm = () => {
   const { appSettings } = useAppSettings();
-  const { userData } = useUserData();
+  const { data: userData } = useUserData();
   const { onPressLogout, handleOnSubmit } = useProfileSettingsForm();
 
   const {

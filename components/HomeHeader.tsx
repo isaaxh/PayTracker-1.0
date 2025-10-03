@@ -10,7 +10,7 @@ import NotificationButton from "./NotificationButton";
 import UIText from "./ui/UIText";
 
 const HomeHeader = () => {
-  const { userData } = useUserData();
+  const { data: userData } = useUserData();
 
   return (
     <View className='flex-row items-center justify-between w-full px-6 py-4'>
