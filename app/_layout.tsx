@@ -18,12 +18,16 @@ import { AppDispatch, persistor, store } from "@/services/state/store";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "firebaseConfig";
 import {
+  clearAuthUser,
   createSerializableUser,
   setAuthUser,
 } from "@/services/state/auth/authSlice";
 import { PersistGate } from "redux-persist/integration/react";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useAuth } from "@/hooks/useAuth";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -69,31 +73,33 @@ export default function RootLayout() {
 const StackLayout = () => {
   const { user } = useAuth();
   const { appSettings } = useAppSettings();
-  const dispatch = useDispatch<AppDispatch>();
   const { setColorScheme } = useColorScheme();
 
   // useDirection(appSettings.language);
 
-  const segments = useSegments();
-  const router = useRouter();
-
-  i18n.enableFallback = true;
-
-  // authentication
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      if (user) {
-        dispatch(setAuthUser(createSerializableUser(user)));
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-
   // app settings
+  i18n.enableFallback = true;
   useEffect(() => {
     i18n.locale = appSettings.language.value;
     setColorScheme(appSettings.theme.value);
   }, [appSettings.language, appSettings.theme]);
+
+  // auth re-routing
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      if (user) {
+        dispatch(setAuthUser(createSerializableUser(user)));
+      } else {
+        dispatch(clearAuthUser());
+      }
+    });
+    return () => unsubscribe();
+  }, [dispatch]);
+
+  const segments = useSegments();
+  const router = useRouter();
 
   // handle navigation changes based on auth state
   useEffect(() => {
@@ -120,11 +126,13 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <StackLayout />
-        </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <StackLayout />
+          </ThemeProvider>
+        </QueryClientProvider>
       </PersistGate>
     </Provider>
   );
