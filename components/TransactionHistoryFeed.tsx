@@ -11,7 +11,7 @@ const TransactionHistoryFeed = () => {
   const { data: userData } = useUserData();
   const {
     data: recentTransactions,
-    isLoading,
+    isPending,
     refetch: refetchTransactions,
     error: transactionError,
   } = useFetchTransactions({
@@ -25,7 +25,7 @@ const TransactionHistoryFeed = () => {
       <TransactionList
         showSections={false}
         transactions={recentTransactions ?? []}
-        transactionStatus={isLoading}
+        transactionStatus={isPending}
         transactionError={transactionError?.message ?? ""}
         refetchTransactions={refetchTransactions}
         showDate
