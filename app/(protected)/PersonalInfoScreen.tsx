@@ -11,7 +11,7 @@ import DetailItemCard from "@/components/DetailItemCard";
 import UIButton from "@/components/ui/UIButton";
 
 const ProfileScreen = () => {
-  const { userData } = useUserData();
+  const { data: userData } = useUserData();
   return (
     <SafeAreaView className='flex-1 bg-bgColor dark:bg-darkBgColor'>
       <CustomHeader title='personalInfo' />

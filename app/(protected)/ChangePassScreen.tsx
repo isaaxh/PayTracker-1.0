@@ -19,7 +19,7 @@ import CustomHeader from "@/components/CustomHeader";
 import UIButton from "@/components/ui/UIButton";
 
 const ChangePassScreen = () => {
-  const { userData } = useUserData();
+  const { data: userData } = useUserData();
   const [loading, setLoading] = useState(false);
 
   const {
