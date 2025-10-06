@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 import { View, Pressable, Platform } from "react-native";
+import { Control, Controller } from "react-hook-form";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { convertToTimezone, formatDate } from "utils/dateHelperFn";
-import UIText from "./ui/UIText";
 import { useColorScheme } from "nativewind";
-import Colors from "@/constants/Colors";
-import { Control, Controller } from "react-hook-form";
+
 import { TTransaction } from "@/constants/TransactionsTypes";
+
+import Colors from "@/constants/Colors";
 import { cn } from "utils/cn";
-import { Timestamp } from "firebase/firestore";
+import { convertToTimezone, formatDate } from "utils/dateHelperFn";
+
 import RenderIcon from "./RenderIcon";
-import { TIconsaxIconProps } from "./IconsaxIcon";
+import UIText from "./ui/UIText";
 
 type CustomDateTimePickerProps = {
-  date: Date;
+  date: string;
   mode: TMode;
-  setDate: React.Dispatch<React.SetStateAction<Date>>;
+  setDate: React.Dispatch<React.SetStateAction<string>>;
   control: Control<TTransaction>;
   placeholder?: string;
   icon?: string;
@@ -25,10 +26,14 @@ type CustomDateTimePickerProps = {
 
 export type TMode = "date" | "time" | "datetime" | "countdown";
 
+// in the project date is stored as ISOString
+// datePicker requires Date obj so inject Date here
+// convert return date to string
+
 const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
   props: CustomDateTimePickerProps
 ) => {
-  const { control, date, setDate, mode } = props;
+  const { control, date, setDate, mode, placeholder } = props;
   const [dateString, setDateString] = useState("");
   const [show, setShow] = useState(false);
 
@@ -65,14 +70,14 @@ const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
                   <UIText>{dateString}</UIText>
                 ) : (
                   <UIText textStyles='text-tintLight dark:text-tintDark'>
-                    {props.placeholder}
+                    {placeholder}
                   </UIText>
                 )}
               </Pressable>
             )}
             {(show || Platform.OS === "ios") && (
               <DateTimePicker
-                value={date}
+                value={new Date(date)}
                 mode={mode}
                 display='default'
                 themeVariant={colorScheme}
@@ -86,10 +91,8 @@ const CustomDateTimePicker: React.FC<CustomDateTimePickerProps> = (
                 ) => {
                   setShow(false);
                   if (event.type === "set" && selectedDate) {
-                    onChange(
-                      Timestamp.fromDate(convertToTimezone(selectedDate, 3))
-                    );
-                    setDate(convertToTimezone(selectedDate, 3));
+                    onChange(convertToTimezone(selectedDate, 3).toISOString());
+                    setDate(convertToTimezone(selectedDate, 3).toISOString());
                     setDateString(formatDate(selectedDate, mode));
                   }
                 }}
