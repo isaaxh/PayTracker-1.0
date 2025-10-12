@@ -26,6 +26,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { useAppSettings } from "@/hooks/useAppSettings";
 import { useAuth } from "@/hooks/useAuth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const queryClient = new QueryClient();
 
@@ -124,16 +125,18 @@ function RootLayoutNav() {
   const { colorScheme } = useColorScheme();
 
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-          >
-            <StackLayout />
-          </ThemeProvider>
-        </QueryClientProvider>
-      </PersistGate>
-    </Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider
+              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+              <StackLayout />
+            </ThemeProvider>
+          </QueryClientProvider>
+        </PersistGate>
+      </Provider>
+    </GestureHandlerRootView>
   );
 }

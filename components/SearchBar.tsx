@@ -1,43 +1,49 @@
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import { Image, TextInput, TouchableOpacity, View } from "react-native";
+import { Platform, TextInput, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 const SearchBar = () => {
   const params = useLocalSearchParams<{ query?: string }>();
-  const [query, setQuery] = useState(params.query);
+  const [query, setQuery] = useState(params.query ?? "");
 
   const handleChange = (text: string) => {
     setQuery(text);
-
-    if (!text) router.setParams({ query: undefined });
+    if (!text.trim()) {
+      router.setParams({ query: undefined });
+    }
   };
 
   const handleSubmit = () => {
-    if (query?.trim()) router.setParams({ query });
+    if (query.trim()) {
+      router.setParams({ query });
+    }
+  };
+
+  const handleClear = () => {
+    setQuery("");
+    router.setParams({ query: undefined });
   };
 
   return (
-    <View className='searchbar'>
+    <View className='flex-row items-center flex-1 px-3 py-3.5 bg-bgSecondaryColor dark:bg-darkBgSecondaryColor rounded-xl'>
+      <Ionicons name='search' size={20} color='#888' />
       <TextInput
-        className='flex-1 p-5'
-        placeholder='Search for pizzas, burgers...'
+        className='flex-1 px-2 text-base leading-[20px] text-black dark:text-white'
+        placeholder='Search transactions...'
+        autoCapitalize='none'
+        autoCorrect={false}
         placeholderTextColor='#A0A0A0'
         value={query}
         onChangeText={handleChange}
         onSubmitEditing={handleSubmit}
         returnKeyType='search'
       />
-      <TouchableOpacity
-        className='pr-5'
-        onPress={() => router.setParams({ query })}
-      >
-        {/* <Image
-          source={images.search}
-          className='size-6'
-          resizeMode='contain'
-          tintColor='#5D5F6D'
-        /> */}
-      </TouchableOpacity>
+      {query.length > 0 && (
+        <TouchableOpacity onPress={handleClear}>
+          <Ionicons name='close-circle' size={20} color='#888' />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
