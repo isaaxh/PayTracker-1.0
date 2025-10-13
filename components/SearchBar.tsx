@@ -1,28 +1,15 @@
-import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
-import { Platform, TextInput, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const SearchBar = () => {
-  const params = useLocalSearchParams<{ query?: string }>();
-  const [query, setQuery] = useState(params.query ?? "");
+type SearchBarProps = {
+  value: string;
+  onChange: (text: string) => void;
+};
 
-  const handleChange = (text: string) => {
-    setQuery(text);
-    if (!text.trim()) {
-      router.setParams({ query: undefined });
-    }
-  };
-
-  const handleSubmit = () => {
-    if (query.trim()) {
-      router.setParams({ query });
-    }
-  };
-
+const SearchBar = ({ value, onChange }: SearchBarProps) => {
   const handleClear = () => {
-    setQuery("");
-    router.setParams({ query: undefined });
+    onChange("");
   };
 
   return (
@@ -34,12 +21,11 @@ const SearchBar = () => {
         autoCapitalize='none'
         autoCorrect={false}
         placeholderTextColor='#A0A0A0'
-        value={query}
-        onChangeText={handleChange}
-        onSubmitEditing={handleSubmit}
-        returnKeyType='search'
+        value={value}
+        onChangeText={onChange}
+        returnKeyType='done'
       />
-      {query.length > 0 && (
+      {value.length > 0 && (
         <TouchableOpacity onPress={handleClear}>
           <Ionicons name='close-circle' size={20} color='#888' />
         </TouchableOpacity>
