@@ -7,11 +7,11 @@ import UIButton from "./ui/UIButton";
 const TransactionsFilterSheet = () => {
   return (
     <ScrollView className='flex-1 px-4'>
-      // header
+      {/* header */}
       <View className='mb-6'>
         <UIText variant={"headingLg"}>Filter & Sort</UIText>
       </View>
-      // sort sections
+      {/* sort sections */}
       <View className='mb-6'>
         <UIText variant={"labelLg"} textStyles='mb-3'>
           Sort By
@@ -30,7 +30,7 @@ const TransactionsFilterSheet = () => {
           </TouchableOpacity>
         </View>
       </View>
-      // date range sections
+      {/* date range sections */}
       <View className='mb-6'>
         <UIText variant='labelLg' textStyles='mb-3'>
           Date Range
@@ -50,7 +50,7 @@ const TransactionsFilterSheet = () => {
           </TouchableOpacity>
         </View>
       </View>
-      // amount range sections
+      {/* amount range sections */}
       <View className='mb-6'>
         <UIText variant='labelLg' textStyles='mb-3'>
           Amount Range
@@ -72,7 +72,7 @@ const TransactionsFilterSheet = () => {
           </TouchableOpacity>
         </View>
       </View>
-      // category sections
+      {/* category sections */}
       <View className='mb-6'>
         <UIText variant='labelLg' textStyles='mb-3'>
           Category
@@ -115,7 +115,7 @@ const TransactionsFilterSheet = () => {
           </TouchableOpacity>
         </View>
       </View>
-      // action buttons
+      {/* action buttons */}
       <View className='gap-3 mb-6'>
         <UIButton
           variant='fill'
