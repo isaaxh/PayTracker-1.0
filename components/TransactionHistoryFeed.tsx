@@ -16,7 +16,10 @@ const TransactionHistoryFeed = () => {
     error: transactionError,
   } = useFetchTransactions({
     uid: userData?.uid ?? "",
-    filter: { docLimit: 5 },
+    filter: {
+      docOrderBy: { field: "date", value: "desc" },
+      docLimit: 5,
+    },
   });
 
   return (
