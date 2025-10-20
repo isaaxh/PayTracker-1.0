@@ -31,10 +31,10 @@ export const getDocument = async <T>(props: TGetDocument): Promise<T | null> => 
 
 export type TGetAllDocument = {
     collectionName: string;
-    dateOrder: "asc" | "desc";
     filterQuery?: TFilterQuery;
     rangeFilterQuery?: TRangeFilterQuery;
     docLimit?: number | null;
+    docOrderBy?: TDocOrderBy
 };
 
 export const getAllDocuments = async <T extends z.ZodRawShape>(
@@ -43,10 +43,10 @@ export const getAllDocuments = async <T extends z.ZodRawShape>(
 ): Promise<z.infer<typeof schema>[]> => {
     const {
         collectionName,
-        dateOrder,
         filterQuery,
         rangeFilterQuery,
         docLimit,
+        docOrderBy
     } = props;
 
     try {
@@ -61,15 +61,9 @@ export const getAllDocuments = async <T extends z.ZodRawShape>(
                 ? [
                     where(rangeFilterQuery.field, ">=", rangeFilterQuery.start),
                     where(rangeFilterQuery.field, "<=", rangeFilterQuery.end),
-                    orderBy(
-                        rangeFilterQuery.field,
-                        rangeFilterQuery?.order || "desc"
-                    ),
                 ]
                 : []),
-            ...(!rangeFilterQuery
-                ? [orderBy("date", filterQuery?.dateOrder || dateOrder)]
-                : []),
+            ...(docOrderBy ? [orderBy(docOrderBy.field, docOrderBy.value)] : []),
             ...(docLimit ? [limit(docLimit)] : [])
         );
 
@@ -116,17 +110,14 @@ export type TFilterQuery =
     | {
         field: "all";
         value: 'all';
-        dateOrder?: "desc" | "asc";
     }
     | {
         field: "category";
         value: TCategoryLabel;
-        dateOrder?: "desc" | "asc";
     }
     | {
         field: "type";
         value: TTransactionType;
-        dateOrder?: "desc" | "asc";
     };
 
 export type TFilterQueryField = TFilterQuery['value']
@@ -145,6 +136,10 @@ export type TRangeFilterQuery =
         order: "asc" | "desc";
     };
 
+export type TDocOrderBy = {
+    field: 'date' | 'amount'
+    value: 'asc' | 'desc'
+}
 
 
 export type TAddTransactionDocument = {

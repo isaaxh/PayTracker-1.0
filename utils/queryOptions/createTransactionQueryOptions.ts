@@ -10,17 +10,17 @@ export const createTransactionQueryOptions = <
 >(
     { uid, filter }: UseTransactionProps,
     options?: Omit<UseQueryOptions<TData, TError>, 'queryKey' | 'queryFn'>) => {
-    const { filterQuery, rangeFilterQuery, dateOrder = 'desc', docLimit } = filter ?? {}
+    const { filterQuery, rangeFilterQuery, docOrderBy, docLimit } = filter ?? {}
 
     return queryOptions({
         ...options,
-        queryKey: ["transactions", uid, { filterQuery, rangeFilterQuery, dateOrder, docLimit }],
+        queryKey: ["transactions", uid, { filterQuery, rangeFilterQuery, docOrderBy, docLimit }],
         queryFn: async (): Promise<TData> => {
             const firestoreTransactions = await getAllDocuments({
                 collectionName: `users/${uid}/transactions`,
-                dateOrder,
                 filterQuery,
                 rangeFilterQuery,
+                docOrderBy,
                 docLimit
             }, firestoreTransactionSchema)
 

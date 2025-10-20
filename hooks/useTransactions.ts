@@ -2,7 +2,7 @@ import { useUserData } from '@/hooks/useUserData';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Timestamp } from "firebase/firestore";
 
-import { addDocument, removeDocument, TGetAllDocument, TRemoveDocument } from './../services/api/firestoreApi';
+import { addDocument, removeDocument, TDocOrderBy, TGetAllDocument, TRemoveDocument } from './../services/api/firestoreApi';
 
 import { firestoreTransactionSchema, TFirestoreTransaction, TTransaction } from "@/constants/TransactionsTypes";
 
@@ -19,7 +19,7 @@ export type UseTransactionProps = {
 export type FilterProps = {
     filterQuery?: TGetAllDocument["filterQuery"];
     rangeFilterQuery?: TGetAllDocument["rangeFilterQuery"];
-    dateOrder?: "asc" | "desc";
+    docOrderBy?: TDocOrderBy;
     docLimit?: number | null;
 };
 
