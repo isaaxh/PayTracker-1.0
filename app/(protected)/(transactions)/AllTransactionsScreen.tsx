@@ -12,7 +12,7 @@ import TransactionList from "@/components/TransactionList";
 import SearchBar from "@/components/SearchBar";
 import CustomBottomSheet from "@/components/CustomBottomSheet";
 import TransactionsFilterSheet from "@/components/TransactionsFilterSheet";
-import FilterButton from "@/components/FIlterButton";
+import FilterButton from "@/components/FilterButton";
 
 const AllTransactionsScreen = () => {
   const { data: userData } = useUserData();
@@ -60,7 +60,7 @@ const AllTransactionsScreen = () => {
 
       <CustomBottomSheet
         ref={bottomSheetRef}
-        snapPoints={["30%"]}
+        snapPoints={[]}
         containerStyles='flex-1'
       >
         <TransactionsFilterSheet />

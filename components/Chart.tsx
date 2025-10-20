@@ -42,7 +42,7 @@ const Chart = () => {
   );
 
   // const { userData, getAllDocuments } = useGlobal() as GlobalContextProps;
-  const { userData } = useUserData();
+  const { data: userData } = useUserData();
 
   useEffect(() => {
     const fetchData = async () => {
