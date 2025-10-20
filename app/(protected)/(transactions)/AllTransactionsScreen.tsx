@@ -3,6 +3,8 @@ import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomSheet from "@gorhom/bottom-sheet";
 
+import { TDocOrderBy, TFilterQuery } from "@/services/api/firestoreApi";
+
 import { useFetchTransactions } from "@/hooks/useTransactions";
 import { useTransactionFilters } from "@/hooks/useTransactionFilter";
 import { useUserData } from "@/hooks/useUserData";
@@ -13,12 +15,15 @@ import SearchBar from "@/components/SearchBar";
 import CustomBottomSheet from "@/components/CustomBottomSheet";
 import TransactionsFilterSheet from "@/components/TransactionsFilterSheet";
 import FilterButton from "@/components/FilterButton";
-import { TFilterQuery } from "@/services/api/firestoreApi";
 
 const AllTransactionsScreen = () => {
   const [filterQuery, setFilterQuery] = useState<TFilterQuery>({
     field: "all",
     value: "all",
+  });
+  const [docOrderBy, setDocOrderBy] = useState<TDocOrderBy>({
+    field: "date",
+    value: "desc",
   });
 
   const { data: userData } = useUserData();
@@ -34,6 +39,7 @@ const AllTransactionsScreen = () => {
     uid: userData?.uid ?? "",
     filter: {
       filterQuery,
+      docOrderBy,
     },
   });
 
@@ -79,10 +85,11 @@ const AllTransactionsScreen = () => {
         containerStyles='flex-1'
       >
         <TransactionsFilterSheet
-          sortBy='date'
           filterBy={filterQuery}
           onChangeFilterQuery={setFilterQuery}
-          onPressCloseSheet={handleCloseSheet}
+          docOrderBy={docOrderBy}
+          onChangeOrderBy={setDocOrderBy}
+          handleCloseSheet={handleCloseSheet}
         />
       </CustomBottomSheet>
     </SafeAreaView>

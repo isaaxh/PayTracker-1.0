@@ -1,28 +1,30 @@
 import React from "react";
 import { View, ScrollView, TouchableOpacity } from "react-native";
 
-import { cn } from "@/utils/cn";
-import { TFilterQuery } from "@/services/api/firestoreApi";
+import { TDocOrderBy, TFilterQuery } from "@/services/api/firestoreApi";
 
 import UIText from "./ui/UIText";
 import UIButton from "./ui/UIButton";
 import FilterSheetFilterSection from "./FilterSheetFilterSection";
+import FilterSheetSortSection from "./FilterSheetSortSection";
 
 type TransactionFilterProps = {
-  sortBy: "date" | "amount" | "category";
   filterBy?: TFilterQuery;
   onChangeFilterQuery: (filterQuery: TFilterQuery) => void;
+  docOrderBy?: TDocOrderBy;
+  onChangeOrderBy: (docOrderBy: TDocOrderBy) => void;
   dateRange?: "";
   amountRange?: "";
   category?: "";
-  onPressCloseSheet: () => void;
+  handleCloseSheet: () => void;
 };
 
 const TransactionsFilterSheet = ({
-  sortBy = "date",
   filterBy,
   onChangeFilterQuery,
-  onPressCloseSheet,
+  docOrderBy,
+  onChangeOrderBy,
+  handleCloseSheet,
 }: TransactionFilterProps) => {
   return (
     <ScrollView className='flex-1 px-4'>
@@ -34,41 +36,10 @@ const TransactionsFilterSheet = ({
         filterBy={filterBy}
         onChangeFilterQuery={onChangeFilterQuery}
       />
-      {/* sort sections */}
-      <View className='mb-6'>
-        <UIText variant={"labelLg"} textStyles='mb-3'>
-          Sort By
-        </UIText>
-        <View className='flex-row flex-wrap gap-2'>
-          {/* <TouchableOpacity className='px-4 py-2 rounded-lg bg-accent'> */}
-          <TouchableOpacity
-            className={cn([
-              "px-4 py-2 rounded-lg",
-              sortBy === "date" && "bg-accent",
-            ])}
-          >
-            <UIText variant='bodyMd' alwaysLightText>
-              Date (Newest)
-            </UIText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className={cn([
-              "px-4 py-2 rounded-lg",
-              sortBy === "amount" && "bg-accent",
-            ])}
-          >
-            <UIText variant='bodyMd'>Amount (Highest)</UIText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className={cn([
-              "px-4 py-2 rounded-lg",
-              sortBy === "category" && "bg-accent",
-            ])}
-          >
-            <UIText variant='bodyMd'>Category</UIText>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <FilterSheetSortSection
+        docOrderBy={docOrderBy}
+        onChangeOrderBy={onChangeOrderBy}
+      />
       {/* date range sections */}
       <View className='mb-6'>
         <UIText variant='labelLg' textStyles='mb-3'>
@@ -116,7 +87,8 @@ const TransactionsFilterSheet = ({
         <UIButton
           onPress={() => {
             onChangeFilterQuery({ field: "all", value: "all" });
-            onPressCloseSheet();
+            onChangeOrderBy({ field: "date", value: "desc" });
+            handleCloseSheet();
           }}
           variant='fill'
           size='default'
