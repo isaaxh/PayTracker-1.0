@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomSheet from "@gorhom/bottom-sheet";
@@ -13,8 +13,14 @@ import SearchBar from "@/components/SearchBar";
 import CustomBottomSheet from "@/components/CustomBottomSheet";
 import TransactionsFilterSheet from "@/components/TransactionsFilterSheet";
 import FilterButton from "@/components/FilterButton";
+import { TFilterQuery } from "@/services/api/firestoreApi";
 
 const AllTransactionsScreen = () => {
+  const [filterQuery, setFilterQuery] = useState<TFilterQuery>({
+    field: "all",
+    value: "all",
+  });
+
   const { data: userData } = useUserData();
 
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -24,7 +30,12 @@ const AllTransactionsScreen = () => {
     isLoading,
     refetch: refetchTransactions,
     error: transactionError,
-  } = useFetchTransactions({ uid: userData?.uid ?? "", filter: {} });
+  } = useFetchTransactions({
+    uid: userData?.uid ?? "",
+    filter: {
+      filterQuery,
+    },
+  });
 
   const { filter, setFilter, filteredTransactions } =
     useTransactionFilters(transactions);
@@ -34,7 +45,11 @@ const AllTransactionsScreen = () => {
   };
 
   const handleOpenSheet = () => {
-    bottomSheetRef.current?.expand();
+    bottomSheetRef.current?.snapToIndex(0);
+  };
+
+  const handleCloseSheet = () => {
+    bottomSheetRef.current?.close();
   };
 
   return (
@@ -60,10 +75,15 @@ const AllTransactionsScreen = () => {
 
       <CustomBottomSheet
         ref={bottomSheetRef}
-        snapPoints={[]}
+        snapPoints={["50%", "80%"]}
         containerStyles='flex-1'
       >
-        <TransactionsFilterSheet />
+        <TransactionsFilterSheet
+          sortBy='date'
+          filterBy={filterQuery}
+          onChangeFilterQuery={setFilterQuery}
+          onPressCloseSheet={handleCloseSheet}
+        />
       </CustomBottomSheet>
     </SafeAreaView>
   );
