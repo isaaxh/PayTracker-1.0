@@ -13,10 +13,10 @@ import { ZodError } from "zod";
 
 export type UseTransactionProps = {
     uid: string;
-    filter?: TransactionFilterProps
+    filter?: FilterProps
 }
 
-export type TransactionFilterProps = {
+export type FilterProps = {
     filterQuery?: TGetAllDocument["filterQuery"];
     rangeFilterQuery?: TGetAllDocument["rangeFilterQuery"];
     dateOrder?: "asc" | "desc";
@@ -99,7 +99,7 @@ export function useAddTransaction() {
 }
 
 
-export function useRemoveTransaction(uid: string, filter?: TransactionFilterProps) {
+export function useRemoveTransaction(uid: string, filter?: FilterProps) {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: ({ id, collectionName }: TRemoveDocument) => {
