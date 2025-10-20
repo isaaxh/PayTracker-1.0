@@ -54,7 +54,7 @@ export const getAllDocuments = async <T extends z.ZodRawShape>(
 
         let customQueryParams = query(
             docRef,
-            ...(filterQuery
+            ...(filterQuery && filterQuery.field !== 'all'
                 ? [where(filterQuery.field, "==", filterQuery.value)]
                 : []),
             ...(rangeFilterQuery
@@ -114,15 +114,22 @@ export const updateDocFields = async <T extends Record<string, any>>(
 
 export type TFilterQuery =
     | {
+        field: "all";
+        value: 'all';
+        dateOrder?: "desc" | "asc";
+    }
+    | {
         field: "category";
         value: TCategoryLabel;
-        dateOrder: "desc" | "asc";
+        dateOrder?: "desc" | "asc";
     }
     | {
         field: "type";
         value: TTransactionType;
-        dateOrder: "desc" | "asc";
+        dateOrder?: "desc" | "asc";
     };
+
+export type TFilterQueryField = TFilterQuery['field']
 
 export type TRangeFilterQuery =
     | {
