@@ -129,7 +129,7 @@ export type TFilterQuery =
         dateOrder?: "desc" | "asc";
     };
 
-export type TFilterQueryField = TFilterQuery['field']
+export type TFilterQueryField = TFilterQuery['value']
 
 export type TRangeFilterQuery =
     | {
