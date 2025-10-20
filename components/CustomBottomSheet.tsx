@@ -1,11 +1,12 @@
-import { View, Text } from "react-native";
 import React, { forwardRef, ReactNode, useCallback } from "react";
 import BottomSheet, {
   BottomSheetBackdrop,
+  BottomSheetBackdropProps,
   BottomSheetProps,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useColorScheme } from "nativewind";
+
 import Colors from "@/constants/Colors";
 
 type CustomBottomSheetProps = {
@@ -19,7 +20,7 @@ const CustomBottomSheet = forwardRef<BottomSheet, CustomBottomSheetProps>(
   (props, ref) => {
     const {
       children,
-      snapPoints = ["30%", "90%"],
+      snapPoints = ["90%"],
       enablePanDownToClose = true,
       containerStyles,
       ...restProps
@@ -28,7 +29,7 @@ const CustomBottomSheet = forwardRef<BottomSheet, CustomBottomSheetProps>(
     const { colorScheme } = useColorScheme();
 
     const renderBackdrop = useCallback(
-      (backdropProps: any) => (
+      (backdropProps: BottomSheetBackdropProps) => (
         <BottomSheetBackdrop
           {...backdropProps}
           disappearsOnIndex={-1}
