@@ -20,7 +20,7 @@ const CustomBottomSheet = forwardRef<BottomSheet, CustomBottomSheetProps>(
   (props, ref) => {
     const {
       children,
-      snapPoints = ["80%"],
+      snapPoints,
       enablePanDownToClose = true,
       containerStyles,
       ...restProps
