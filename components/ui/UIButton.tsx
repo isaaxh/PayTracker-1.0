@@ -199,7 +199,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
           className={cn(
             btnStyles({ variant: variant, size: size, type: type }),
             buttonStyles,
-            primary && "bg-bgSecondaryColor",
+            primary && "bg-darkBgColor dark:bg-bgColor",
             isPressed && "opacity-60",
             disabled && "opacity-40"
           )}
@@ -213,7 +213,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
                   textVariants.variant.button,
                   textInnerStyle,
                   textStyles,
-                  primary && "text-textLight",
+                  primary && "text-textDark dark:text-textLight",
                   (type === "danger" || type === "success") && "text-textDark"
                 )}
               >
@@ -229,7 +229,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
                   textVariants.variant.button,
                   textInnerStyle,
                   textStyles,
-                  primary && "text-textLight",
+                  primary && "text-textDark dark:text-textLight",
                   (type === "danger" || type === "success") && "text-textDark"
                 )}
               >
@@ -239,7 +239,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
                 className={cn(
                   textInnerStyle,
                   textStyles,
-                  primary && "text-textLight",
+                  primary && "text-textDark dark:text-textLight",
                   (type === "danger" || type === "success") && "text-textDark"
                 )}
               >
@@ -252,7 +252,7 @@ const UIButton = forwardRef<View, UIButtonProps>(
                 textInnerStyle,
                 textStyles,
 
-                primary && "text-textLight"
+                primary && "text-textDark dark:text-textLight"
               )}
             >
               {children}
