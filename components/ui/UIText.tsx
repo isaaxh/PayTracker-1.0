@@ -15,6 +15,7 @@ interface UITextProps extends TextProps, VariantProps<typeof txtStyles> {
   textStyles?: string;
   alwaysDarkText?: boolean;
   alwaysLightText?: boolean;
+  className?: string;
 }
 
 export const textVariants = {
@@ -57,6 +58,7 @@ const UIText = forwardRef<Text, UITextProps>((Props: UITextProps, ref) => {
     textStyles,
     alwaysDarkText,
     alwaysLightText,
+    className,
     ...props
   } = Props;
   return (
@@ -66,7 +68,8 @@ const UIText = forwardRef<Text, UITextProps>((Props: UITextProps, ref) => {
         txtStyles({ variant }),
         textStyles,
         alwaysDarkText && "text-black",
-        alwaysLightText && "text-textDark"
+        alwaysLightText && "text-textDark",
+        className
       )}
       {...props}
     >
