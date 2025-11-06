@@ -251,7 +251,6 @@ const UIButton = forwardRef<View, UIButtonProps>(
               className={cn(
                 textInnerStyle,
                 textStyles,
-
                 primary && "text-textDark dark:text-textLight"
               )}
             >
