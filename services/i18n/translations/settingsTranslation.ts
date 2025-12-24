@@ -12,6 +12,7 @@ export const settingsTranslations = {
     dark: "Dark",
     light: "Light",
     system: "system",
+    saveSettings: "Save Settings"
   },
   ar: {
     settings: "الإعدادات",
@@ -26,5 +27,6 @@ export const settingsTranslations = {
     dark: "داكن",
     light: "فاتح",
     system: "النظام",
+    saveSettings: "حفظ الإعدادات"
   },
 };

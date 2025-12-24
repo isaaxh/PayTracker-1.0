@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import UIButton from "./ui/UIButton";
 import { i18n } from "@/services/i18n/i18n";
@@ -22,7 +22,7 @@ const ProfileSettingsFooter = ({
         onPress={onPressSave}
         disabled={!isDirty || isSubmitting}
       >
-        {i18n.t("saveChanges")}
+        {i18n.t("saveSettings")}
       </UIButton>
     </View>
   );
