@@ -1,6 +1,6 @@
 import { TMode } from "components/CustomDateTimePicker";
 import { Timestamp } from "firebase/firestore";
-import moment from "moment";
+import moment from "moment-timezone";
 
 export const getFormattedDate = () => {
   const date = new Date();
@@ -91,4 +91,40 @@ export const getMonthName = (month: number) => {
     "Dec",
   ];
   return months[month];
+};
+
+export type TRangeUnit = 'days' | 'weeks' | 'months'
+
+export const getDateRangeFromToday = (amount: number, unit: TRangeUnit) => {
+
+  const endDate = moment().endOf('day').toDate()
+  const startDate = moment().subtract(amount, unit).startOf('day').toDate()
+
+  return {
+    startDate,
+    endDate
+  }
+}
+
+export type TDateRangePresets = "oneWeek" | "thirtyDays" | "threeMonths" | "custom" | null
+
+export const deriveSelectedDatePreset = (
+  startDate: Date,
+  endDate: Date
+): TDateRangePresets => {
+  const presets = {
+    "oneWeek": getDateRangeFromToday(1, "weeks"),
+    "thirtyDays": getDateRangeFromToday(30, "days"),
+    "threeMonths": getDateRangeFromToday(3, "months"),
+  } as const;
+
+  for (const [key, range] of Object.entries(presets)) {
+    const isMatch =
+      range.startDate.getTime() === startDate.getTime() &&
+      range.endDate.getTime() === endDate.getTime();
+
+    if (isMatch) return key as "oneWeek" | "thirtyDays" | "threeMonths";
+  }
+
+  return "custom";
 };
