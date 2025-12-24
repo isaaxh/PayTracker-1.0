@@ -25,7 +25,7 @@ const FilterSheetSortSection = ({
           onPress={() => onChangeOrderBy({ field: "date", value: "desc" })}
           className={cn([
             "px-4 py-2 rounded-lg",
-            docOrderBy && docOrderBy.field === "date" && "bg-accent",
+            docOrderBy && docOrderBy.field === "date" && "bg-primary",
           ])}
         >
           <UIText variant='bodyMd'>Date (Newest)</UIText>
@@ -34,7 +34,7 @@ const FilterSheetSortSection = ({
           onPress={() => onChangeOrderBy({ field: "amount", value: "desc" })}
           className={cn([
             "px-4 py-2 rounded-lg",
-            docOrderBy && docOrderBy.field === "amount" && "bg-accent",
+            docOrderBy && docOrderBy.field === "amount" && "bg-primary",
           ])}
         >
           <UIText variant='bodyMd'>Amount (Highest)</UIText>

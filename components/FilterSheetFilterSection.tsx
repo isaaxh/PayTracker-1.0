@@ -132,7 +132,7 @@ const FilterItem = ({
       className={cn([
         filterItemKind === "category" && categoryFilterStyle,
         filterItemKind === "type" && typeFilterStyle,
-        filterBy.value === filterQuery.value && "bg-accent",
+        filterBy.value === filterQuery.value && "bg-primary",
       ])}
     >
       {showIcon && (
