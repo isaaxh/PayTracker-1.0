@@ -15,7 +15,7 @@ module.exports = {
         "quicksand-medium": ["Quicksand-Medium", "sans-serif"],
       },
       colors: {
-        accent: "#29874c",
+        accent: "#F5A623",
         primary: "#F5A623",
         textLight: "#31445e",
         bgColor: "#f2f5f6",
